@@ -1,12 +1,22 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import config from '../config'
+import { 
+  HomeOutlined,
+  CopyOutlined,
+  CommentOutlined,
+  LinkOutlined,
+  PictureOutlined,
+  AppstoreOutlined,
+  UserOutlined,
+  SettingOutlined,
+} from '@ant-design/icons-vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
+    meta: { title: '系统首页', icon: HomeOutlined },
     component: () => import(/* webpackChunkName: "Home" */ '../views/Home.vue'),
-    meta: { title: '系统首页', icon: 'HomeOutlined' },
   },
   {
     path: '/404',
@@ -23,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '',
     name: 'Content',
-    meta: { title: '内容管理', noLink: true, role: [1, 2], icon: 'el-icon-edit' },
+    meta: { title: '内容管理', noLink: true, role: [1, 2], icon: CopyOutlined },
     component: () => import(/* webpackChunkName: "ArticleIndex" */ '../views/Content/Index.vue'),
     children: [
       {
@@ -79,7 +89,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '',
     name: 'Interact',
-    meta: { title: '互动管理', noLink: true, role: [1, 2], icon: 'el-icon-s-comment' },
+    meta: { title: '互动管理', noLink: true, role: [1, 2], icon: CommentOutlined },
     component: () => import(/* webpackChunkName: "InteractIndex" */ '../views/Interact/Index.vue'),
     children: [
       {
@@ -99,7 +109,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '',
     name: 'BlogrollIndex',
-    meta: { title: '友链管理', noLink: true, role: [1, 2], icon: 'el-icon-link' },
+    meta: { title: '友链管理', noLink: true, role: [1, 2], icon: LinkOutlined },
     component: () => import(/* webpackChunkName: "BlogrollIndex" */ '../views/Blogroll/Index.vue'),
     children: [
       {
@@ -113,7 +123,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '',
     name: 'AlbumIndex',
-    meta: { title: '相册管理', noLink: true, role: [1, 2], icon: 'el-icon-picture-outline' },
+    meta: { title: '相册管理', noLink: true, role: [1, 2], icon: PictureOutlined },
     component: () => import(/* webpackChunkName: "AlbumIndex" */ '../views/Album/Index.vue'),
     children: [
       {
@@ -133,7 +143,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '',
     name: 'ColumnIndex',
-    meta: { title: '栏目管理', noLink: true, role: [1, 2], icon: 'el-icon-menu' },
+    meta: { title: '栏目管理', noLink: true, role: [1, 2], icon: AppstoreOutlined },
     component: () => import(/* webpackChunkName: "ColumnIndex" */ '../views/Column/Index.vue'),
     children: [
       {
@@ -147,7 +157,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '',
     name: 'UserIndex',
-    meta: { title: '用户管理', noLink: true, role: [1, 2], icon: 'el-icon-user' },
+    meta: { title: '用户管理', noLink: true, role: [1, 2], icon: UserOutlined },
     component: () => import(/* webpackChunkName: "UserIndex" */ '../views/User/Index.vue'),
     children: [
       {
@@ -161,7 +171,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '',
     name: 'SettingsIndex',
-    meta: { title: '系统设置', noLink: true, role: [1, 2], icon: 'el-icon-setting' },
+    meta: { title: '系统设置', noLink: true, role: [1, 2], icon: SettingOutlined },
     component: () => import(/* webpackChunkName: "SettingsIndex" */ '../views/Settings/Index.vue'),
     children: [
       {

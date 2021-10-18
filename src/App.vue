@@ -1,7 +1,13 @@
 <template>
   <div class="yzp-app">
     
-    <YzpAside v-if="showBar" ref="menu" />
+    <YzpAside
+      v-if="showBar"
+      :menus="menus"
+      :openName="openName"
+      :selectName="selectName"
+      ref="menuRef"
+    />
 
     <div v-if="showBar" class="yzp-main">
       <YzpHeader @collapseMenu="collapseMenu" />
@@ -20,30 +26,51 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, onBeforeMount } from 'vue'
-import { useRoute } from 'vue-router'
+import { defineComponent, ref, watch, onBeforeMount, toRefs, reactive } from 'vue'
+import { useRouter, useRoute  } from 'vue-router'
 
 export default defineComponent({
   setup() {
-    const menu = ref()
+    const menuRef = ref()
     const showBar = ref(false)
+    const menuState = reactive({
+      openName: [] as any,
+      selectName: [ 'Home' ] as any
+    })
 
     const route = useRoute()
-    watch(() => route.path, (path: string) => {
+    const router = useRouter()
+    const routes = router.options.routes
+    const menus = reactive(routes.filter((e: any) => !e.meta.noMenu))
+
+    watch(() => route.path, (path: {} | any) => {
+      menus.forEach((e: any) => {
+        if (e.children) {
+          e.children.forEach((c: any) => {
+            if (c.name === route.name) {
+              menuState.openName = [ e.name ]
+              menuState.selectName = [ c.name ]
+            }
+          });
+        }
+      })
       showBar.value = path !== '/login'
     })
 
     const collapseMenu = () => {
-      menu.value.toggleCollapsed()
+      menuRef.value.toggleCollapsed()
     }
 
     onBeforeMount(() => {
+      console.log(route)
       showBar.value = route.path !== '/login'
     })
 
     return {
-      menu,
+      menuRef,
       showBar,
+      menus,
+      ...toRefs(menuState),
       collapseMenu
     }
   }

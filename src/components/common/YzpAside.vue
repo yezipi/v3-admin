@@ -12,8 +12,16 @@
       v-model:selectedKeys="selectedKeys"
     >
       <template v-for="(item) in menus">
-        <a-menu-item v-if="!item.children" :key="item.name" @click="onMenuClick(item)">{{ item.meta.title }}</a-menu-item>
+        <a-menu-item v-if="!item.children" :key="item.name" @click="onMenuClick(item)">
+          <template #icon>
+            <component :is="item.meta.icon"></component>
+          </template>
+          {{ item.meta.title }}
+        </a-menu-item>
         <a-sub-menu v-else :key="item.name">
+          <template #icon>
+            <component :is="item.meta.icon"></component>
+          </template>
           <template #title>{{ item.meta.title }}</template>
           <template v-if="item.children.length">
             <template v-for="(sub, idx) in item.children">
@@ -28,31 +36,44 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter  } from 'vue-router'
 
 export default defineComponent({
   props: {
-    currRouteName: {
-      type: String
+    openName: {
+      type: Array,
+      default: () => []
+    },
+    selectName: {
+      type: Array,
+      default: () => []
+    },
+    menus: {
+      type: Array,
+      default: () => []
     }
   },
   setup(props) {
     const state = reactive({
       collapsed: false,
-      selectedKeys: ['Home'],
-      openKeys: [],
-      preOpenKeys: [],
+      selectedKeys: props.selectName,
+      openKeys: props.openName,
+      preOpenKeys: [] as any,
     });
 
     const router = useRouter()
-    const route = useRoute()
-    const routes = router.options.routes
-    const menus = routes.filter((e: any) => !e.meta.noMenu)
 
-    watch(
-      () => state.openKeys,
-      (val, oldVal) => {
-        state.preOpenKeys = oldVal;
+    watch(() => [
+      state.openKeys,
+      props.selectName,
+      props.openName,
+    ], (
+        [ newPre, newSelect, newOpen],
+        [ oldPre ],
+      ) => {
+        state.preOpenKeys = oldPre;
+        state.selectedKeys = newSelect,
+        state.openKeys = newOpen
       },
     );
 
@@ -71,13 +92,8 @@ export default defineComponent({
       router.push(path)
     }
 
-    // const currRouteName: any = route.name
-    // state.selectedKeys = [currRouteName]
-    
-
     return {
       ...toRefs(state),
-      menus: reactive(menus),
       toggleCollapsed,
       onMenuClick,
     };
