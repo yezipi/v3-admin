@@ -144,7 +144,7 @@ body {
 .ant-input-affix-wrapper {
   background-color: rgba(255,255,255,0.5)!important;
 }
-.ant-input {
+.ant-input, .ant-table {
   background: none!important;
 }
 </style>

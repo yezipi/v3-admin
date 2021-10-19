@@ -3,6 +3,11 @@ import store from '../store'
 import config from '../config'
 import { message } from 'ant-design-vue';
 
+// interface resConfig extends AxiosResponse<any> {
+//   rows?: [],
+//   count?: number,
+// }
+
 axios.defaults.timeout = 30000
 axios.defaults.baseURL = config.REQ_URL
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -25,11 +30,13 @@ axios.interceptors.request.use((config: AxiosRequestConfig) => {
 // 添加响应拦截器
 axios.interceptors.response.use((response: AxiosResponse) => {
   const res = response.data
-  const req = response.config.data
-  const dataLoading = req.indexOf('loading') > -1
-  const { data, code, msg } = res
+  const { params, data } = response.config
+  const { code, msg,  } = res
 
-  if (dataLoading) {
+  const dataLoading = data && data.indexOf('loading') > -1
+  const paramsLoading = params && params.loading
+
+  if (dataLoading || paramsLoading) {
     store.commit('hideLoading')
   }
 
@@ -45,7 +52,7 @@ axios.interceptors.response.use((response: AxiosResponse) => {
     return Promise.reject(res)
   }
 
-  return data
+  return res
 }, (error: AxiosError) => {
   const str = error.toString()
   const errMsg = str.indexOf('timeout') > 0 ? '请求超时，请刷新后重试！' : str

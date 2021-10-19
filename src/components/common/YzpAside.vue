@@ -18,17 +18,19 @@
           </template>
           {{ item.meta.title }}
         </a-menu-item>
-        <a-sub-menu v-else :key="item.name">
-          <template #icon>
-            <component :is="item.meta.icon"></component>
-          </template>
-          <template #title>{{ item.meta.title }}</template>
-          <template v-if="item.children.length">
-            <template v-for="(sub, idx) in item.children">
-              <a-menu-item v-if="!sub.meta.noMenu" :key="sub.name" @click="onMenuClick(sub)">{{ sub.meta.title }}</a-menu-item>
+        <template v-else>
+          <a-sub-menu :key="item.name">
+            <template #icon>
+              <component :is="item.meta.icon"></component>
             </template>
-          </template>
-        </a-sub-menu>
+            <template #title>{{ item.meta.title }}</template>
+            <template v-if="item.children.length">
+              <template v-for="(sub) in item.children">
+                <a-menu-item v-if="!sub.meta.noMenu" :key="sub.name" @click="onMenuClick(sub)">{{ sub.meta.title }}</a-menu-item>
+              </template>
+            </template>
+          </a-sub-menu>
+        </template>
       </template>
     </a-menu>
   </div>
@@ -49,7 +51,7 @@ export default defineComponent({
       default: () => []
     },
     menus: {
-      type: Array,
+      type: Array as any,
       default: () => []
     }
   },

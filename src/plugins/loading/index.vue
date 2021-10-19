@@ -58,6 +58,7 @@ export default defineComponent({
       active,
       show,
       hide,
+      clickMask,
     }
   }
 })
@@ -66,7 +67,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .yzp-loading {
   position: fixed;
-  background: rgba(0,0,0,0.7);
+  background: rgba(255,255,255,0.5);
   left: 0;
   right: 0;
   top: 0;
@@ -79,12 +80,13 @@ export default defineComponent({
     width: 150px;
     height: 150px;
     border-radius: 5px;
-    background: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.9);
     backdrop-filter: saturate(150%) blur(10px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    box-shadow:  0 0 20px rgba(0,0,0,0.15);
   }
   span {
     display: block;
