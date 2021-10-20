@@ -31,7 +31,7 @@ axios.interceptors.request.use((config: AxiosRequestConfig) => {
 axios.interceptors.response.use((response: AxiosResponse) => {
   const res = response.data
   const { params, data } = response.config
-  const { code, msg,  } = res
+  const { code, msg  } = res
 
   const dataLoading = data && data.indexOf('loading') > -1
   const paramsLoading = params && params.loading
@@ -50,6 +50,12 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   if (code !== 1) {
     message.error(msg)
     return Promise.reject(res)
+  }
+
+  // console.log(response)
+
+  if (data && data.indexOf('showMsg') > -1) {
+    message.success(msg)
   }
 
   return res
