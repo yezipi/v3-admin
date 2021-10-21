@@ -11,6 +11,7 @@ import { message } from 'ant-design-vue';
 axios.defaults.timeout = 30000
 axios.defaults.baseURL = config.REQ_URL
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
   config.headers.common.Authorization = store.state.token;
   const { params, data } = config
@@ -31,7 +32,7 @@ axios.interceptors.request.use((config: AxiosRequestConfig) => {
 axios.interceptors.response.use((response: AxiosResponse) => {
   const res = response.data
   const { params, data } = response.config
-  const { code, msg  } = res
+  const { code, msg } = res
 
   const dataLoading = data && data.indexOf('loading') > -1
   const paramsLoading = params && params.loading

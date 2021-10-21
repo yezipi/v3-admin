@@ -3,22 +3,22 @@ import Request from '../utils/request'
 
 type ArticleFields =  {
   type?: string,
-  sub_column_id?: Number,
-  column_id?: Number,
+  sub_column_id?: number,
+  column_id?: number,
   cover_thumb?: string,
   keywords?: string,
   description?: string,
   author_name?: string,
-  user_id?: Number,
-  view?: Number,
-  like?: Number,
+  user_id?: number,
+  view?: number,
+  like?: number,
   status?: boolean,
   top?: boolean
   recommend?: boolean
   download_link?: string
   comment_open?: boolean
   tags?: string,
-  sort?: Number,
+  sort?: number,
 }
 
 export interface ArticleSaveConfig extends ArticleFields {
@@ -32,9 +32,9 @@ export interface ArticleUpdateConfig extends ArticleFields {
 }
 
 export interface ArticleListConfig {
-  page?:Number,
-  size?: Number,
-  title?:string,
+  page?: number,
+  size?: number,
+  title?: string,
 }
 
 export default new class Article extends Request {
@@ -69,6 +69,16 @@ export default new class Article extends Request {
   }
 
   /**
+   * 删除文章
+   * @param { String } id 文章id
+   * @version 2021-10-20 zzc
+   */
+   public destory(id: string) {
+    const url = `v1/admin/article/${id}`
+    return this.delete(url, { loading: true, showMsg: true })
+  }
+
+  /**
    * 更新文章
    * @param { String } id 文章id
    * @param { Obejct } data 同创建的参数
@@ -82,9 +92,9 @@ export default new class Article extends Request {
   /**
    * 文章列表
    * @param { Obejct } params 参数
-   * @param { Obejct } params.page 页码
-   * @param { Obejct } params.size 页数
-   * @param { Obejct } params.title 文章标题，可选
+   * @param { Number } params.page 页码
+   * @param { Number } params.size 页数
+   * @param { String } params.title 文章标题，可选
    * @version 2021-10-19 zzc
    */
    public getList(params?: ArticleListConfig) {

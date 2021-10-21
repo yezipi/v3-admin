@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div class="page-list">
+    <div class="page-filter">
+      <div class="filter-left">
+        <column-select></column-select>
+      </div>
+    </div>
     <a-table
       :dataSource="dataSource"
       :columns="columns"
@@ -17,11 +22,11 @@
         <a-switch :checked="record.status" @change="onStatusChange(record, $event)" />
       </template>
 
-      <template #action>
+      <template #action="{ record }">
         <span>
           <a>编辑</a>
           <a-divider type="vertical" />
-          <a @click="confirmDelete">删除</a>
+          <a @click="confirmDelete(record.id)">删除</a>
         </span>
       </template>
 
@@ -30,10 +35,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, createVNode, onMounted, reactive, toRefs } from 'vue'
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
-import { Modal } from 'ant-design-vue';
+import { defineComponent, onMounted, reactive, toRefs } from 'vue'
 import ArticleApi from '../../api/article'
+import confirm from '../../utils/confirm'
 
 export default defineComponent({
   setup() {
@@ -75,19 +79,23 @@ export default defineComponent({
       total: 0,
       current: 1
     })
-
-    const getList = (async () => {
+    const filter = reactive({
+      subcolumn_id: '',
+      title: ''
+    })
+    // 获取列表
+    const getList = async () => {
       const page = tableConfig.current
       const { data: { rows, count } } = await ArticleApi.getList({ page })
       tableConfig.dataSource = rows
       tableConfig.total = count
-    })
+    }
 
     // 分页
-    const onPageChange = ((e: { current: number }) => {
+    const onPageChange = (e: { current: number }) => {
       tableConfig.current = e.current
       getList()
-    })
+    }
 
     // 隐藏显示
     const onStatusChange = async ({ status, id }: { status: boolean, id: string }, checked: boolean) => {
@@ -103,18 +111,11 @@ export default defineComponent({
     }
 
     // 删除
-    const confirmDelete = () => {
-      Modal.confirm({
-        title: () => '提示',
-        content: () => '确定删除该文章吗',
-        okType: 'danger',
-        okText: () => '确定',
-        cancelText: () => '取消',
-        icon: () => createVNode(ExclamationCircleOutlined),
-        onOk() {
-          console.log('OK');
-        },
-      });
+    const confirmDelete = (id: string) => {
+      confirm('确定删除该文章吗？', async () => {
+        await ArticleApi.destory(id)
+        getList()
+      })
     }
 
     onMounted(() => {
@@ -123,6 +124,7 @@ export default defineComponent({
 
     return {
       ...toRefs(tableConfig),
+      filter,
       onPageChange,
       onStatusChange,
       confirmDelete

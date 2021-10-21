@@ -14,12 +14,14 @@ declare module 'vue' {
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     ARadioButton: typeof import('ant-design-vue/es')['RadioButton']
+    ASelect: typeof import('ant-design-vue/es')['Select']
     ASpin: typeof import('ant-design-vue/es')['Spin']
     ASubMenu: typeof import('ant-design-vue/es')['SubMenu']
     ASwitch: typeof import('ant-design-vue/es')['Switch']
     ATable: typeof import('ant-design-vue/es')['Table']
-    YzpAside: typeof import('G:/myProjects/newBlog/v3-admin/src/components/common/YzpAside.vue')['default']
-    YzpHeader: typeof import('G:/myProjects/newBlog/v3-admin/src/components/common/YzpHeader.vue')['default']
+    ColumnSelect: typeof import('./src/components/ feature/column/ColumnSelect.vue')['default']
+    YzpAside: typeof import('./src/components/common/YzpAside.vue')['default']
+    YzpHeader: typeof import('./src/components/common/YzpHeader.vue')['default']
   }
 }
 

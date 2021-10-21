@@ -68,7 +68,7 @@ export default defineComponent({
       formRef.value.validate().then(async () => {
         try {
           loading.value = true
-          const { token, user }: any = await UserApi.login(formVal)
+          const { data: { token, user } } = await UserApi.login(formVal)
           commit('updateToken', token)
           commit('updateUser', user)
           router.replace('/')

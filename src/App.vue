@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, onBeforeMount, toRefs, reactive } from 'vue'
-import { useRouter, useRoute  } from 'vue-router'
+import { defineComponent, ref, watch, toRefs, reactive, onMounted, nextTick } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 export default defineComponent({
   setup() {
@@ -43,7 +43,7 @@ export default defineComponent({
     const routes = router.options.routes
     const menus = reactive(routes.filter((e: any) => !e.meta.noMenu))
 
-    watch(() => route.path, (path: {} | any) => {
+    watch(() => route.path, () => {
       menus.forEach((e: any) => {
         if (e.children) {
           e.children.forEach((c: any) => {
@@ -54,16 +54,20 @@ export default defineComponent({
           });
         }
       })
-      showBar.value = path !== '/login'
+      showBar.value = route.name !== 'Login'
+      console.log(1)
     })
 
     const collapseMenu = () => {
       menuRef.value.toggleCollapsed()
     }
 
-    onBeforeMount(() => {
-      console.log(route)
-      showBar.value = route.path !== '/login'
+    onMounted(() => {
+      console.log(route.name)
+      showBar.value = route.name !== 'Login'
+      nextTick(() => {
+        console.log(route.name)
+      })
     })
 
     return {
