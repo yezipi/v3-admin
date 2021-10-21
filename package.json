@@ -8,8 +8,11 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
+    "@tinymce/tinymce-vue": "^4.0.4",
+    "@types/tinymce": "^4.6.4",
     "ant-design-vue": "^2.2.8",
     "axios": "^0.21.4",
+    "tinymce": "^5.10.0",
     "vue": "^3.2.11",
     "vue-router": "^4.0.8",
     "vuex": "^4.0.1"
@@ -17,7 +20,8 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.6.2",
     "@vue/compiler-sfc": "^3.2.12",
-    "sass": "^1.34.1",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
     "typescript": "^4.4.3",
     "unplugin-vue-components": "^0.15.2",
     "vite": "^2.5.8",

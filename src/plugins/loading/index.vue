@@ -64,10 +64,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .yzp-loading {
   position: fixed;
-  background: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0);
   left: 0;
   right: 0;
   top: 0;

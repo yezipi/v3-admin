@@ -62,7 +62,7 @@ export default defineComponent({
 
 </script>
 
-<style lang="scss">
+<style lang="less">
 .yzp-head {
   position: fixed;
   z-index: 9;

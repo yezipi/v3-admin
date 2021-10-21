@@ -104,7 +104,7 @@ export default defineComponent({
 
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .yzp-aside {
   backdrop-filter: saturate(150%) blur(10px);
   background: rgba(0,0,0,0.5);

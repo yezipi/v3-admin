@@ -2,15 +2,16 @@
   <div class="yzp-app">
     
     <YzpAside
-      v-if="showBar"
+      v-if="isFullPage"
       :menus="menus"
       :openName="openName"
       :selectName="selectName"
-      ref="menuRef"
+      ref="aside"
     />
 
-    <div v-if="showBar" class="yzp-main">
+    <div v-if="isFullPage" class="yzp-main">
       <YzpHeader @collapseMenu="collapseMenu" />
+
       <section class="yzp-section">
         <div class="yzp-content">
           <router-view />
@@ -18,6 +19,7 @@
       </section>
     </div>
 
+    <!--未登录显示-->
     <div v-else class="yzp-main no-margin">
       <router-view />
     </div>
@@ -26,13 +28,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, onBeforeMount, toRefs, reactive } from 'vue'
+import { defineComponent, ref, watch, toRefs, reactive } from 'vue'
 import { useRouter, useRoute  } from 'vue-router'
 
 export default defineComponent({
   setup() {
-    const menuRef = ref()
-    const showBar = ref(false)
+    const aside = ref()
+    const isFullPage = ref(false)
     const menuState = reactive({
       openName: [] as any,
       selectName: [ 'Home' ] as any
@@ -43,7 +45,11 @@ export default defineComponent({
     const routes = router.options.routes
     const menus = reactive(routes.filter((e: any) => !e.meta.noMenu))
 
-    watch(() => route.path, (path: {} | any) => {
+    const setFullPageState = () => {
+      isFullPage.value = route.name !== 'Login'
+    }
+
+    watch(() => route.name, () => {
       menus.forEach((e: any) => {
         if (e.children) {
           e.children.forEach((c: any) => {
@@ -54,23 +60,19 @@ export default defineComponent({
           });
         }
       })
-      showBar.value = path !== '/login'
+      setFullPageState()
+      console.log(123)
     })
 
     const collapseMenu = () => {
-      menuRef.value.toggleCollapsed()
+      aside.value.toggleCollapsed()
     }
 
-    onBeforeMount(() => {
-      console.log(route)
-      showBar.value = route.path !== '/login'
-    })
-
     return {
-      menuRef,
-      showBar,
-      menus,
       ...toRefs(menuState),
+      aside,
+      menus,
+      isFullPage,
       collapseMenu
     }
   }
@@ -78,8 +80,18 @@ export default defineComponent({
 
 </script>
 
-<style lang="scss">
+<style lang="less">
+@import './assets/css/theme.less';
+
+.halfWhite {
+  background: rgba(255,255,255,0.5)!important;
+}
+* {
+  padding: 0;
+  margin: 0;
+}
 body {
+  font-size: 14px;
   &:before {
     content: '';
     display: block;
@@ -88,8 +100,8 @@ body {
     position: fixed;
     left: 0;
     top: 0;
-    background: rgba(255,255,255,0.5);
     z-index: 0;
+    .halfWhite;
   }
   &:after {
     content: '';
@@ -135,17 +147,39 @@ body {
 .yzp-section {
   margin: 15px;
   backdrop-filter: saturate(150%) blur(10px);
-  background: rgba(255,255,255,0.5);
+  .halfWhite;
   border-radius: 5px;
 }
 .yzp-content {
   padding: 15px;
 }
-.ant-input-affix-wrapper {
-  background-color: rgba(255,255,255,0.5)!important;
+
+/*===============================================覆盖ant-design-vue的样式============================*/
+.ant-input,
+.ant-table, 
+.ant-input-affix-wrapper,
+.ant-select:not(.ant-select-customize-input) .ant-select-selector
+{
+  .halfWhite;
 }
-.ant-input, .ant-table {
-  background: none!important;
+/*===============================================end结束=============================================*/
+
+/*========================================= editor样式 ==============================================*/
+
+.tox .tox-dialog__content-js {z-index: 1;}
+.tox .tox-textfield,
+.tox .tox-menubar,
+.tox .tox-toolbar-overlord,
+.tox .tox-statusbar,
+.tox .tox-dropzone,
+.tox-textarea, .tox .tox-selectfield select,
+.tox .tox-edit-area__iframe
+{
+  .halfWhite;
 }
+.tox .tox-editor-header {
+  border-bottom: 1px solid #bbbbbb
+}
+/*========================================= editor样式结束 ==============================================*/
 </style>
 
