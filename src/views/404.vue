@@ -21,7 +21,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({})
 </script>
 
-<style lang="scss">
+<style lang="less">
 .admin-content .admin-main {
   height: 100%;
   padding: 0;
@@ -29,7 +29,7 @@ export default defineComponent({})
 </style>
 
 
-<style scoped lang="scss">
+<style scoped lang="less">
 div#da-wrapper,
 div#da-wrapper.fluid {
   width: 100%;
