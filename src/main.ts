@@ -3,8 +3,7 @@ import App from './App.vue'
 import Router from './router'
 import Store from './store'
 import AntVue from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.less'
-// import './assets/css/theme.less'
+import 'ant-design-vue/dist/antd.css'
 
 const app = createApp(App)
 

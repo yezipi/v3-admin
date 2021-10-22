@@ -1,0 +1,50 @@
+.halfWhite {
+  background: rgba(255,255,255,0.5)!important;
+}
+/*===============================================覆盖ant-design-vue的样式============================*/
+.ant-input,
+.ant-table, 
+.ant-input-affix-wrapper,
+.ant-select:not(.ant-select-customize-input) .ant-select-selector
+{
+  .halfWhite;
+}
+.ant-input, .ant-btn {
+  padding-top: 8px!important;
+  padding-bottom: 8px!important;
+}
+.ant-input-affix-wrapper, .ant-input, .ant-btn {
+  border-radius: 4px!important;
+}
+.ant-btn {
+  height: 40px!important;
+}
+.ant-btn-lg {
+  height: 50px!important;
+}
+.ant-input-affix-wrapper > input.ant-input {
+  background: none!important;
+}
+/*===============================================end结束=============================================*/
+
+/*========================================= editor样式 ==============================================*/
+
+.tox .tox-dialog__content-js {z-index: 1;}
+.tox .tox-textfield,
+.tox .tox-menubar,
+.tox .tox-toolbar-overlord,
+.tox .tox-statusbar,
+.tox .tox-dropzone,
+.tox-textarea, .tox .tox-selectfield select,
+.tox .tox-edit-area__iframe,
+.tox .tox-toolbar__primary
+{
+  .halfWhite;
+}
+.tox .tox-editor-header {
+  border-bottom: 1px solid #bbbbbb
+}
+.tox-tinymce {
+  border-radius: 4px!important;
+}
+/*========================================= editor样式结束 ==============================================*/

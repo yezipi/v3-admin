@@ -81,7 +81,7 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-@import './assets/css/theme.less';
+@import './assets/css/reset.less';
 
 .halfWhite {
   background: rgba(255,255,255,0.5)!important;
@@ -153,33 +153,5 @@ body {
 .yzp-content {
   padding: 15px;
 }
-
-/*===============================================覆盖ant-design-vue的样式============================*/
-.ant-input,
-.ant-table, 
-.ant-input-affix-wrapper,
-.ant-select:not(.ant-select-customize-input) .ant-select-selector
-{
-  .halfWhite;
-}
-/*===============================================end结束=============================================*/
-
-/*========================================= editor样式 ==============================================*/
-
-.tox .tox-dialog__content-js {z-index: 1;}
-.tox .tox-textfield,
-.tox .tox-menubar,
-.tox .tox-toolbar-overlord,
-.tox .tox-statusbar,
-.tox .tox-dropzone,
-.tox-textarea, .tox .tox-selectfield select,
-.tox .tox-edit-area__iframe
-{
-  .halfWhite;
-}
-.tox .tox-editor-header {
-  border-bottom: 1px solid #bbbbbb
-}
-/*========================================= editor样式结束 ==============================================*/
 </style>
 

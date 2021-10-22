@@ -16,8 +16,11 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
-        javascriptEnabled: true
+        javascriptEnabled: false
       }
     }
+  },
+  server: {
+    host: '0.0.0.0'
   }
 })
