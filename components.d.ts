@@ -14,10 +14,10 @@ declare module 'vue' {
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
+    AInputSearch: typeof import('ant-design-vue/es')['InputSearch']
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     ARadio: typeof import('ant-design-vue/es')['Radio']
-    ARadioButton: typeof import('ant-design-vue/es')['RadioButton']
     ARadioGroup: typeof import('ant-design-vue/es')['RadioGroup']
     ASelect: typeof import('ant-design-vue/es')['Select']
     ASelectOption: typeof import('ant-design-vue/es')['SelectOption']
@@ -26,10 +26,12 @@ declare module 'vue' {
     ASwitch: typeof import('ant-design-vue/es')['Switch']
     ATable: typeof import('ant-design-vue/es')['Table']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
-    ColumnSelect: typeof import('./src/components/ feature/column/ColumnSelect.vue')['default']
-    YzpAside: typeof import('./src/components/common/YzpAside.vue')['default']
-    YzpEditor: typeof import('./src/components/common/YzpEditor.vue')['default']
-    YzpHeader: typeof import('./src/components/common/YzpHeader.vue')['default']
+    AUpload: typeof import('ant-design-vue/es')['Upload']
+    ColumnSelect: typeof import('G:/myProjects/newBlog/v3-admin/src/components/features/Column/ColumnSelect.vue')['default']
+    YzpAside: typeof import('G:/myProjects/newBlog/v3-admin/src/components/common/YzpAside.vue')['default']
+    YzpEditor: typeof import('G:/myProjects/newBlog/v3-admin/src/components/common/YzpEditor.vue')['default']
+    YzpHeader: typeof import('G:/myProjects/newBlog/v3-admin/src/components/common/YzpHeader.vue')['default']
+    YzpUpload: typeof import('G:/myProjects/newBlog/v3-admin/src/components/common/YzpUpload.vue')['default']
   }
 }
 

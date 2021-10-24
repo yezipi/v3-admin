@@ -3,7 +3,6 @@
 }
 /*===============================================覆盖ant-design-vue的样式============================*/
 .ant-input,
-.ant-table, 
 .ant-input-affix-wrapper,
 .ant-select:not(.ant-select-customize-input) .ant-select-selector
 {
@@ -13,17 +12,39 @@
   padding-top: 8px!important;
   padding-bottom: 8px!important;
 }
-.ant-input-affix-wrapper, .ant-input, .ant-btn {
+.ant-btn {
+  padding-left: 20px!important;
+  padding-right: 20px!important;
+}
+.ant-input-affix-wrapper, .ant-input, .ant-btn,
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector
+{
   border-radius: 4px!important;
 }
-.ant-btn {
+.ant-btn,
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input,
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector
+{
   height: 40px!important;
+}
+.ant-select-single .ant-select-selector .ant-select-selection-item,
+.ant-select-single .ant-select-selector .ant-select-selection-placeholder
+{
+  line-height: 40px!important;
 }
 .ant-btn-lg {
   height: 50px!important;
 }
-.ant-input-affix-wrapper > input.ant-input {
+.ant-input-affix-wrapper > input.ant-input, .ant-table {
   background: none!important;
+}
+.ant-input-search .ant-input {
+  border-top-right-radius: 0!important;
+  border-bottom-right-radius: 0!important;
+}
+.ant-input-search .ant-btn {
+  border-top-left-radius: 0!important;
+  border-bottom-left-radius: 0!important;
 }
 /*===============================================end结束=============================================*/
 

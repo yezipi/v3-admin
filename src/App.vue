@@ -61,7 +61,6 @@ export default defineComponent({
         }
       })
       setFullPageState()
-      console.log(123)
     })
 
     const collapseMenu = () => {
@@ -145,10 +144,11 @@ body {
   }
 }
 .yzp-section {
+  .halfWhite;
   margin: 15px;
   backdrop-filter: saturate(150%) blur(10px);
-  .halfWhite;
   border-radius: 5px;
+  min-height: calc(100vh - 90px);
 }
 .yzp-content {
   padding: 15px;

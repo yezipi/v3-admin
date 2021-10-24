@@ -83,11 +83,12 @@ export default new class Column extends Request {
   /**
    * 二级栏目详情
    * @param { String } id 二级栏目id
+   * @param { Boolean } loading 是否loading
    * @version 2021-10-21 zzc
    */
-   public getSubColumnDetail(id: string) {
+   public getSubColumnDetail(id: string, loading?: boolean) {
     const url = `v1/admin/column/getSubColumnDetail/${id}`
-    return this.get(url, { loading: true })
+    return this.get(url, { loading })
   }
 
   /**
@@ -99,6 +100,19 @@ export default new class Column extends Request {
    */
    public getList(params?: { size?: number, page?: number }) {
     const url = 'v1/admin/column'
-    return this.get(url, { ...params, loading: true })
+    return this.get(url, { ...params })
+  }
+
+  /**
+   * 二级栏目列表
+   * @param { Obejct } params 参数
+   * @param { Number } params.page 页码
+   * @param { Number } params.size 页数
+   * @param { String } params.type 类型，只有article和case才可以新建分类
+   * @version 2021-10-21 zzc
+   */
+  public getSubList(params?: { size?: number, page?: number, type: string }) {
+    const url = 'v1/admin/subColumn'
+    return this.get(url, { ...params })
   }
 }
