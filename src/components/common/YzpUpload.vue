@@ -18,10 +18,10 @@
   </a-upload>
 </template>
 <script lang="ts">
-import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
-import { message } from 'ant-design-vue';
 import { defineComponent, ref, watch } from 'vue';
 import CommonApi from '@/api/common'
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
+import { message } from 'ant-design-vue';
 
 interface FileItem {
   uid: string;
@@ -96,7 +96,9 @@ export default defineComponent({
       return isJpgOrPng && isLt2M;
     };
 
-    const startUpload = async (file: any) => {
+  const startUpload = async (data: any) => {
+
+    console.log(data.file);
 
     const formData = new FormData();
     const thumb: any = props.thumb
@@ -104,7 +106,7 @@ export default defineComponent({
     const watermark: any = props.watermark
 
     formData.append('filename', props.filename || `${new Date().valueOf()}.jpg`);
-    formData.append('file', file);
+    formData.append('files', data.file);
     formData.append('dir', dir);
     formData.append('thumb', thumb);
     formData.append('maxWidth', String(props.width));

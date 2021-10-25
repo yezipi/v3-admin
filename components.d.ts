@@ -27,11 +27,11 @@ declare module 'vue' {
     ATable: typeof import('ant-design-vue/es')['Table']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     AUpload: typeof import('ant-design-vue/es')['Upload']
-    ColumnSelect: typeof import('G:/myProjects/newBlog/v3-admin/src/components/features/Column/ColumnSelect.vue')['default']
-    YzpAside: typeof import('G:/myProjects/newBlog/v3-admin/src/components/common/YzpAside.vue')['default']
-    YzpEditor: typeof import('G:/myProjects/newBlog/v3-admin/src/components/common/YzpEditor.vue')['default']
-    YzpHeader: typeof import('G:/myProjects/newBlog/v3-admin/src/components/common/YzpHeader.vue')['default']
-    YzpUpload: typeof import('G:/myProjects/newBlog/v3-admin/src/components/common/YzpUpload.vue')['default']
+    ColumnSelect: typeof import('./src/components/features/Column/ColumnSelect.vue')['default']
+    YzpAside: typeof import('./src/components/common/YzpAside.vue')['default']
+    YzpEditor: typeof import('./src/components/common/YzpEditor.vue')['default']
+    YzpHeader: typeof import('./src/components/common/YzpHeader.vue')['default']
+    YzpUpload: typeof import('./src/components/common/YzpUpload.vue')['default']
   }
 }
 

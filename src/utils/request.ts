@@ -33,8 +33,7 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   const res = response.data
   const { params, data } = response.config
   const { code, msg } = res
-
-  const dataLoading = data && data.indexOf('loading') > -1
+  const dataLoading = data && typeof data === 'string' && data.indexOf('loading') > -1
   const paramsLoading = params && params.loading
 
   if (dataLoading || paramsLoading) {
