@@ -16,11 +16,10 @@
 
       <a-form-item label="封面" :wrapperCol="wrapperCol">
         <yzp-upload
-          v-model="formState.cover_thumb"
+          v-model:value="formState.cover_thumb"
           :thumb="true"
           :clip="true"
-          :height="250"
-          :width="500"
+          :width="800"
           dir="article_cover"
         >
         </yzp-upload>
@@ -38,13 +37,25 @@
         <yzp-editor ref="editor" v-model="formState.content"></yzp-editor>
       </a-form-item>
 
+      <a-form-item label="来源" :wrapperCol="wrapperCol">
+        <a-input v-model:value="formState.author_name" placeholder="请输入文章来源" />
+      </a-form-item>
+      
+      <a-form-item label="点赞" :wrapperCol="wrapperCol">
+        <a-input v-model:value="formState.like" type="number" placeholder="请输入点赞数" />
+      </a-form-item>
+      
+      <a-form-item label="浏览" :wrapperCol="wrapperCol">
+        <a-input v-model:value="formState.view" type="number" placeholder="请输入浏览数" />
+      </a-form-item>
+
       <a-form-item label="设置">
         <a-checkbox v-model:checked="formState.status">是否显示</a-checkbox>
         <a-checkbox v-model:checked="formState.open_comment">开启评论</a-checkbox>
         <a-checkbox v-model:checked="formState.recommend">设为推荐</a-checkbox>
         <a-checkbox v-model:checked="formState.top">置顶</a-checkbox>
       </a-form-item>
-
+      
       <a-form-item :wrapper-col="{ offset: 2 }">
         <a-button type="primary" @click="onSubmit">立即保存</a-button>
         <a-button style="margin-left: 10px" @click="resetForm">重置</a-button>
@@ -55,24 +66,30 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, reactive, ref, toRaw, UnwrapRef, onMounted } from 'vue';
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
-import { defineComponent, reactive, ref, toRaw, UnwrapRef } from 'vue';
+import { message } from 'ant-design-vue';
 import { useStore } from 'vuex';
-import { useRouter  } from 'vue-router'
-import ArticleApi from '../../api/article';
+import { useRouter, useRoute  } from 'vue-router'
+import ArticleApi from '@/api/article';
 
 interface FormState {
-  title: string,
-  subcolumn_id: string | undefined,
-  cover_thumb: string,
-  cover_origin: string,
-  keywords: string,
-  description: string,
-  content: string,
-  status: boolean,
-  open_comment: boolean,
-  recommend: boolean,
-  top: boolean,
+  data: {
+    title: string,
+    subcolumn_id: string | undefined,
+    cover_thumb: string,
+    cover_origin: string,
+    keywords: string,
+    description: string,
+    content: string,
+    author_name: string,
+    like: number,
+    view: number,
+    status: boolean,
+    open_comment: boolean,
+    recommend: boolean,
+    top: boolean,
+  }
 }
 
 export default defineComponent({
@@ -80,21 +97,23 @@ export default defineComponent({
     const formRef = ref();
 
     const formState: UnwrapRef<FormState> = reactive({
-      title: '',
-      subcolumn_id: undefined,
-      cover_thumb: '',
-      cover_origin: '',
-      keywords: '',
-      description: '',
-      content: '',
-      status: true,
-      open_comment: true,
-      recommend: false,
-      top: false,
+      data: {
+        title: '',
+        subcolumn_id: undefined,
+        cover_thumb: '',
+        cover_origin: '',
+        keywords: '',
+        description: '',
+        content: '',
+        author_name: '',
+        like: 0,
+        view: 0,
+        status: true,
+        open_comment: true,
+        recommend: false,
+        top: false,
+      }
     });
-
-    const fileList = ref([])
-    const imageUrl = ref('')
 
     const rules = {
       title: [
@@ -110,33 +129,53 @@ export default defineComponent({
 
     const { state } = useStore()
     const router = useRouter()
+    const route = useRoute()
+    const id: any = route.query.id
+
+    // 获取详情
+    const getDetail = async () => {
+      if (!id) {
+        return
+      }
+      const { data } = await ArticleApi.detail(id)
+      formState.data = reactive(data)
+      console.log(formState.data)
+    }
 
     const onSubmit = () => {
       formRef.value
         .validate()
         .then(async () => {
+          formState.data.cover_origin = formState.data.cover_thumb.replace('thumb_', 'origin_')
+          console.log(toRaw(formState))
           const data = {
-            ...toRaw(formState),
+            ...toRaw(formState.data),
             user_id: state.user.id
           }
           await ArticleApi.create(data)
-          router.push('/ArticleList')
+          message.success('保存成功', 1.5, () => {
+            router.push('/ArticleList')
+          })
         })
         .catch((error: ValidateErrorEntity<FormState>) => {
           console.log('error', error);
         });
     };
+
     const resetForm = () => {
       formRef.value.resetFields();
     };
+
+    onMounted(() => {
+      getDetail()
+    })
+
     return {
       formRef,
       labelCol: { span: 2 },
       wrapperCol: { span: 10 },
-      formState,
+      formState: formState.data,
       rules,
-      fileList,
-      imageUrl,
       onSubmit,
       resetForm,
     };

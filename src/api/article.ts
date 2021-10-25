@@ -90,6 +90,16 @@ export default new class Article extends Request {
   }
 
   /**
+   * 获取文章详情
+   * @param { String } id 文章id
+   * @version 2021-10-26 zzc
+   */
+   public detail(id: string) {
+    const url = `v1/admin/article/${id}`
+    return this.get(url, { loading: true })
+  }
+
+  /**
    * 文章列表
    * @param { Obejct } params 参数
    * @param { Number } params.page 页码

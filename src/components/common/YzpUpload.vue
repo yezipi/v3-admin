@@ -10,18 +10,19 @@
     @change="handleChange"
   >
     <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-    <div v-else>
+    <div v-else style="font-size: 34px; color: #999999">
       <loading-outlined v-if="loading"></loading-outlined>
       <plus-outlined v-else></plus-outlined>
-      <div class="ant-upload-text">Upload</div>
+      <div class="ant-upload-text"></div>
     </div>
   </a-upload>
 </template>
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
-import CommonApi from '@/api/common'
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
+import CommonApi from '@/api/common';
+import CONFIG from '@/config';
 
 interface FileItem {
   uid: string;
@@ -63,7 +64,7 @@ export default defineComponent({
     const imageUrl = ref<string | undefined>('');
 
     watch(() => props.value, (val) => {
-      imageUrl.value = val
+      imageUrl.value = CONFIG.REQ_URL + val
     })
 
     const handleChange = (info: FileInfo) => {
@@ -87,11 +88,11 @@ export default defineComponent({
     const beforeUpload = (file: FileItem) => {
       const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
       if (!isJpgOrPng) {
-        message.error('You can only upload JPG file!');
+        message.error('只能上传图片哦！');
       }
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        message.error('Image must smaller than 2MB!');
+        message.error('不能超过2m大小哦!');
       }
       return isJpgOrPng && isLt2M;
     };
@@ -111,19 +112,22 @@ export default defineComponent({
     formData.append('thumb', thumb);
     formData.append('maxWidth', String(props.width));
     formData.append('watermark', watermark);
+
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     };
+
     try {
       const { data } = await CommonApi.uploadImg(formData, config);
-      const path = data.path || data.thumb_path
-      console.log(path)
-      emit('input', '/' + path);
-      message.success('上传成功~');
+      const path = data.path || data.thumbPath
+      emit('update:value', path)
+      message.success('上传成功！')
     } catch (e) {
-      console.log(e);
+      console.log(e)
+    } finally {
+      loading.value = false
     }
   }
 

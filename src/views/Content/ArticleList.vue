@@ -36,7 +36,7 @@
 
       <template #action="{ record }">
         <span>
-          <a>编辑</a>
+          <a @click="toEdit(record.id)">编辑</a>
           <a-divider type="vertical" />
           <a @click="confirmDelete(record.id)">删除</a>
         </span>
@@ -133,6 +133,10 @@ export default defineComponent({
       router.push('/ArticleEdit')
     }
 
+    const toEdit = (id: string) => {
+      router.push('/ArticleEdit?id=' + id)
+    }
+
     const onSearch = (res: string) => {
       condition.title = res
       getList()
@@ -158,6 +162,7 @@ export default defineComponent({
       confirmDelete,
       onSearch,
       toCreate,
+      toEdit,
     }
   }
 })

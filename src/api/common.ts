@@ -9,7 +9,7 @@ export default new class Common extends Request {
    * @param { Object } headers
    * @version 2021-10-21 zzc
    */
-   public uploadImg(formData: any, headers: object) {
+  public uploadImg(formData: any, headers: object) {
     const url = 'v1/admin/common/uploadImg'
     return this.post(url, formData, headers)
   }
