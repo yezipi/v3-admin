@@ -123,7 +123,7 @@ export default defineComponent({
   .yzp-logo {
     width: 80px;
     height: 80px;
-    margin: 30px auto;
+    margin: 20px auto;
     transition: all 0.3s;
     img {
       width: 100%;

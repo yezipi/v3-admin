@@ -10,7 +10,7 @@
     />
 
     <div v-if="isFullPage" class="yzp-main">
-      <YzpHeader @collapseMenu="collapseMenu" />
+      <YzpHeader :breadcrumbs="breadcrumbs" @collapseMenu="collapseMenu" />
 
       <section class="yzp-section">
         <div class="yzp-content">
@@ -40,6 +40,8 @@ export default defineComponent({
       selectName: [ 'Home' ] as any
     })
 
+    const breadcrumbs = ref()
+
     const route = useRoute()
     const router = useRouter()
     const routes = router.options.routes
@@ -50,12 +52,14 @@ export default defineComponent({
     }
 
     watch(() => route.name, () => {
+      breadcrumbs.value = []
       menus.forEach((e: any) => {
         if (e.children) {
           e.children.forEach((c: any) => {
             if (c.name === route.name) {
               menuState.openName = [ e.name ]
               menuState.selectName = [ c.name ]
+              breadcrumbs.value = [e.meta.title, c.meta.title]
             }
           });
         }
@@ -69,10 +73,11 @@ export default defineComponent({
 
     return {
       ...toRefs(menuState),
+      breadcrumbs,
       aside,
       menus,
       isFullPage,
-      collapseMenu
+      collapseMenu,
     }
   }
 })
@@ -152,6 +157,12 @@ body {
 }
 .yzp-content {
   padding: 15px;
+}
+
+@media screen and (max-width: 1024px) and (min-width: 320px) {
+  .ant-col {
+    max-width: 100%!important;
+  }
 }
 </style>
 

@@ -1,33 +1,45 @@
 <script lang="ts" setup>
-import { onMounted, ref, toRaw } from 'vue'
-import ColumnApi from '@/api/column'
+  import { onMounted, ref, toRaw, watch } from 'vue'
+  import ColumnApi from '@/api/column'
 
-const options = ref<any>([])
-const id = ref<number | undefined>(undefined)
+  const options = ref<any>([])
+  let id = ref<string | number | undefined>(undefined)
 
-const emit = defineEmits(['change'])
-const props = defineProps({
-  type: {
-    type: String,
-    default: ''
+  const emit = defineEmits(['update:value', 'change'])
+  const props = defineProps({
+    type: {
+      type: String,
+      default: ''
+    },
+    value: {
+      type: String,
+      default: undefined
+    }
+  })
+
+  watch(() => props.value, (val: string | undefined) => {
+    id.value = String(val)
+  })
+
+  const getColumnList = async () => {
+    console.log(props)
+    const { data: { rows } } = await ColumnApi.getSubList({ type: props.type })
+    options.value = rows.map((e: any) => {
+      e.id = String(e.id)
+      return e
+    })
+    console.log(toRaw(options.value))
   }
-})
 
-const getColumnList = async () => {
-  console.log(props)
-  const { data: { rows } } = await ColumnApi.getSubList({ type: props.type })
-  options.value = rows
-  console.log(toRaw(options.value))
-}
+  const onChange = (val: any) => {
+    console.log(typeof val)
+    emit('change', val)
+    emit('update:value', val) // 这组件太坑了，是number的话，form校验过不去
+  }
 
-const onChange = (value: any) => {
-  console.log(value)
-  emit('change', value) // 这组件太坑了，是number的话，form校验过不去
-}
-
-onMounted(() => {
-  getColumnList()
-})
+  onMounted(() => {
+    getColumnList()
+  })
 </script>
 
 <template>
@@ -42,12 +54,13 @@ onMounted(() => {
     <a-select-option
       v-for="(item, index) in options"
       :key="index"
-      :value="String(item.id)"
+      :value="item.id"
     >
       {{ item.name }}
     </a-select-option>
   </a-select>
 </template>
 
-<style scoped lang="scss">
+<style>
+
 </style>

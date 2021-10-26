@@ -3,7 +3,7 @@ import Request from '../utils/request'
 
 type ArticleFields =  {
   type?: string,
-  sub_column_id?: number,
+  sub_column_id?: number | string,
   column_id?: number,
   cover_thumb?: string,
   keywords?: string,

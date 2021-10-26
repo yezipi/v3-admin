@@ -1,5 +1,5 @@
 <template>
-  <div class="article-save">
+  <div class="article-form">
     <a-form
       ref="formRef"
       :model="formState"
@@ -11,7 +11,7 @@
       </a-form-item>
 
       <a-form-item label="分类" name="subcolumn_id" :wrapperCol="wrapperCol">
-        <column-select v-model:value="formState.subcolumn_id" type="article" style="width: 100%"></column-select>
+        <column-select v-model:value="formState.subcolumn_id" :type="type" style="width: 100%"></column-select>
       </a-form-item>
 
       <a-form-item label="封面" :wrapperCol="wrapperCol">
@@ -50,14 +50,14 @@
       </a-form-item>
 
       <a-form-item label="设置">
-        <a-checkbox v-model:checked="formState.status">是否显示</a-checkbox>
+        <a-checkbox v-model:checked="formState.status">显示</a-checkbox>
         <a-checkbox v-model:checked="formState.open_comment">开启评论</a-checkbox>
         <a-checkbox v-model:checked="formState.recommend">设为推荐</a-checkbox>
         <a-checkbox v-model:checked="formState.top">置顶</a-checkbox>
       </a-form-item>
       
       <a-form-item :wrapper-col="{ offset: 2 }">
-        <a-button type="primary" @click="onSubmit">立即保存</a-button>
+        <a-button type="primary" @click="onSubmit">{{ articleId ? '立即保存' : '立即发布' }}</a-button>
         <a-button style="margin-left: 10px" @click="resetForm">重置</a-button>
       </a-form-item>
 
@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRaw, UnwrapRef, onMounted } from 'vue';
+import { defineComponent, ref, toRaw, onMounted } from 'vue';
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
 import { message } from 'ant-design-vue';
 import { useStore } from 'vuex';
@@ -74,45 +74,49 @@ import { useRouter, useRoute  } from 'vue-router'
 import ArticleApi from '@/api/article';
 
 interface FormState {
-  data: {
-    title: string,
-    subcolumn_id: string | undefined,
-    cover_thumb: string,
-    cover_origin: string,
-    keywords: string,
-    description: string,
-    content: string,
-    author_name: string,
-    like: number,
-    view: number,
-    status: boolean,
-    open_comment: boolean,
-    recommend: boolean,
-    top: boolean,
-  }
+  title: string,
+  subcolumn_id: string | undefined,
+  cover_thumb: string,
+  cover_origin: string,
+  keywords: string,
+  description: string,
+  content: string,
+  author_name: string,
+  like: number,
+  view: number,
+  status: boolean,
+  open_comment: boolean,
+  recommend: boolean,
+  top: boolean,
 }
 
 export default defineComponent({
-  setup() {
+
+  props: {
+    type: {
+      type: String,
+      default: 'article', // 文章类型，article,case
+    }
+  },
+
+  setup(props) {
     const formRef = ref();
 
-    const formState: UnwrapRef<FormState> = reactive({
-      data: {
-        title: '',
-        subcolumn_id: undefined,
-        cover_thumb: '',
-        cover_origin: '',
-        keywords: '',
-        description: '',
-        content: '',
-        author_name: '',
-        like: 0,
-        view: 0,
-        status: true,
-        open_comment: true,
-        recommend: false,
-        top: false,
-      }
+    let formState= ref<FormState>({
+      title: '',
+      subcolumn_id: undefined,
+      cover_thumb: '',
+      cover_origin: '',
+      keywords: '',
+      description: '',
+      content: '',
+      author_name: '',
+      like: 0,
+      view: 0,
+      status: true,
+      open_comment: true,
+      recommend: false,
+      top: false,
     });
 
     const rules = {
@@ -124,36 +128,42 @@ export default defineComponent({
         { required: true, message: '请输入正文内容', trigger: 'change' },
         { min: 5, message: '正文至少5个字哦', trigger: 'change' },
       ],
-      subcolumn_id:[ { required: true, message: '请选择分类', trigger: 'change' } ]
+      subcolumn_id:[ { required: true, message: '请选择分类', trigger: 'blur' } ]
     };
 
     const { state } = useStore()
     const router = useRouter()
     const route = useRoute()
-    const id: any = route.query.id
+    const articleId: any = route.query.id
 
     // 获取详情
     const getDetail = async () => {
-      if (!id) {
+      if (!articleId) {
         return
       }
-      const { data } = await ArticleApi.detail(id)
-      formState.data = reactive(data)
-      console.log(formState.data)
+      const { data } = await ArticleApi.detail(articleId)
+      data.subcolumn_id = String(data.subcolumn_id)
+      formState.value = data
     }
 
     const onSubmit = () => {
       formRef.value
         .validate()
         .then(async () => {
-          formState.data.cover_origin = formState.data.cover_thumb.replace('thumb_', 'origin_')
+          formState.value.cover_origin = formState.value.cover_thumb.replace('thumb_', 'origin_')
           console.log(toRaw(formState))
           const data = {
-            ...toRaw(formState.data),
+            ...toRaw(formState.value),
+            type: props.type,
             user_id: state.user.id
           }
-          await ArticleApi.create(data)
-          message.success('保存成功', 1.5, () => {
+          const msg = articleId ? '保存成功' : '发布成功'
+          if (!articleId) {
+            await ArticleApi.create(data)
+          } else {
+            await ArticleApi.update(articleId, data)
+          }
+          message.success(msg, 1.5, () => {
             router.push('/ArticleList')
           })
         })
@@ -174,10 +184,11 @@ export default defineComponent({
       formRef,
       labelCol: { span: 2 },
       wrapperCol: { span: 10 },
-      formState: formState.data,
+      formState,
       rules,
       onSubmit,
       resetForm,
+      articleId,
     };
   },
 });

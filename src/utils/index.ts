@@ -128,3 +128,27 @@ export const formatStr = (str: string, ...arg: any) => {
   }
   return arr.reduce(reduce, str)
 }
+
+/**
+ * file转blob
+ * @param { String } file 文件信息
+ * @version 2021-10-26 zzc
+ */
+export const dataURItoBlob = (file: any) => {
+  return new Promise((resolve: any) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = ({ target }: any) => {
+      const base64 = target.result
+      const byteString = atob(base64.split(',')[1]);
+      const mimeString = base64.split(',')[0].split(':')[1].split(';')[0];
+      const buffs = new ArrayBuffer(byteString.length);
+      const u8a = new Uint8Array(buffs);
+      for (let i = 0; i < byteString.length; i++) {
+        u8a[i] = byteString.charCodeAt(i);
+      }
+      const blob = new Blob([buffs], {type: mimeString});
+      resolve(URL.createObjectURL(blob))
+    }
+  })
+}

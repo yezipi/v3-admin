@@ -47,6 +47,31 @@
   border-top-left-radius: 0!important;
   border-bottom-left-radius: 0!important;
 }
+.ant-menu-sub.ant-menu-inline > .ant-menu-item,
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected,
+.ant-menu-inline.ant-menu-root .ant-menu-submenu-title,
+.ant-menu-dark.ant-menu-inline .ant-menu-item,
+.ant-menu-dark.ant-menu-vertical .ant-menu-item,
+.ant-menu-dark .ant-menu-item
+{
+  margin: 0!important;
+  height: 50px!important;
+  line-height: 50px!important;
+}
+.ant-menu-sub.ant-menu-inline > .ant-menu-item:hover,
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected,
+.ant-menu-inline.ant-menu-root .ant-menu-submenu-title:hover,
+.ant-menu-dark .ant-menu-item:hover,
+.ant-menu-dark .ant-menu-item-active
+{
+  background: rgba(0,0,0,0.25)!important;
+}
+.ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
+  background: rgba(0,0,0,0.5)!important;
+}
+.ant-menu-submenu-popup .ant-menu-sub {
+  backdrop-filter: saturate(100%) blur(10px);
+}
 /*===============================================end结束=============================================*/
 
 /*========================================= editor样式 ==============================================*/

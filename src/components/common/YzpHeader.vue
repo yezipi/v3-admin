@@ -8,6 +8,9 @@
       <div class="left-btn">
         <ReloadOutlined />
       </div>
+      <a-breadcrumb style="margin-left: 10px">
+        <a-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index">{{ item }}</a-breadcrumb-item>
+      </a-breadcrumb>
     </div>
     <div class="head-right">
       <a-dropdown>
@@ -40,6 +43,12 @@ export default defineComponent({
     MenuUnfoldOutlined,
     ReloadOutlined,
     UserOutlined
+  },
+  props: {
+    breadcrumbs: {
+      type: Array,
+      default: () => []
+    }
   },
   setup(props, { emit }) {
 
@@ -81,6 +90,7 @@ export default defineComponent({
   }
   .head-left {
     display: flex;
+    align-items: center;
     .left-btn {
       width: 60px;
       height: 60px;

@@ -97,8 +97,8 @@ export default defineComponent({
 
     const router = useRouter()
 
-    const condition: { subcolumn_id?: number, title: string } = reactive({
-      subcolumn_id: undefined,
+    const condition = reactive({
+      subcolumn_id: '',
       title: ''
     })
 

@@ -1,21 +1,23 @@
 <template>
-  <a-upload
-    v-model:file-list="fileList"
-    name="avatar"
-    list-type="picture-card"
-    class="avatar-uploader"
-    :show-upload-list="false"
-    :before-upload="beforeUpload"
-    :customRequest="startUpload"
-    @change="handleChange"
-  >
-    <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-    <div v-else style="font-size: 34px; color: #999999">
-      <loading-outlined v-if="loading"></loading-outlined>
-      <plus-outlined v-else></plus-outlined>
-      <div class="ant-upload-text"></div>
-    </div>
-  </a-upload>
+  <div class="yzp-upload">
+    <a-upload
+      v-model:file-list="fileList"
+      name="avatar"
+      list-type="picture-card"
+      class="avatar-uploader"
+      :show-upload-list="false"
+      :before-upload="beforeUpload"
+      :customRequest="startUpload"
+      @change="handleChange"
+    >
+      <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+      <div v-else style="font-size: 34px; color: #999999">
+        <loading-outlined v-if="loading"></loading-outlined>
+        <plus-outlined v-else></plus-outlined>
+        <div class="ant-upload-text"></div>
+      </div>
+    </a-upload>
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
@@ -56,7 +58,9 @@ export default defineComponent({
     thumb: Boolean,
     watermark: Boolean,
     filename: String,
-    width: Number,
+    width: [Number, String],
+    height: [Number, String],
+    clip: Boolean,
   },
   setup(props, { emit }) {
     const fileList = ref([]);
@@ -97,26 +101,26 @@ export default defineComponent({
       return isJpgOrPng && isLt2M;
     };
 
-  const startUpload = async (data: any) => {
+    const startUpload = async (data: any) => {
 
-    console.log(data.file);
+      console.log(data.file);
 
-    const formData = new FormData();
-    const thumb: any = props.thumb
-    const dir: any = props.dir
-    const watermark: any = props.watermark
+      const formData = new FormData();
+      const thumb: any = props.thumb
+      const dir: any = props.dir
+      const watermark: any = props.watermark
 
-    formData.append('filename', props.filename || `${new Date().valueOf()}.jpg`);
-    formData.append('files', data.file);
-    formData.append('dir', dir);
-    formData.append('thumb', thumb);
-    formData.append('maxWidth', String(props.width));
-    formData.append('watermark', watermark);
+      formData.append('filename', props.filename || `${new Date().valueOf()}.jpg`);
+      formData.append('files', data.file);
+      formData.append('dir', dir);
+      formData.append('thumb', thumb);
+      formData.append('maxWidth', String(props.width));
+      formData.append('watermark', watermark);
 
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
     };
 
     try {
