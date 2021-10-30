@@ -1,15 +1,16 @@
 <template>
   <a-upload
     v-model:file-list="fileList"
-    name="avatar"
+    name="file"
     list-type="picture-card"
-    class="avatar-uploader"
+    class="yzp-uploader"
+    :class="{ autoWidth }"
     :show-upload-list="false"
     :before-upload="beforeUpload"
     :customRequest="startUpload"
     @change="handleChange"
   >
-    <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+    <img v-if="imageUrl" :src="imageUrl" />
     <div v-else style="font-size: 34px; color: #999999">
       <loading-outlined v-if="loading"></loading-outlined>
       <plus-outlined v-else></plus-outlined>
@@ -51,11 +52,30 @@ export default defineComponent({
     PlusOutlined,
   },
   props: {
-    value: String,
-    dir: String,
-    thumb: Boolean,
-    watermark: Boolean,
-    filename: String,
+    value: {
+      type: String,
+      default: ''
+    },
+    dir: {
+      type: String,
+      default: ''
+    },
+    thumb: {
+      type: Boolean,
+      default: false,
+    },
+    watermark: {
+      type: Boolean,
+      default: false,
+    },
+    filename: {
+      type: [String, Number],
+      default: String(new Date().getTime()),
+    },
+    autoWidth: {
+      type: Boolean,
+      default: false,
+    },
     width: Number,
   },
   setup(props, { emit }) {
@@ -102,16 +122,16 @@ export default defineComponent({
     console.log(data.file);
 
     const formData = new FormData();
-    const thumb: any = props.thumb
-    const dir: any = props.dir
-    const watermark: any = props.watermark
+ 
+    if (props.dir) {
+      formData.append('dir', props.dir);
+    }
 
-    formData.append('filename', props.filename || `${new Date().valueOf()}.jpg`);
+    formData.append('filename', `${props.filename}.jpg` || `${new Date().valueOf()}.jpg`);
     formData.append('files', data.file);
-    formData.append('dir', dir);
-    formData.append('thumb', thumb);
+    formData.append('thumb', props.thumb ? '1' : '0');
     formData.append('maxWidth', String(props.width));
-    formData.append('watermark', watermark);
+    formData.append('watermark', props.watermark ? '1' : '0');
 
     const config = {
       headers: {
@@ -123,6 +143,7 @@ export default defineComponent({
       const { data } = await CommonApi.uploadImg(formData, config);
       const path = data.path || data.thumbPath
       emit('update:value', path)
+      emit('input', path)
       message.success('上传成功！')
     } catch (e) {
       console.log(e)
@@ -143,10 +164,12 @@ export default defineComponent({
 });
 </script>
 <style scoped lang="less">
-.avatar-uploader > .ant-upload {
+.yzp-uploader > .ant-upload {
   width: 128px;
   height: 128px;
+  margin: 0;
 }
+
 .ant-upload-select-picture-card i {
   font-size: 32px;
   color: #999;

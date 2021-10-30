@@ -89,6 +89,10 @@ export default defineComponent({
   padding: 0;
   margin: 0;
 }
+ul {
+  list-style: none;
+  margin: 0;
+}
 body {
   font-size: 14px;
   &:before {
