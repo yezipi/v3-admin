@@ -50,8 +50,8 @@
 import { defineComponent, onMounted, reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { EditOutlined } from '@ant-design/icons-vue'
-import ArticleApi from '../../api/article'
-import confirm from '../../utils/confirm'
+import ArticleApi from '@/api/article'
+import confirm from '@/utils/confirm'
 
 export default defineComponent({
   components: { EditOutlined },

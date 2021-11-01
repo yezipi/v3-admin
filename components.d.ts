@@ -28,6 +28,7 @@ declare module 'vue' {
     AUpload: typeof import('ant-design-vue/es')['Upload']
     ColumnSelect: typeof import('./src/components/features/Column/ColumnSelect.vue')['default']
     YzpAside: typeof import('./src/components/common/YzpAside.vue')['default']
+    YzpDraw: typeof import('./src/components/common/YzpDraw.vue')['default']
     YzpEditor: typeof import('./src/components/common/YzpEditor.vue')['default']
     YzpHeader: typeof import('./src/components/common/YzpHeader.vue')['default']
     YzpUpload: typeof import('./src/components/common/YzpUpload.vue')['default']
