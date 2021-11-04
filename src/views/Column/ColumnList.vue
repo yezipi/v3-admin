@@ -19,7 +19,7 @@
       </template>
 
       <template #action="{ record }">
-        <a v-if="record.type === 'article' || record.type === 'case'" @click="toAdd(record.id)">编辑</a>
+        <a v-if="record.type === 'article' || record.type === 'case'" @click="toAdd(record.id)">添加</a>
         <a @click="toEdit(record.id)">编辑</a>
         <template v-if="record.can_delete">
           <a-divider type="vertical" />
@@ -28,11 +28,18 @@
       </template>
 
     </a-table>
+
+    <yzp-draw ref="draw" title="编辑栏目">
+      <template #content>
+        123`
+      </template>
+    </yzp-draw>
+
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs } from 'vue'
+import { defineComponent, onMounted, reactive, toRefs, ref } from 'vue'
 import { EditOutlined } from '@ant-design/icons-vue'
 import ColumnApi from '@/api/column'
 import confirm from '@/utils/confirm'
@@ -40,6 +47,7 @@ import confirm from '@/utils/confirm'
 export default defineComponent({
   components: { EditOutlined },
   setup() {
+    const draw = ref<any>('')
     const tableConfig = reactive({
       dataSource: [],
       columns: [
@@ -113,7 +121,7 @@ export default defineComponent({
     }
 
     const toEdit = (id: string) => {
-      // router.push('/ArticleEdit?id=' + id)
+      draw.value.show()
       console.log(id)
     }
 
@@ -131,6 +139,7 @@ export default defineComponent({
 
     onMounted(() => {
       getList()
+      console.log(draw.value)
     })
 
     return {
@@ -140,6 +149,7 @@ export default defineComponent({
       confirmDelete,
       toAdd,
       toEdit,
+      draw,
     }
   }
 })

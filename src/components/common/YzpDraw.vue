@@ -5,15 +5,17 @@
     :visible="visible"
     :size="size"
     :maskClosable="maskClosable"
-    @close="onClose"
+    @close="hide"
   > 
-    <div class="drawo-content">
-      <slot name="content"></slot>
+    <div class="draw-wrap">
+      <div class="draw-content">
+        <slot name="content"></slot>
+      </div>
+      <div class="draw-footer">
+        <a-button style="flex: 1;margin-right: 24px" size="large" @click="hide">取消</a-button>
+        <a-button type="primary" size="large" style="flex: 1" @click="hide">确定</a-button>
+      </div>
     </div>
-    <template #footer>
-      <a-button style="margin-right: 8px" @click="onClose">取消</a-button>
-      <a-button type="primary" @click="onClose">确定</a-button>
-    </template>
   </a-drawer>
 </template>
 <script lang="ts">
@@ -42,19 +44,39 @@ export default defineComponent({
   setup() {
     const visible = ref<boolean>(false);
 
-    const showDrawer = () => {
+    const show = () => {
       visible.value = true;
     };
 
-    const onClose = () => {
+    const hide = () => {
       visible.value = false;
     };
+
     return {
       visible,
-      showDrawer,
-      onClose,
+      show,
+      hide,
     };
   },
 });
 </script>
 
+<style scoped lang="less">
+.draw-wrap {
+  position: absolute;
+  height: calc(100% - 103px);
+  left: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  .draw-content {
+    flex: 1;
+  }
+  .draw-footer {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+</style>

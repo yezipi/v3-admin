@@ -1,6 +1,6 @@
 
 const HOST = {
-  DEV: 'http://localhost:7001/',
+  DEV: 'http://localhost:7002/',
   RELEASE: 'http://game.meiyechuancheng.com/api/'
 }
 const REQ_URL = import.meta.env.MODE === 'development' ? HOST.DEV : HOST.RELEASE
