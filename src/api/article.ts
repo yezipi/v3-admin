@@ -1,4 +1,4 @@
-// 用户接口
+// 文章接口
 import Request from '../utils/request'
 
 type ArticleFields =  {
