@@ -62,6 +62,12 @@ export default defineComponent({
               breadcrumbs.value = [e.meta.title, c.meta.title]
             }
           });
+        } else {
+          if (e.name === route.name) {
+            menuState.openName = [ e.name ]
+            menuState.selectName = [ e.name ]
+            breadcrumbs.value = [e.meta.title]
+          }
         }
       })
       setFullPageState()
