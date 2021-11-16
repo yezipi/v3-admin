@@ -1,11 +1,18 @@
-import UserApi from './user'
-import ArticleApi from './article'
-import SettingsApi from './settings'
-import CommonApi from './common'
+import User from './user'
+import Article from './article'
+import Settings from './settings'
+import Commoni from './common'
 
-export {
-  UserApi,
-  ArticleApi,
-  SettingsApi,
-  CommonApi
+export interface ApiConfig {
+  User: object,
+  Article: object,
+  Settings: object,
+  Commoni: object,
+}
+
+export default {
+  User,
+  Article,
+  Settings,
+  Commoni,
 }

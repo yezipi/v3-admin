@@ -68,14 +68,50 @@ axios.interceptors.response.use((response: AxiosResponse) => {
 })
 
 /**
- * @name request请求
- * @author 2020-4-30 zzc
+ * request请求
  */
-export default class {
+export default class Request {
 
-  get = (url: string, query?: object) =>  axios.get(url, { params: query })
-  post = (url: string, data: any, config?: AxiosRequestConfig) =>  axios.post(url, data, config)
-  put = (url: string, data?: object) =>  axios.put(url, data)
-  delete = (url: string, data?: object) =>  axios.delete(url, { params: data })
+  // get = (url: string, query?: object) =>  axios.get(url, { params: query })
+  // post = (url: string, data: any, config?: AxiosRequestConfig) =>  axios.post(url, data, config)
+  // put = (url: string, data?: object) =>  axios.put(url, data)
+  // delete = (url: string, data?: object) =>  axios.delete(url, { params: data })
+
+  /**
+   * get请求
+   * @param { String } url 接口地址
+   * @param { Object } query 参数
+   */
+   get(url: string, query?: object) {
+     return axios.get(url, { params: query })
+   }
+
+   /**
+   * post请求
+   * @param { String } url 接口地址
+   * @param { Object } data 参数
+   */
+    post(url: string, data: any, config?: AxiosRequestConfig) {
+      return axios.post(url, data, config)
+    }
+
+  /**
+   * put请求
+   * @param { String } url 接口地址
+   * @param { Object } data 参数
+   */
+   put(url: string, data?: object) {
+    return axios.put(url, data)
+  }
+
+  /**
+   * delete请求
+   * @param { String } url 接口地址
+   * @param { Object } data 参数
+   */
+   delete(url: string, data?: object) {
+    return axios.delete(url, { params: data })
+  }
+   
 
 }

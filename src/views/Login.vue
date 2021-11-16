@@ -36,7 +36,7 @@ import { defineComponent, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
-import { UserApi } from '../api/index'
+import UserApi from '@/api/user'
 
 export default defineComponent({
   components: { UserOutlined, LockOutlined },

@@ -12,7 +12,7 @@
         <slot :name="item" :scope="scope"></slot>
       </template>
     </a-table>
-    <ky-pagintion :total="total" :size="condition.size" @change="onPageChange"></ky-pagintion>
+    <yzp-pagintion :total="total" :size="condition.size" @change="onPageChange"></yzp-pagintion>
   </div>
 </template>
 
@@ -75,11 +75,12 @@ export default defineComponent({
       const str = url.split('.')
       const obj: { [key: string]: any } = api[str[0] as keyof ApiConfig] // class对象
       const fn = str[1] // 对象下面的方法
-      const { result } = await obj[fn](filters.value)
-      const { lists, count } = result.data
-      tableConfig.dataSource = lists
+      const { data } = await obj[fn](filters.value)
+      const { rows, count } = data
+      console.log(rows)
+      tableConfig.dataSource = rows
       tableConfig.total = count
-      emit('load', lists)
+      emit('load', rows)
     }
 
     // 分页
@@ -94,12 +95,13 @@ export default defineComponent({
       init()
       const filterEle: any = document.querySelector('#list-filter') // 列表的筛选统一加这个id
       const filterHeight = filterEle ? filterEle.offsetHeight : 0
-      tableHeight.value = screen.height - 330 - filterHeight
+      tableHeight.value = screen.height - 380 - filterHeight
       tableWidth.value = scrollWidth
     })
 
     return {
       ...toRefs(tableConfig),
+      init,
       tableHeight,
       tableWidth,
       slotsKeys,

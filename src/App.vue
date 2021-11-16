@@ -114,7 +114,7 @@ body {
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 0;
+    z-index: -1;
     .halfWhite;
   }
   &:after {
@@ -129,7 +129,7 @@ body {
     background-size: cover;
     background-attachment: fixed;
     filter: blur(10px);
-    z-index: -1;
+    z-index: -2;
     transform: scale(1.2);
   }
 }
