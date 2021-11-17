@@ -1,172 +1,113 @@
 <template>
   <div class="page-list">
-    <a-table
-      :dataSource="dataSource"
-      :columns="columns"
-      :pagination="{ total, pageSize: 10 }"
-      childrenColumnName="subcolumn"
-      rowKey="id"
-      size ="middle"
-      @change="onPageChange"
-    >
-
-      <template #new_window="{ record }">
-        <span>{{ record.new_window ? '新窗口' : '当前窗口' }}</span>
+    <yzp-table :columns="columns" ref="tableRef" childrenColumnName="subcolumn" url="Column.getList">
+      <template #status="{ scope }">
+        <a-switch :checked="scope.record.status" @change="onStatusChange(scope.record, $event)" />
       </template>
 
-      <template #status="{ record }">
-        <a-switch :checked="record.status" @change="onStatusChange(record, $event)" />
+      <template #createdAt="{ scope }">
+        <span>{{ formatDate(scope.record.createdAt, 'YYYY-MM-DD hh:mm') }}</span>
       </template>
 
-      <template #action="{ record }">
-        <a v-if="record.type === 'article' || record.type === 'case'" @click="toAdd(record.id)">添加</a>
-        <a @click="toEdit(record.id)">编辑</a>
-        <template v-if="record.can_delete">
+      <template #action="{ scope }">
+        <template v-if="scope.record.type === 'article' || scope.record.type === 'case'">
+          <a @click="toAdd(scope.record.id)">添加</a>
+          <a-divider type="vertical" />
+        </template>
+        <a @click="toEdit(scope.record.id)">编辑</a>
+        <template v-if="scope.record.can_delete">
           <a-divider type="vertical" />
           <a>删除</a>
         </template>
       </template>
-
-    </a-table>
-
-    <yzp-draw ref="draw" title="编辑栏目">
-      <template #content>
-        123`
-      </template>
-    </yzp-draw>
-
+    </yzp-table>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs, ref } from 'vue'
-import { EditOutlined } from '@ant-design/icons-vue'
+import { defineComponent, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import ColumnApi from '@/api/column'
 import confirm from '@/utils/confirm'
+import { formatDate } from '@/utils/index'
 
 export default defineComponent({
-  components: { EditOutlined },
   setup() {
-    const draw = ref<any>('')
-    const tableConfig = reactive({
-      dataSource: [],
-      columns: [
-        {
-          title: '名称',
-          dataIndex: 'name',
-        },
-        {
-          title: '路径',
-          dataIndex: 'url',
-        },
-        {
-          title: '类型',
-          dataIndex: 'type',
-        },
-        {
-          title: '是否新窗口',
-          dataIndex: 'new_window',
-          slots: { customRender: 'new_window' },
-        },
-        {
-          title: '排序  ',
-          dataIndex: 'sort',
-        },
-        {
-          title: '状态',
-          dataIndex: 'status',
-          slots: { customRender: 'status' },
-        },
-        {
-          title: '操作',
-          key: 'action',
-          slots: { customRender: 'action' },
-        },
-      ],
-      total: 0,
-      current: 1
-    })
-
-    // 获取列表
-    const getList = async () => {
-      const page = tableConfig.current
-      const { data: { rows, count } } = await ColumnApi.getList({ page })
-      tableConfig.dataSource = rows.map((e: any) => {
-        if (!e.subcolumn.length) {
-          delete e.subcolumn
+    const columns = reactive([
+      {
+        title: '名称',
+        dataIndex: 'name',
+      },
+      {
+        title: '路径',
+        dataIndex: 'url',
+      },
+      {
+        title: '类型',
+        dataIndex: 'type',
+      },
+      {
+        title: '是否新窗口',
+        dataIndex: 'new_window',
+        dict: {
+          false: '当前窗口',
+          true: '新窗口'
         }
-        return e
-      })
-      tableConfig.total = count
-    }
+      },
+      {
+        title: '排序  ',
+        dataIndex: 'sort',
+      },
+      {
+        title: '状态',
+        dataIndex: 'status',
+        slots: { customRender: 'status' },
+      },
+      {
+        title: '操作',
+        key: 'action',
+        slots: { customRender: 'action' },
+      },
+    ])
 
-    // 分页
-    const onPageChange = (e: { current: number }) => {
-      tableConfig.current = e.current
-      getList()
-    }
+    const tableRef = ref()
+
+    const router = useRouter()
 
     // 隐藏显示
-    const onStatusChange = async (item: { status: boolean, id: string }, checked: boolean) => {
-      const { status, id } = item
+    const onStatusChange = async ({ status, id }: { status: boolean, id: string }, checked: boolean) => {
       if (status === checked) {
         return
       }
       try {
         await ColumnApi.updateColumn(id, { status: checked })
-        getList()
       } catch (e) {
-        item.status = !status
+        status = !status
       }
     }
 
-    const toEdit = (id: string) => {
-      draw.value.show()
-      console.log(id)
+    const toEdit = (id: string) => { }
+
+    // 删除
+    const confirmDelete = (id: string) => {
+      confirm('确定删除该分类吗？', async () => {
+        await ColumnApi.destorySubColumn(id)
+      })
     }
 
     const toAdd = (id: string) => {
       // todo
     }
 
-    // 删除
-    const confirmDelete = (id: string) => {
-      confirm('确定删除该分类吗？', async () => {
-        await ColumnApi.destorySubColumn(id)
-        getList()
-      })
-    }
-
-    onMounted(() => {
-      getList()
-      console.log(draw.value)
-    })
-
     return {
-      ...toRefs(tableConfig),
-      onPageChange,
+      columns,
+      tableRef,
       onStatusChange,
       confirmDelete,
       toAdd,
       toEdit,
-      draw,
+      formatDate,
     }
   }
 })
 </script>
-
-<style lang="less" scoped>
-.page-filter {
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  .column-select {
-    margin-right: 10px;
-  }
-  .filter-left, .filter-right {
-    display: flex;
-    align-items: center;
-  }
-}
-</style>

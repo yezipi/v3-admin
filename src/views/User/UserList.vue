@@ -1,28 +1,37 @@
 <template>
-  <div>
-    <a-table :dataSource="dataSource" :columns="columns" rowKey="id" size ="middle">
-      <template #createdAt="{ record }">
-        <span>{{ record.createdAt.substr(0, 10) }}</span>
+  <div class="page-list">
+
+    <yzp-table :columns="columns" ref="tableRef" url="User.getList">
+
+      <template #status="{ scope }">
+        <a-switch :checked="scope.record.status" @change="onStatusChange(scope.record, $event)" />
       </template>
-      <template #action>
+
+      <template #createdAt="{ scope }">
+        <span>{{ formatDate(scope.record.createdAt, 'YYYY-MM-DD hh:mm') }}</span>
+      </template>
+
+      <template #action="{ scope }">
         <span>
-          <a>编辑</a>
+          <a @click="toEdit(scope.record.id)">编辑</a>
           <a-divider type="vertical" />
-          <a>删除</a>
+          <a @click="confirmDelete(scope.record.id)">删除</a>
         </span>
       </template>
-    </a-table>
+    </yzp-table>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
-import { UserApi } from '../../api'
+import { defineComponent, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import ArticleApi from '@/api/article'
+import confirm from '@/utils/confirm'
+import { formatDate } from '@/utils/index'
 
 export default defineComponent({
   setup() {
-    const dataSource = ref([])
-    const columns = ref([
+    const columns = reactive([
       {
         title: '账号',
         dataIndex: 'name',
@@ -34,10 +43,15 @@ export default defineComponent({
       {
         title: '角色',
         dataIndex: 'role',
+        dict: {
+          admin: '普通管理员',
+          super: '超级管理员'
+        }
       },
       {
         title: '状态',
         dataIndex: 'status',
+        slots: { customRender: 'status' },
       },
       {
         title: '时间',
@@ -51,20 +65,39 @@ export default defineComponent({
       },
     ])
 
-    const getList = (async () => {
-      const { data } = await UserApi.getList()
-      dataSource.value = data.rows
-    });
+    const tableRef = ref() 
 
-    onMounted(() => {
-      getList()
-    })
+    const router = useRouter()
+
+    // 隐藏显示
+    const onStatusChange = async ({ status, id }: { status: boolean, id: string }, checked: boolean) => {
+      if (status === checked) {
+        return
+      }
+      try {
+        await ArticleApi.update(id, { status: checked })
+      } catch (e) {
+        status = !status
+      }
+    }
+
+    const toEdit = (id: string) => {}
+
+    // 删除
+    const confirmDelete = (id: string) => {
+      confirm('确定删除该文章吗？', async () => {
+        await ArticleApi.destory(id)
+      })
+    }
 
     return {
-      dataSource,
-      columns
+      columns,
+      tableRef,
+      onStatusChange,
+      confirmDelete,
+      toEdit,
+      formatDate,
     }
   }
 })
 </script>
-

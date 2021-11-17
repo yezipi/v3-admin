@@ -43,7 +43,7 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   if (code === 401) {
     alert('请重新授权')
     store.dispatch('resetUser')
-    location.replace(location.href)
+    location.replace('/login')
     return Promise.reject(res)
   }
 

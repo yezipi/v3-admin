@@ -10,8 +10,8 @@ const app = createApp(App)
 Router.beforeEach((to: any, from: any, next: any) => {
   console.log(to.fullPath)
   document.title = to.meta.title || '未命名'
-  if (!to.name) {
-    alert('抱歉，页面不存在')
+  if (!to.name || (to.meta.noLink && to.matched.length === 1)) {
+    next('/404')
     return
   }
   next()

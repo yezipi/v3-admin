@@ -47,9 +47,9 @@ export default defineComponent({
 
     const initEditor = {
       selector: '#tinymce',
-      language_url: 'langs/zh_CN.js',
+      language_url: '/tinymce/langs/zh_CN.js',
       language: 'zh_CN',
-      skin_url: 'skins/ui/oxide',
+      skin_url: '/tinymce/skins/ui/oxide',
       height: 400,
       branding: false,
       plugins: 'link lists image codesample code table wordcount  media table fullscreen preview pagebreak insertdatetime hr paste', // 插件

@@ -28,27 +28,33 @@
 /**
  * 格式化时间
  * @param { Date } date 日期对象及格式
- * @param { String } formatStr 例如YYYY-MM-DD
+ * @param { String } type 例如YYYY-MM-DD
  * @version 2021-10-29 zzc
  */
 
-const formatDate = (date: Date | any, formatStr?: string) => {
-  const dat = date;
-  const Week = ['日', '一', '二', '三', '四', '五', '六'];
-  let str = formatStr || 'YYYY-MM-DD';
-  str = str.replace(/yyyy|YYYY/, dat.getFullYear());
-  str = str.replace(/yy|YY/, (dat.getYear() % 100) > 9 ? (dat.getYear() % 100).toString() : '0' + (dat.getYear() % 100));
-  str = str.replace(/MM/, dat.getMonth() > 9 ? (dat.getMonth() + 1).toString() : '0' + (dat.getMonth() + 1));
-  str = str.replace(/M/g, (dat.getMonth() + 1));
-  str = str.replace(/w|W/g, Week[dat.getDay()]);
-  str = str.replace(/dd|DD/, dat.getDate() > 9 ? dat.getDate().toString() : '0' + dat.getDate());
-  str = str.replace(/d|D/g, dat.getDate());
-  str = str.replace(/hh|HH/, dat.getHours() > 9 ? dat.getHours().toString() : '0' + dat.getHours());
-  str = str.replace(/h|H/g, dat.getHours());
-  str = str.replace(/mm/, dat.getMinutes() > 9 ? dat.getMinutes().toString() : '0' + dat.getMinutes());
-  str = str.replace(/m/g, dat.getMinutes());
-  str = str.replace(/ss|SS/, dat.getSeconds() > 9 ? dat.getSeconds().toString() : '0' + dat.getSeconds());
-  str = str.replace(/s|S/g, dat.getSeconds());
+const formatDate = (date: string, type?: string) => {
+  const time = new Date(date)
+  const week = ['日', '一', '二', '三', '四', '五', '六']
+  const year =  time.getFullYear()
+  const month = time.getMonth() + 1
+  const day = time.getDate()
+  const hours = time.getHours()
+  const minutes = time.getMinutes()
+  const sec = time.getSeconds()
+  let str = type || 'YYYY-MM-DD'
+  str = str.replace(/yyyy|YYYY/, String(year))
+  str = str.replace(/yy|YY/, (year % 100) > 9 ? (year % 100).toString() : '0' + (year % 100))
+  str = str.replace(/MM/, month > 9 ? String(month) : '0' + month)
+  str = str.replace(/M/g, String(month))
+  str = str.replace(/w|W/g, week[time.getDay()])
+  str = str.replace(/dd|DD/, day > 9 ? String(day) : '0' + day)
+  str = str.replace(/d|D/g, String(day))
+  str = str.replace(/hh|HH/, hours > 9 ? String(hours) : '0' + hours)
+  str = str.replace(/h|H/g, String(hours))
+  str = str.replace(/mm/, minutes > 9 ? String(minutes) : '0' + minutes)
+  str = str.replace(/m/g, String(minutes))
+  str = str.replace(/ss|SS/, sec > 9 ? String(sec) : '0' + sec)
+  str = str.replace(/s|S/g,  String(sec))
   return str
 }
 

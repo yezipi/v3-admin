@@ -1,35 +1,38 @@
 <template>
   <div class="page-list">
-    <div id="list-filter">
-      <a-form :model="condition" class="filter-left">
-        <div class="column-select">
-          <column-select
-            v-model:value="condition.subcolumn_id"
-            type="article"
-            style="width: 200px;"
-          ></column-select>
-        </div>
-        <a-input-search
-          v-model:value="condition.title"
-          placeholder="请输入关键字"
-          enter-button
-          @search="onSearch"
-        />
-      </a-form>
-      <a-button type="primary" @click="toCreate">
-        <template #icon>
-          <EditOutlined />
-        </template>
-        创建文章
-      </a-button>
-    </div>
-    <yzp-table :columns="columns" :condition="condition" ref="tableRef" url="Article.getList">
-      <template #created_at="{ scope }">
-        <span>{{ scope.record.created_at }}</span>
+
+    <yzp-table :columns="columns" ref="tableRef" url="Article.getList">
+      
+      <template #filter>
+        <a-form :model="condition" class="filter-left">
+          <div class="column-select" style="margin-right: 10px">
+            <column-select
+              v-model:value="condition.subcolumn_id"
+              type="article"
+              style="width: 200px;"
+            ></column-select>
+          </div>
+          <a-input-search
+            v-model:value="condition.title"
+            placeholder="请输入关键字"
+            enter-button
+            @search="onSearch"
+          />
+        </a-form>
+        <a-button type="primary" @click="toCreate">
+          <template #icon>
+            <EditOutlined />
+          </template>
+          创建文章
+        </a-button>
       </template>
 
       <template #status="{ scope }">
         <a-switch :checked="scope.record.status" @change="onStatusChange(scope.record, $event)" />
+      </template>
+
+      <template #created_at="{ scope }">
+        <span>{{ formatDate(scope.record.created_at, 'YYYY-MM-DD hh:mm') }}</span>
       </template>
 
       <template #action="{ scope }">
@@ -44,11 +47,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive, ref, toRaw } from 'vue'
 import { useRouter } from 'vue-router'
 import { EditOutlined } from '@ant-design/icons-vue'
 import ArticleApi from '@/api/article'
 import confirm from '@/utils/confirm'
+import { formatDate } from '@/utils/index'
 
 export default defineComponent({
   components: { EditOutlined },
@@ -57,6 +61,7 @@ export default defineComponent({
       {
         title: '标题',
         dataIndex: 'title',
+        width: 400,
       },
       {
         title: '评论',
@@ -109,17 +114,17 @@ export default defineComponent({
     }
 
     const toCreate = () => {
-      router.push('/ArticleEdit')
+      router.push('/article/edit')
     }
 
     const toEdit = (id: string) => {
-      router.push('/ArticleEdit?id=' + id)
+      router.push('/article/edit?id=' + id)
     }
 
     const onSearch = (res: string) => {
       condition.title = res
       console.log(tableRef.value)
-      tableRef.value.init()
+      tableRef.value.init(toRaw(condition))
     }
 
     // 删除
@@ -138,24 +143,14 @@ export default defineComponent({
       onSearch,
       toCreate,
       toEdit,
+      formatDate,
     }
   }
 })
 </script>
 
 <style lang="less" scoped>
-#list-filter {
-  margin-bottom: 10px;
+.filter-left {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  .column-select {
-    margin-right: 10px;
-  }
-  .filter-left,
-  .filter-right {
-    display: flex;
-    align-items: center;
-  }
 }
 </style>

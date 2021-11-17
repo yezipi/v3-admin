@@ -2,7 +2,7 @@
   分页组件, 2021-11-10 zzc
 -->
 <template>
-  <div v-if="total" class="ky-pagintion" style="margin-top: 20px">
+  <div class="ky-pagintion" style="margin-top: 20px">
     <a-config-provider :locale="locale">
       <a-pagination
         :total="total"

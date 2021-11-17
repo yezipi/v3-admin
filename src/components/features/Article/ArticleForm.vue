@@ -164,7 +164,7 @@ export default defineComponent({
             await ArticleApi.update(articleId, data)
           }
           message.success(msg, 1.5, () => {
-            router.push('/ArticleList')
+            router.push({ name: 'ArticleList' })
           })
         })
         .catch((error: ValidateErrorEntity<FormState>) => {
