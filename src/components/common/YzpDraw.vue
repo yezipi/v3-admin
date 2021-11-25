@@ -2,9 +2,10 @@
   <a-drawer
     :title="title"
     :width="width"
-    :visible="visible"
     :size="size"
     :maskClosable="maskClosable"
+    :visible="state"
+    :destroyOnClose="true"
     @close="hide"
   > 
     <div class="draw-wrap">
@@ -12,8 +13,8 @@
         <slot name="content"></slot>
       </div>
       <div class="draw-footer">
-        <a-button style="flex: 1;margin-right: 24px" size="large" @click="hide">取消</a-button>
-        <a-button type="primary" size="large" style="flex: 1" @click="hide">确定</a-button>
+        <a-button style="flex: 1;margin-right: 24px" @click="cancel">取消</a-button>
+        <a-button type="primary" style="flex: 1" @click="confirm">确定</a-button>
       </div>
     </div>
   </a-drawer>
@@ -23,13 +24,9 @@ import { defineComponent, ref } from 'vue';
 export default defineComponent({
 
   props: {
-    title: {
-      type: String,
-      default: ''
-    },
     width: {
       type: [String, Number],
-      default: 720
+      default: '40%'
     },
     size: {
       type: String,
@@ -37,25 +34,40 @@ export default defineComponent({
     },
     maskClosable: {
       type: Boolean,
-      default: true,
-    }
+      default: false,
+    },
+    title: String,
   },
 
-  setup() {
-    const visible = ref<boolean>(false);
+  setup(props, ctx) {
+
+    const state = ref<boolean>(false);
 
     const show = () => {
-      visible.value = true;
-    };
+      ctx.emit('update:visible', true)
+      state.value = true
+    }
 
     const hide = () => {
-      visible.value = false;
-    };
+      ctx.emit('update:visible', false)
+      console.log(state.value)
+    }
+
+    const confirm = () => {
+      ctx.emit('confirm', true)
+    }
+
+    const cancel = () => {
+      ctx.emit('cancel', true)
+      hide()
+    }
 
     return {
-      visible,
+      state,
       show,
       hide,
+      cancel,
+      confirm
     };
   },
 });
@@ -63,20 +75,20 @@ export default defineComponent({
 
 <style scoped lang="less">
 .draw-wrap {
-  position: absolute;
-  height: calc(100% - 103px);
-  left: 24px;
-  right: 24px;
   display: flex;
   flex-direction: column;
+  margin-right: -24px;
   .draw-content {
-    flex: 1;
+    padding-right: 24px;
+    height: calc(100vh - 170px);
+    overflow-y: auto;
   }
   .draw-footer {
     margin-top: 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-right: 24px;
   }
 }
 </style>

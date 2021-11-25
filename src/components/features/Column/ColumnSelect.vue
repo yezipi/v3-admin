@@ -3,13 +3,14 @@
   import ColumnApi from '@/api/column'
 
   const options = ref<any>([])
+  const lists = ref<any>([])
   let id = ref<string | number | undefined>(undefined)
 
   const emit = defineEmits(['update:value', 'change'])
   const props = defineProps({
     type: {
       type: String,
-      default: ''
+      default: 'article'
     },
     value: {
       type: String,
@@ -21,14 +22,22 @@
     id.value = String(val)
   })
 
+  watch(() => props.type, (val: string) => {
+    id.value = undefined
+    filterOptions(val)
+  })
+
+  const filterOptions = (type: string) => {
+    options.value = lists.value.filter((e: any) => e.type === type)
+  }
+
   const getColumnList = async () => {
-    console.log(props)
-    const { data: { rows } } = await ColumnApi.getSubList({ type: props.type })
-    options.value = rows.map((e: any) => {
+    const { data: { rows } } = await ColumnApi.getSubList()
+    lists.value = rows.map((e: any) => {
       e.id = String(e.id)
       return e
     })
-    console.log(toRaw(options.value))
+    filterOptions(props.type)
   }
 
   const onChange = (val: any) => {

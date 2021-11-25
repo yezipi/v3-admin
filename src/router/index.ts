@@ -44,12 +44,6 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/ContentEdit/ArticleEdit.vue'),
       },
       {
-        path: '/case/edit',
-        name: 'CaseEdit',
-        meta: { title: '案例发布' },
-        component: () => import('@/views/ContentEdit/CaseEdit.vue'),
-      },
-      {
         path: '/mood/edit',
         name: 'MoodEdit',
         meta: { title: '微语发布' },

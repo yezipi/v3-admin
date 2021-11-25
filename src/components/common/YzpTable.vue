@@ -37,8 +37,8 @@ export default defineComponent({
       default: () => []
     },
     scrollWidth: {
-      type: [ Number, String ],
-      default: undefined
+      type: [ Number, String, Boolean ],
+      default: false
     },
     // api对象的获取列表方法
     url: {
@@ -55,7 +55,7 @@ export default defineComponent({
     },
     childrenColumnName: String
   },
-  setup({ url, scrollWidth, columns, size }, { emit, slots }) {
+  setup({ url, scrollWidth, columns, size, childrenColumnName }, { emit, slots }) {
 
     const tableConfig = reactive({
       dataSource: [] as any,
@@ -68,6 +68,17 @@ export default defineComponent({
     const tableWidth = ref<any>(undefined)
     const loadEnd = ref(false)
     const page = ref(1)
+
+    const mapColumns = (e: any) => {
+      columns.forEach((i: any) => {
+        const key = i.dataIndex
+        const item = e[key]
+        if (i.dict) {
+          e[key] = i.dict[item]
+        }
+      })
+      return e
+    }
 
     // 获取列表
     const init = async (condition?: object) => {
@@ -82,13 +93,22 @@ export default defineComponent({
         const { rows, count } = data
         // 匹配字典
         tableConfig.dataSource = rows.map((e: any[]) => {
-          columns.forEach((i: any) => {
-            const key = i.dataIndex
-            const item = e[key]
-            if (i.dict) {
-              e[key] = i.dict[item]
+          const childKeyName: any = childrenColumnName
+
+          mapColumns(e)
+
+          // 二级为空的删除属性
+          if (e[childKeyName]) {
+            if (!e[childKeyName].length) {
+              delete e[childKeyName]
+            } else {
+              e[childKeyName] = e[childKeyName].map((x: any) => {
+                mapColumns(x)
+                return x
+              })
             }
-          })
+          }
+
           return e
         })
         tableConfig.total = count

@@ -6,14 +6,6 @@
       :rules="rules"
       :label-col="labelCol"
     >
-      <a-form-item label="标题" name="title" :wrapperCol="wrapperCol">
-        <a-input v-model:value="formState.title" placeholder="请输入标题" />
-      </a-form-item>
-
-      <a-form-item label="分类" name="subcolumn_id" :wrapperCol="wrapperCol">
-        <column-select v-model:value="formState.subcolumn_id" :type="type" style="width: 100%"></column-select>
-      </a-form-item>
-
       <a-form-item label="封面" :wrapperCol="wrapperCol">
         <yzp-upload
           v-model:value="formState.cover_thumb"
@@ -23,6 +15,21 @@
           dir="article_cover"
         >
         </yzp-upload>
+      </a-form-item>
+
+      <a-form-item label="类型" name="type" :wrapperCol="wrapperCol">
+        <a-radio-group v-model:value="formState.type">
+          <a-radio value="article">文章</a-radio>
+          <a-radio value="case">案例</a-radio>
+        </a-radio-group>
+      </a-form-item>
+
+      <a-form-item label="分类" name="subcolumn_id" :wrapperCol="wrapperCol">
+        <column-select v-model:value="formState.subcolumn_id" :type="formState.type" style="width: 100%"></column-select>
+      </a-form-item>
+
+      <a-form-item label="标题" name="title" :wrapperCol="wrapperCol">
+        <a-input v-model:value="formState.title" placeholder="请输入标题" />
       </a-form-item>
 
       <a-form-item label="关键字" name="keywords" :wrapperCol="wrapperCol">
@@ -88,16 +95,10 @@ interface FormState {
   open_comment: boolean,
   recommend: boolean,
   top: boolean,
+  type: string
 }
 
 export default defineComponent({
-
-  props: {
-    type: {
-      type: String,
-      default: 'article', // 文章类型，article,case
-    }
-  },
 
   setup(props) {
     const formRef = ref();
@@ -117,6 +118,7 @@ export default defineComponent({
       open_comment: true,
       recommend: false,
       top: false,
+      type: 'article'
     });
 
     const rules = {
@@ -154,7 +156,6 @@ export default defineComponent({
           console.log(toRaw(formState))
           const data = {
             ...toRaw(formState.value),
-            type: props.type,
             user_id: state.user.id
           }
           const msg = articleId ? '保存成功' : '发布成功'

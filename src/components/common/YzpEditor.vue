@@ -2,6 +2,7 @@
   <editor
     id="tinymce"
     v-model="val"
+    placeholder="写点什么把..."
     :init="initEditor"
     @input="onEditorInput"
   >

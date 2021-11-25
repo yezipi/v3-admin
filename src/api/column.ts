@@ -18,6 +18,7 @@ export interface SubColumnSaveConfig extends ColumnBaseConfig {
 export interface SubColumnUpdateConfig extends ColumnBaseConfig {
   name?: string,
   url?: string,
+  sort?: string, 
 }
 
 export default new class Column extends Request {
@@ -54,7 +55,7 @@ export default new class Column extends Request {
    * @param { Obejct } data 同创建的参数
    * @version 2021-10-21 zzc
    */
-   public updateSubColumn(id: string, data?: SubColumnUpdateConfig) {
+   public updateSubColumn(id: number, data?: SubColumnUpdateConfig) {
     const url = `v1/admin/column/updateSubColumn/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
@@ -65,7 +66,7 @@ export default new class Column extends Request {
    * @param { Obejct } data 同创建的参数
    * @version 2021-10-21 zzc
    */
-   public updateColumn(id: string, data?: SubColumnUpdateConfig) {
+   public updateColumn(id: number | string, data?: SubColumnUpdateConfig) {
     const url = `v1/admin/column/updateColumn/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
@@ -75,7 +76,7 @@ export default new class Column extends Request {
    * @param { String } id 一级栏目id
    * @version 2021-10-21 zzc
    */
-   public getColumnDetail(id: string) {
+   public getColumnDetail(id: number) {
     const url = `v1/admin/column/getColumnDetail/${id}`
     return this.get(url, { loading: true })
   }
@@ -86,7 +87,7 @@ export default new class Column extends Request {
    * @param { Boolean } loading 是否loading
    * @version 2021-10-21 zzc
    */
-   public getSubColumnDetail(id: string, loading?: boolean) {
+   public getSubColumnDetail(id: number, loading?: boolean) {
     const url = `v1/admin/column/getSubColumnDetail/${id}`
     return this.get(url, { loading })
   }
