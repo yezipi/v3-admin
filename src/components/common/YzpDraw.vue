@@ -13,14 +13,15 @@
         <slot name="content"></slot>
       </div>
       <div class="draw-footer">
-        <a-button style="flex: 1;margin-right: 24px" @click="cancel">取消</a-button>
-        <a-button type="primary" style="flex: 1" @click="confirm">确定</a-button>
+        <!-- <a-button style="flex: 1;margin-right: 24px" @click="cancel">取消</a-button>
+        <a-button type="primary" style="flex: 1" @click="confirm">确定</a-button> -->
+        <slot name="footer"></slot>
       </div>
     </div>
   </a-drawer>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 export default defineComponent({
 
   props: {
@@ -50,7 +51,7 @@ export default defineComponent({
 
     const hide = () => {
       ctx.emit('update:visible', false)
-      console.log(state.value)
+      ctx.emit('hide', false)
     }
 
     const confirm = () => {

@@ -2,7 +2,6 @@
   <div class="page-list">
 
     <yzp-table :columns="columns" ref="tableRef" url="Article.getList">
-      
       <template #filter>
         <a-form :model="condition" class="filter-left">
           <div class="column-select" style="margin-right: 10px">
@@ -28,7 +27,7 @@
       </template>
 
       <template #status="{ scope }">
-        <a-switch :checked="scope.record.status" @change="onStatusChange(scope.record, $event)" />
+        <a-switch :checked="scope.record.status" @change="changeStatus(scope.record, $event)" />
       </template>
 
       <template #created_at="{ scope }">
@@ -36,11 +35,9 @@
       </template>
 
       <template #action="{ scope }">
-        <span>
-          <a @click="toEdit(scope.record.id)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="confirmDelete(scope.record.id)">删除</a>
-        </span>
+        <a @click="toEdit(scope.record.id)">编辑</a>
+        <a-divider type="vertical" />
+        <a @click="confirmDelete(scope.record.id)">删除</a>
       </template>
     </yzp-table>
   </div>
@@ -102,14 +99,13 @@ export default defineComponent({
     })
 
     // 隐藏显示
-    const onStatusChange = async ({ status, id }: { status: boolean, id: string }, checked: boolean) => {
-      if (status === checked) {
-        return
-      }
+    const changeStatus = async (item: any, checked: boolean) => {
+      const { status, id } = item
       try {
         await ArticleApi.update(id, { status: checked })
+        item.status = checked
       } catch (e) {
-        status = !status
+        item.status = !status
       }
     }
 
@@ -141,7 +137,7 @@ export default defineComponent({
       columns,
       condition,
       tableRef,
-      onStatusChange,
+      changeStatus,
       confirmDelete,
       onSearch,
       toCreate,

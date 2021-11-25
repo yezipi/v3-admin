@@ -1,9 +1,13 @@
 <template>
   <div class="page-list">
     <yzp-table :columns="columns" ref="tableRef" url="Column.getList" childrenColumnName="subcolumn">
+      <template #filter>
+        <div></div>
+        <a-button type="primary" @click="$router.push({ name: 'ColumnEdit' })">+ 创建栏目</a-button>
+      </template>
 
       <template #status="{ scope }">
-        <a-switch :checked="scope.record.status" @change="onStatusChange(scope.record, $event)" />
+        <a-switch :checked="scope.record.status" @change="changeStatus(scope.record, $event)" />
       </template>
 
       <template #createdAt="{ scope }">
@@ -41,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRaw } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { EditOutlined, CheckOutlined } from '@ant-design/icons-vue'
 import ColumnApi from '@/api/column'
@@ -96,23 +100,17 @@ export default defineComponent({
     ])
 
     const tableRef = ref()
-    const drawState = reactive({
-      data: {} as any,
-      title: '编辑',
-      visible: false
-    })
 
     const router = useRouter()
 
     // 隐藏显示
-    const onStatusChange = async ({ status, id }: { status: boolean, id: string }, checked: boolean) => {
-      if (status === checked) {
-        return
-      }
+    const changeStatus = async (item: any, checked: boolean) => {
+      const { status, id } = item
       try {
         await ColumnApi.updateColumn(id, { status: checked })
+        item.status = checked
       } catch (e) {
-        status = !status
+        item.status = !status
       }
     }
 
@@ -165,8 +163,7 @@ export default defineComponent({
     return {
       columns,
       tableRef,
-      drawState,
-      onStatusChange,
+      changeStatus,
       confirmDelete,
       toAdd,
       toEdit,

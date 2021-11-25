@@ -3,11 +3,11 @@
     <a-page-header :title="pageTitle" style="padding-top: 0;" />
     <a-form ref="formRef" :model="ruleForm" :rules="rules" :label-col="labelCol">
       <a-form-item label="栏目标题" name="name">
-        <a-input v-model:value="ruleForm.name" auto-complete="off" placeholder="填写栏目标题"></a-input>
+        <a-input v-model:value="ruleForm.name" :maxlength="10" placeholder="填写栏目标题"></a-input>
       </a-form-item>
 
       <a-form-item label="栏目url" name="url">
-        <a-input v-model:value="ruleForm.url" auto-complete="off" placeholder="填写url名称，英文"></a-input>
+        <a-input v-model:value="ruleForm.url" :maxlength="10" autocomplete="off" placeholder="填写url名称，英文"></a-input>
       </a-form-item>
 
       <a-form-item label="栏目类型">
@@ -51,7 +51,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
-import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { useRoute, useRouter } from 'vue-router'
 import ColumnApi from '@/api/column'
 import DICT, { ColumnType } from '@/dict/index'
@@ -120,9 +119,6 @@ export default defineComponent({
             router.go(-1)
           }, 1500)
         })
-        .catch((error: ValidateErrorEntity) => {
-          console.log('error', error)
-        })
     }
 
     const resetForm = () => {
@@ -136,7 +132,7 @@ export default defineComponent({
       ruleForm,
       typeOptions,
       rules,
-      labelCol: { style: { width: '80px' } },
+      labelCol: { style: { width: '100px' } },
       id,
       onSubmit,
       resetForm,

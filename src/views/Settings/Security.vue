@@ -6,7 +6,7 @@
       :rules="rules"
       :label-col="labelCol"
     >
-      <a-form-item label="ip地址" :wrapperCol="wrapperCol">
+      <a-form-item label="黑名单ip" :wrapperCol="wrapperCol">
         <a-textarea v-model:value="formState.black_ip" rows="3" placeholder="请输入要拦截的ip，英文逗号隔开"></a-textarea>
       </a-form-item>
 

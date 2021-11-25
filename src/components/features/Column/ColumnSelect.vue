@@ -55,7 +55,6 @@
   <a-select
     ref="select"
     v-model:value="id"
-    allowClear
     style="width: 100%;"
     placeholder="请选择"
     @change="onChange"

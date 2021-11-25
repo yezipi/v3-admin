@@ -120,7 +120,7 @@ export default new class Column extends Request {
    * @param { Boolean } loading 是否loading
    * @version 2021-10-21 zzc
    */
-   public getSubColumnDetail(id: number, loading?: boolean) {
+   public getSubColumnDetail(id: any, loading?: boolean) {
     const url = `v1/admin/column/getSubColumnDetail/${id}`
     return this.get(url, { loading })
   }

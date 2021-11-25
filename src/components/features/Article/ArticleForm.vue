@@ -29,15 +29,15 @@
       </a-form-item>
 
       <a-form-item label="标题" name="title">
-        <a-input v-model:value="formState.title" placeholder="请输入标题" />
+        <a-input v-model:value="formState.title" :maxlength="50" placeholder="请输入标题" />
       </a-form-item>
 
       <a-form-item label="关键字" name="keywords" >
-        <a-textarea v-model:value="formState.keywords" rows="3" placeholder="请输入关键字，英文逗号隔开" />
+        <a-textarea v-model:value="formState.keywords" autoSize :rows="3" placeholder="请输入关键字，英文逗号隔开" />
       </a-form-item>
 
       <a-form-item label="描述" name="description">
-        <a-textarea v-model:value="formState.description" rows="3" placeholder="请输入描述" />
+        <a-textarea v-model:value="formState.description" autoSize :rows="3" placeholder="请输入描述" />
       </a-form-item>
 
       <a-form-item label="正文" name="content" class="maxwidth-100">
@@ -74,7 +74,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, toRaw, onMounted } from 'vue'
-import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { message } from 'ant-design-vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
@@ -150,9 +149,6 @@ export default defineComponent({
           message.success(msg, 1.5, () => {
             router.push({ name: 'ArticleList' })
           })
-        })
-        .catch((error: ValidateErrorEntity) => {
-          console.log('error', error)
         })
     }
 

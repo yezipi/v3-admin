@@ -24,9 +24,10 @@ export default (params: string | ConfirmConfig, callback: Function) => {
   } = typeof params === 'string' ? {} : params
 
   Modal.confirm({
+    okType: 'danger',
+    centered: true,
     title: () => title,
     content: () => typeof params === 'string' ? params : content,
-    okType: 'danger',
     okText: () => okText,
     cancelText: () => cancelText,
     icon: () => createVNode(ExclamationCircleOutlined),

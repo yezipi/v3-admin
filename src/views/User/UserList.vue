@@ -3,8 +3,18 @@
 
     <yzp-table :columns="columns" ref="tableRef" url="User.getList">
 
+      <template #filter>
+        <div></div>
+        <a-button type="primary" @click="toCreate">+ 创建账号</a-button>
+      </template>
+
       <template #status="{ scope }">
-        <a-switch :checked="scope.record.status" @change="onStatusChange(scope.record, $event)" />
+        <a-switch v-if="scope.record.role === 'admin'" :checked="scope.record.status" @change="changeStatus(scope.record, $event)" />
+        <span v-else>正常</span>
+      </template>
+
+      <template #role="{ scope }">
+        <span>{{ setUserRole(scope.record.role) }}</span>
       </template>
 
       <template #createdAt="{ scope }">
@@ -14,20 +24,27 @@
       <template #action="{ scope }">
         <span>
           <a @click="toEdit(scope.record.id)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="confirmDelete(scope.record.id)">删除</a>
+          <template v-if="scope.record.role === 'admin'">
+            <a-divider type="vertical" />
+            <a @click="confirmDelete(scope.record.id)">删除</a>
+          </template>
         </span>
       </template>
     </yzp-table>
+
+    <user-edit v-model:visible="drawVisible" :id="userId" @change="initList"></user-edit>
+
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import ArticleApi from '@/api/article'
+import { useStore } from 'vuex'
+import { Modal } from 'ant-design-vue'
+import UserApi from '@/api/user'
 import confirm from '@/utils/confirm'
 import { formatDate } from '@/utils/index'
+import DICT, { UserRole } from '@/dict/index'
 
 export default defineComponent({
   setup() {
@@ -43,10 +60,7 @@ export default defineComponent({
       {
         title: '角色',
         dataIndex: 'role',
-        dict: {
-          admin: '普通管理员',
-          super: '超级管理员'
-        }
+        slots: { customRender: 'role' },
       },
       {
         title: '状态',
@@ -65,38 +79,63 @@ export default defineComponent({
       },
     ])
 
-    const tableRef = ref() 
-
-    const router = useRouter()
+    const tableRef = ref()
+    const userId = ref()
+    const drawVisible = ref(false)
+    const setUserRole = (role: UserRole) => DICT.USER_ROLE[role]
 
     // 隐藏显示
-    const onStatusChange = async ({ status, id }: { status: boolean, id: string }, checked: boolean) => {
-      if (status === checked) {
-        return
-      }
+    const changeStatus = async (item: any, checked: boolean) => {
+      const { status, id } = item
       try {
-        await ArticleApi.update(id, { status: checked })
+        await UserApi.update(id, { status: checked })
+        item.status = checked
       } catch (e) {
-        status = !status
+        item.status = !status
       }
     }
 
-    const toEdit = (id: string) => {}
+    const toEdit = (id: string) => {
+      userId.value = id
+      drawVisible.value = true
+    }
+
+    const toCreate = () => {
+      userId.value = ''
+      drawVisible.value = true
+    }
 
     // 删除
-    const confirmDelete = (id: string) => {
-      confirm('确定删除该文章吗？', async () => {
-        await ArticleApi.destory(id)
+    const confirmDelete = (id: any) => {
+      if (useStore().state.user.id === id) {
+        Modal.info({
+          title: '温馨提示',
+          content: '这是您当前登录的用户，不能删除'
+        })
+        return
+      }
+      confirm('确定删除该用户吗？', async () => {
+        await UserApi.destory(id)
+        initList()
       })
+    }
+
+    const initList = () => {
+      tableRef.value.init()
     }
 
     return {
       columns,
       tableRef,
-      onStatusChange,
+      userId,
+      drawVisible,
+      changeStatus,
       confirmDelete,
       toEdit,
       formatDate,
+      setUserRole,
+      toCreate,
+      initList,
     }
   }
 })

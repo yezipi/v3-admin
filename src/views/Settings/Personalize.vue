@@ -92,7 +92,7 @@ export default defineComponent({
       auto: false,
     })
 
-    const uploadSuccess = (path: string) => {
+    const uploadSuccess = (path: any) => {
       console.log(path)
       imgs.value.push(path)
     }
