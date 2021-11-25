@@ -1,27 +1,50 @@
 // 栏目接口
 import Request from '../utils/request'
 
-type ColumnBaseConfig = {
+export interface ColumnSaveConfig {
+  name: string;
+  url: string;
+  type: string;
+  new_window: boolean;
+  status: boolean;
+  sort: number;
+  keywords: string;
+  description: string;
+  content?: string;
+  column_id: undefined;
+  can_delete: boolean
+}
+
+export interface ColumnUpdateConfig {
+  name?: string,
+  url?: string,
+  sort?: number,
+  column_id?: number | undefined,
   new_windows?: number,
   keywords?: string,
   description?: string,
   content?: string,
   status?: boolean,
-}
-
-export interface SubColumnSaveConfig extends ColumnBaseConfig {
-  column_id: number,
-  name: string,
-  url: string,
-}
-
-export interface SubColumnUpdateConfig extends ColumnBaseConfig {
-  name?: string,
-  url?: string,
-  sort?: string, 
+  type?: string;
+  can_delete?: boolean
 }
 
 export default new class Column extends Request {
+
+  /**
+   * 创建一级级栏目
+   * @param { Object } data 用户名
+   * @param { String } data.name 栏目名称
+   * @param { String } data.url 栏目路径
+   * @param { Number } data.new_windows 是否新窗口打开
+   * @param { Number } data.keywords 关键词
+   * @param { Number } data.description 描述
+   * @version 2021-10-21 zzc
+   */
+  public createColumn(data: ColumnSaveConfig) {
+    const url = 'v1/admin/column/createColumn'
+    return this.post(url, { ...data, loading: true, showMsg: true })
+  }
 
   /**
    * 创建二级栏目
@@ -34,9 +57,19 @@ export default new class Column extends Request {
    * @param { Number } data.description 描述
    * @version 2021-10-21 zzc
    */
-  public createSubcolumn(data: SubColumnSaveConfig) {
+   public createSubColumn(data: ColumnSaveConfig) {
     const url = 'v1/admin/column/createSubcolumn'
     return this.post(url, { ...data, loading: true, showMsg: true })
+  }
+
+  /**
+   * 删除一级栏目
+   * @param { String } id 一级栏目id
+   * @version 2021-11-25 zzc
+   */
+   public destoryColumn(id: any) {
+    const url = `v1/admin/column/destoryColumn/${id}`
+    return this.delete(url, { loading: true, showMsg: true })
   }
 
   /**
@@ -44,9 +77,9 @@ export default new class Column extends Request {
    * @param { String } id 二级栏目id
    * @version 2021-10-21 zzc
    */
-   public destorySubColumn(id: string) {
-    const url = `v1/admin/column/createSubcolumn/${id}`
-    return this.post(url, { loading: true, showMsg: true })
+   public destorySubColumn(id: any) {
+    const url = `v1/admin/column/destorySubColumn/${id}`
+    return this.delete(url, { loading: true, showMsg: true })
   }
 
   /**
@@ -55,7 +88,7 @@ export default new class Column extends Request {
    * @param { Obejct } data 同创建的参数
    * @version 2021-10-21 zzc
    */
-   public updateSubColumn(id: number, data?: SubColumnUpdateConfig) {
+   public updateSubColumn(id: any, data?: ColumnUpdateConfig) {
     const url = `v1/admin/column/updateSubColumn/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
@@ -66,7 +99,7 @@ export default new class Column extends Request {
    * @param { Obejct } data 同创建的参数
    * @version 2021-10-21 zzc
    */
-   public updateColumn(id: number | string, data?: SubColumnUpdateConfig) {
+   public updateColumn(id: any, data?: ColumnUpdateConfig) {
     const url = `v1/admin/column/updateColumn/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
@@ -76,7 +109,7 @@ export default new class Column extends Request {
    * @param { String } id 一级栏目id
    * @version 2021-10-21 zzc
    */
-   public getColumnDetail(id: number) {
+   public getColumnDetail(id: any) {
     const url = `v1/admin/column/getColumnDetail/${id}`
     return this.get(url, { loading: true })
   }

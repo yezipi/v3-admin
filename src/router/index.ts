@@ -38,9 +38,15 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/ContentEdit/Index.vue'),
     children: [
       {
+        path: '/article/add',
+        name: 'ArticleAdd',
+        meta: { title: '发布文章' },
+        component: () => import('@/views/ContentEdit/ArticleEdit.vue'),
+      },
+      {
         path: '/article/edit',
         name: 'ArticleEdit',
-        meta: { title: '发布文章' },
+        meta: { title: '编辑文章', noMenu: true },
         component: () => import('@/views/ContentEdit/ArticleEdit.vue'),
       },
       {
@@ -90,22 +96,22 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/interact',
-    name: 'Interact',
+    path: '/comments',
+    name: 'Comments',
     meta: { title: '互动管理', noLink: true, role: [1, 2], icon: CommentOutlined },
-    component: () => import('@/views/Interact/Index.vue'),
+    component: () => import('@/views/Comments/Index.vue'),
     children: [
       {
         path: '/comment/list',
         name: 'CommentList',
         meta: { title: '评论管理', role: [1, 2], icon: 'el-icon-chat-line-round' },
-        component: () => import('@/views/Interact/CommentList.vue'),
+        component: () => import('@/views/Comments/CommentList.vue'),
       },
       {
         path: '/feedback/list',
         name: 'FeedbackList',
         meta: { title: '留言管理', role: [1, 2], icon: 'el-icon-chat-dot-square' },
-        component: () => import('@/views/Interact/FeedbackList.vue'),
+        component: () => import('@/views/Comments/FeedbackList.vue'),
       },
     ],
   },
@@ -152,8 +158,32 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/columns/list',
         name: 'ColumnList',
-        meta: { title: '栏目列表', role: [1, 2], icon: 'el-icon-s-grid' },
+        meta: { title: '栏目列表', role: [1, 2] },
         component: () => import('@/views/Column/ColumnList.vue'),
+      },
+      {
+        path: '/columns/edit',
+        name: 'ColumnEdit',
+        meta: { title: '栏目编辑', noMenu: true, role: [1, 2] },
+        component: () => import('@/views/Column/ColumnEdit.vue'),
+      },
+      {
+        path: '/columns/sub-edit',
+        name: 'SubColumnEdit',
+        meta: { title: '编辑子栏目', noMenu: true, role: [1, 2] },
+        component: () => import('@/views/Column/SubColumnEdit.vue'),
+      },
+      {
+        path: '/columns/sub-add',
+        name: 'SubColumnAdd',
+        meta: { title: '添加子栏目', noMenu: true, role: [1, 2] },
+        component: () => import('@/views/Column/SubColumnEdit.vue'),
+      },
+      {
+        path: '/columns/add',
+        name: 'ColumnAdd',
+        meta: { title: '栏目添加', role: [1, 2] },
+        component: () => import('@/views/Column/ColumnEdit.vue'),
       },
     ],
   },

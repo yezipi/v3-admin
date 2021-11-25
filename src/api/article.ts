@@ -63,7 +63,7 @@ export default new class Article extends Request {
    * @param { Number } data.sort 排序
    * @version 2021-10-20 zzc
    */
-   public create(data?: ArticleSaveConfig) {
+   public create(data: ArticleSaveConfig) {
     const url = 'v1/admin/article'
     return this.post(url, { ...data, loading: true })
   }
@@ -84,7 +84,7 @@ export default new class Article extends Request {
    * @param { Obejct } data 同创建的参数
    * @version 2021-10-20 zzc
    */
-   public update(id: string, data?: ArticleUpdateConfig) {
+   public update(id: any, data: ArticleUpdateConfig) {
     const url = `v1/admin/article/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
@@ -94,7 +94,7 @@ export default new class Article extends Request {
    * @param { String } id 文章id
    * @version 2021-10-26 zzc
    */
-   public detail(id: string) {
+   public detail(id: any) {
     const url = `v1/admin/article/${id}`
     return this.get(url, { loading: true })
   }

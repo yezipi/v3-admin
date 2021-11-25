@@ -6,7 +6,7 @@
       :rules="rules"
       :label-col="labelCol"
     >
-      <a-form-item label="封面" :wrapperCol="wrapperCol">
+      <a-form-item label="封面" style="margin-bottom: 0;">
         <yzp-upload
           v-model:value="formState.cover_thumb"
           :thumb="true"
@@ -17,42 +17,42 @@
         </yzp-upload>
       </a-form-item>
 
-      <a-form-item label="类型" name="type" :wrapperCol="wrapperCol">
+      <a-form-item label="类型" name="type">
         <a-radio-group v-model:value="formState.type">
           <a-radio value="article">文章</a-radio>
           <a-radio value="case">案例</a-radio>
         </a-radio-group>
       </a-form-item>
 
-      <a-form-item label="分类" name="subcolumn_id" :wrapperCol="wrapperCol">
+      <a-form-item label="分类" name="subcolumn_id">
         <column-select v-model:value="formState.subcolumn_id" :type="formState.type" style="width: 100%"></column-select>
       </a-form-item>
 
-      <a-form-item label="标题" name="title" :wrapperCol="wrapperCol">
+      <a-form-item label="标题" name="title">
         <a-input v-model:value="formState.title" placeholder="请输入标题" />
       </a-form-item>
 
-      <a-form-item label="关键字" name="keywords" :wrapperCol="wrapperCol">
+      <a-form-item label="关键字" name="keywords" >
         <a-textarea v-model:value="formState.keywords" rows="3" placeholder="请输入关键字，英文逗号隔开" />
       </a-form-item>
 
-      <a-form-item label="描述" name="description" :wrapperCol="wrapperCol">
+      <a-form-item label="描述" name="description">
         <a-textarea v-model:value="formState.description" rows="3" placeholder="请输入描述" />
       </a-form-item>
 
-      <a-form-item label="正文" name="content">
+      <a-form-item label="正文" name="content" class="maxwidth-100">
         <yzp-editor ref="editor" v-model="formState.content"></yzp-editor>
       </a-form-item>
 
-      <a-form-item label="来源" :wrapperCol="wrapperCol">
+      <a-form-item label="来源">
         <a-input v-model:value="formState.author_name" placeholder="请输入文章来源" />
       </a-form-item>
       
-      <a-form-item label="点赞" :wrapperCol="wrapperCol">
+      <a-form-item label="点赞">
         <a-input v-model:value="formState.like" type="number" placeholder="请输入点赞数" />
       </a-form-item>
       
-      <a-form-item label="浏览" :wrapperCol="wrapperCol">
+      <a-form-item label="浏览">
         <a-input v-model:value="formState.view" type="number" placeholder="请输入浏览数" />
       </a-form-item>
 
@@ -63,8 +63,8 @@
         <a-checkbox v-model:checked="formState.top">置顶</a-checkbox>
       </a-form-item>
       
-      <a-form-item :wrapper-col="{ offset: 2 }">
-        <a-button type="primary" @click="onSubmit">{{ articleId ? '立即保存' : '立即发布' }}</a-button>
+      <a-form-item class="btn-label">
+        <a-button type="primary" @click="onSubmit">{{ id ? '立即保存' : '立即发布' }}</a-button>
         <a-button style="margin-left: 10px" @click="resetForm">重置</a-button>
       </a-form-item>
 
@@ -73,37 +73,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRaw, onMounted } from 'vue';
-import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface';
-import { message } from 'ant-design-vue';
-import { useStore } from 'vuex';
-import { useRouter, useRoute  } from 'vue-router'
-import ArticleApi from '@/api/article';
+import { defineComponent, ref, toRaw, onMounted } from 'vue'
+import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
+import { message } from 'ant-design-vue'
+import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
+import ArticleApi from '@/api/article'
 
-interface FormState {
-  title: string,
-  subcolumn_id: string | undefined,
-  cover_thumb: string,
-  cover_origin: string,
-  keywords: string,
-  description: string,
-  content: string,
-  author_name: string,
-  like: number,
-  view: number,
-  status: boolean,
-  open_comment: boolean,
-  recommend: boolean,
-  top: boolean,
-  type: string
-}
 
 export default defineComponent({
 
   setup(props) {
     const formRef = ref();
 
-    let formState= ref<FormState>({
+    let formState= ref({
       title: '',
       subcolumn_id: undefined,
       cover_thumb: '',
@@ -119,7 +102,7 @@ export default defineComponent({
       recommend: false,
       top: false,
       type: 'article'
-    });
+    })
 
     const rules = {
       title: [
@@ -136,14 +119,14 @@ export default defineComponent({
     const { state } = useStore()
     const router = useRouter()
     const route = useRoute()
-    const articleId: any = route.query.id
+    const id = route.query.id
 
     // 获取详情
     const getDetail = async () => {
-      if (!articleId) {
+      if (!id) {
         return
       }
-      const { data } = await ArticleApi.detail(articleId)
+      const { data } = await ArticleApi.detail(id)
       data.subcolumn_id = String(data.subcolumn_id)
       formState.value = data
     }
@@ -158,24 +141,24 @@ export default defineComponent({
             ...toRaw(formState.value),
             user_id: state.user.id
           }
-          const msg = articleId ? '保存成功' : '发布成功'
-          if (!articleId) {
+          const msg = id ? '保存成功' : '发布成功'
+          if (!id) {
             await ArticleApi.create(data)
           } else {
-            await ArticleApi.update(articleId, data)
+            await ArticleApi.update(id, data)
           }
           message.success(msg, 1.5, () => {
             router.push({ name: 'ArticleList' })
           })
         })
-        .catch((error: ValidateErrorEntity<FormState>) => {
-          console.log('error', error);
-        });
-    };
+        .catch((error: ValidateErrorEntity) => {
+          console.log('error', error)
+        })
+    }
 
     const resetForm = () => {
       formRef.value.resetFields();
-    };
+    }
 
     onMounted(() => {
       getDetail()
@@ -183,14 +166,13 @@ export default defineComponent({
 
     return {
       formRef,
-      labelCol: { span: 2 },
-      wrapperCol: { span: 10 },
+      labelCol: { style: { width: '100px' } },
       formState,
       rules,
       onSubmit,
       resetForm,
-      articleId,
-    };
+      id,
+    }
   },
-});
+})
 </script>

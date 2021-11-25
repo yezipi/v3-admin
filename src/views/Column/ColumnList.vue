@@ -10,6 +10,10 @@
         <span>{{ formatDate(scope.record.createdAt, 'YYYY-MM-DD hh:mm') }}</span>
       </template>
 
+      <template #type="{ scope }">
+        <span>{{ setColumnTypeText(scope.record.type) }}</span>
+      </template>
+
       <template #sort="{ scope }">
         <a v-if="!scope.record.showSortInput" class="sort-wrap" @click="showSortInput(scope.record)">
           <span>{{ scope.record.sort }}</span>
@@ -22,22 +26,17 @@
       </template>
 
       <template #action="{ scope }">
-        <template v-if="scope.record.type === 'article' || scope.record.type === 'case'">
+        <template v-if="(scope.record.type === 'article' || scope.record.type === 'case') && !scope.record.column_id">
           <a @click="toAdd(scope.record.id)">添加</a>
           <a-divider type="vertical" />
         </template>
         <a @click="toEdit(scope.record)">编辑</a>
         <template v-if="scope.record.can_delete">
           <a-divider type="vertical" />
-          <a>删除</a>
+          <a @click="confirmDelete(scope.record)">删除</a>
         </template>
       </template>
     </yzp-table>
-    <yzp-draw v-model:visible="drawState.visible" :title="drawState.title" @confirm="onUpdate">
-      <template #content>
-        <column-edit :id="drawState.data.id"></column-edit>
-      </template>
-    </yzp-draw>
   </div>
 </template>
 
@@ -48,6 +47,7 @@ import { EditOutlined, CheckOutlined } from '@ant-design/icons-vue'
 import ColumnApi from '@/api/column'
 import confirm from '@/utils/confirm'
 import { formatDate } from '@/utils/index'
+import DICT, { ColumnType } from '@/dict/index'
 
 export default defineComponent({
   components: {
@@ -67,6 +67,7 @@ export default defineComponent({
       {
         title: '类型',
         dataIndex: 'type',
+        slots: { customRender: 'type' },
       },
       {
         title: '是否新窗口',
@@ -116,21 +117,35 @@ export default defineComponent({
     }
 
     // 删除
-    const confirmDelete = (id: string) => {
-      confirm('确定删除该分类吗？', async () => {
-        await ColumnApi.destorySubColumn(id)
+    const confirmDelete = (item: { id: number, column_id: number, name: string }) => {
+      const { id, column_id, name } = item
+      confirm(`确定删除${name}吗？`, async () => {
+        if (!column_id) {
+          await ColumnApi.destoryColumn(id)
+        } else {
+          await ColumnApi.destorySubColumn(id)
+        }
+        tableRef.value.init()
       })
     }
 
-    const toEdit = (item: { name: string, id: number }) => {
-      drawState.data = item
-      drawState.title = '编辑' + item.name
-      drawState.visible = true
-      console.log(toRaw(drawState))
+    const toEdit = (item: { id: number, column_id: number }) => {
+      const { id, column_id } = item
+      if (!column_id) {
+        router.push({
+          name: 'ColumnEdit',
+          query: { id }
+        })
+      } else {
+        router.push({
+          name: 'SubColumnEdit',
+          query: { id, column_id }
+        })
+      }
     }
 
-    const toAdd = (id: string) => {
-      // todo
+    const toAdd = (id: number) => {
+      router.push({ name: 'SubColumnAdd', query: { column_id: id } })
     }
 
     const showSortInput = (e: any) => {
@@ -142,6 +157,8 @@ export default defineComponent({
       e.showSortInput = false
       tableRef.value.init()
     }
+
+    const setColumnTypeText = (type: ColumnType) => DICT.COLUMN_TYPE[type]
 
     const onUpdate = () => {}
 
@@ -157,6 +174,7 @@ export default defineComponent({
       showSortInput,
       confirmSortChange,
       onUpdate,
+      setColumnTypeText,
     }
   }
 })

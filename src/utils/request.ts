@@ -52,9 +52,11 @@ axios.interceptors.response.use((response: AxiosResponse) => {
     return Promise.reject(res)
   }
 
-  // console.log(response)
-
   if (data && typeof data === 'string' && data.indexOf('showMsg') > -1) {
+    message.success(msg)
+  }
+
+  if (res && res.msg && params && params.showMsg) {
     message.success(msg)
   }
 

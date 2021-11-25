@@ -13,6 +13,10 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import tinymce from 'tinymce'
 import Editor from '@tinymce/tinymce-vue'
+import { message } from 'ant-design-vue'
+import { useStore } from 'vuex'
+import CommonApi from '@/api/common'
+import CONFIG from '@/config'
 
 import 'tinymce/themes/silver/theme.min.js'
 import 'tinymce/icons/default/icons'
@@ -24,7 +28,6 @@ import 'tinymce/plugins/table'
 import 'tinymce/plugins/lists'
 import 'tinymce/plugins/wordcount'
 import 'tinymce/plugins/media'
-import 'tinymce/plugins/emoticons'
 import 'tinymce/plugins/fullscreen'
 import 'tinymce/plugins/preview'
 import 'tinymce/plugins/pagebreak'
@@ -45,15 +48,14 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const val = ref('')
-
     const initEditor = {
       selector: '#tinymce',
       language_url: '/tinymce/langs/zh_CN.js',
       language: 'zh_CN',
       skin_url: '/tinymce/skins/ui/oxide',
-      height: 400,
+      height: 500,
       branding: false,
-      plugins: 'link lists image codesample code table wordcount  media table fullscreen preview pagebreak insertdatetime hr paste', // 插件
+      plugins: 'link lists image codesample code table wordcount media fullscreen preview pagebreak insertdatetime hr paste', // 插件
       toolbar: 'codesample image bold italic underline alignleft aligncenter alignright alignjustify | forecolor backcolor | fontselect | fontsizeselect | formatselect |  bullist numlist | outdent indent blockquote | removeformat| undo redo | link unlink media insertdatetime table  hr pagebreak | fullscreen preview | strikethrough', // 工具条
       font_formats: 'Arial=arial,helvetica,sans-serif; 宋体=SimSun;  微软雅黑=Microsoft Yahei; Impact=impact,chicago;', // 字体
       fontsize_formats: '11px 12px 14px 16px 18px 24px 36px 48px 64px 72px', // 文字大小
@@ -68,12 +70,13 @@ export default defineComponent({
       // 图片上传回调
       images_upload_handler: (blobInfo: any, success: any) => {
         const file = blobInfo.blob()
-        // this.uploadToServe(file).then((url: any) => {
-        //   success('/api' + url)
-        // })
-        console.log(file)
+        uploadFiles(file).then((url: any) => {
+          success(CONFIG.REQ_URL + url)
+        })
       },
     }
+
+    const Store = useStore()
 
     const onEditorInput = () => {
       emit('input', val.value)
@@ -83,32 +86,28 @@ export default defineComponent({
       val.value = content
     }
 
-    const uploadFiles = (file: any) => {
-      // const ld = this.$loading({
-      //   text: '图片上传中...',
-      //   lock: true,
-      //   spinner: 'el-icon-loading',
-      // });
-      // const formData = new FormData();
-      // formData.append('filename', `${new Date().valueOf()}.jpg`);
-      // formData.append('file', file);
-      // formData.append('dir', 'article_content');
-      // formData.append('maxWidth', '750');
-      // formData.append('watermark', 'true');
-      // const config = {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // };
-      // try {
-      //   const { result } = await this.$api.common.upload(formData, config);
-      //   this.$message.success('上传成功~');
-      //   return result.path
-      // } catch (e) {
-      //   console.log(e);
-      // } finally {
-      //   ld.close();
-      // }
+    const uploadFiles = async (file: any) => {
+      Store.commit('showLoading', '上传中...')
+      const formData = new FormData()
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+      formData.append('filename', `${new Date().valueOf()}.jpg`)
+      formData.append('file', file)
+      formData.append('dir', 'article_content')
+      formData.append('maxWidth', '750')
+      formData.append('watermark', '1')
+      try {
+        const { data } = await CommonApi.uploadImg(formData, config)
+        message.success('上传成功！')
+        return data.path
+      } catch (e) {
+        console.log(e)
+      } finally {
+        Store.commit('hideLoading')
+      }
     }
 
     onMounted(() => {

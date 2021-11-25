@@ -114,16 +114,18 @@ export default defineComponent({
     }
 
     const toCreate = () => {
-      router.push('/article/edit')
+      router.push({ name: 'ArticleAdd' })
     }
 
     const toEdit = (id: string) => {
-      router.push('/article/edit?id=' + id)
+      router.push({
+        name: 'ArticleEdit',
+        query: { id }
+      })
     }
 
-    const onSearch = (res: string) => {
-      condition.title = res
-      console.log(tableRef.value)
+    const onSearch = (res?: string) => {
+      condition.title = res as string
       tableRef.value.init(toRaw(condition))
     }
 
@@ -131,6 +133,7 @@ export default defineComponent({
     const confirmDelete = (id: string) => {
       confirm('确定删除该文章吗？', async () => {
         await ArticleApi.destory(id)
+        onSearch()
       })
     }
 
