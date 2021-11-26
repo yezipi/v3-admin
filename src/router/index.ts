@@ -119,7 +119,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/blogroll',
     name: 'BlogrollIndex',
     meta: { title: '友链管理', noLink: true, role: [1, 2], icon: LinkOutlined },
-    component: () => mport('@/views/Blogroll/BlogrollList.vue'),
+    component: () => import('@/views/Blogroll/BlogrollList.vue'),
     children: [
       {
         path: '/blogroll/list',
