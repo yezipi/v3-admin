@@ -35,7 +35,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/content-publish',
     name: 'ContentPublish',
     meta: { title: '内容发布', noLink: true, role: [1, 2], icon: EditOutlined },
-    component: () => import('@/views/ContentPublish/ArticleEdit.vue'),
+    component: () => import('@/views/ContentPublish/Index.vue'),
     children: [
       {
         path: '/article/add',
@@ -61,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/content-manage',
     name: 'ContentManage',
     meta: { title: '内容管理', noLink: true, role: [1, 2], icon: CopyOutlined },
-    component: () => import('@/views/ContentManage/ArticleList.vue'),
+    component: () => import('@/views/ContentManage/Index.vue'),
     children: [
       {
         path: '/article/list',
@@ -99,7 +99,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/comments',
     name: 'Comments',
     meta: { title: '互动管理', noLink: true, role: [1, 2], icon: CommentOutlined },
-    component: () => import('@/views/Comments/CommentList.vue'),
+    component: () => import('@/views/Comments/Index.vue'),
     children: [
       {
         path: '/comment/list',
@@ -119,7 +119,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/blogroll',
     name: 'BlogrollIndex',
     meta: { title: '友链管理', noLink: true, role: [1, 2], icon: LinkOutlined },
-    component: () => import('@/views/Blogroll/BlogrollList.vue'),
+    component: () => import('@/views/Blogroll/Index.vue'),
     children: [
       {
         path: '/blogroll/list',
@@ -133,7 +133,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/albums',
     name: 'AlbumIndex',
     meta: { title: '相册管理', noLink: true, role: [1, 2], icon: PictureOutlined },
-    component: () => import('@/views/Album/AlbumList.vue'),
+    component: () => import('@/views/Album/Index.vue'),
     children: [
       {
         path: '/albums/list',
@@ -153,7 +153,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/columns',
     name: 'ColumnIndex',
     meta: { title: '栏目管理', noLink: true, role: [1, 2], icon: AppstoreOutlined },
-    component: () => import('@/views/Column/ColumnList.vue'),
+    component: () => import('@/views/Column/Index.vue'),
     children: [
       {
         path: '/columns/list',
@@ -191,7 +191,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/users',
     name: 'UserIndex',
     meta: { title: '用户管理', noLink: true, role: [1, 2], icon: UserOutlined },
-    component: () => {},
+    component: () => import('@/views/User/Index.vue'),
     children: [
       {
         path: '/users/list',
@@ -205,7 +205,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/settings',
     name: 'SettingsIndex',
     meta: { title: '系统设置', noLink: true, role: [1, 2], icon: SettingOutlined },
-    component: () => import('@/views/Settings/Base.vue'),
+    component: () => import('@/views/Settings/Index.vue'),
     children: [
       {
         path: '/settings/base',
