@@ -1,35 +1,37 @@
 <template>
   <div class="yzp-app">
-    
-    <YzpAside
-      v-if="isFullPage"
-      :menus="menus"
-      :openName="openName"
-      :selectName="selectName"
-      ref="aside"
-    />
+    <a-config-provider :locale="locale">
+      <yzp-aside
+        v-if="isFullPage"
+        :menus="menus"
+        :openName="openName"
+        :selectName="selectName"
+        ref="aside"
+      >
+      </yzp-aside>
 
-    <div v-if="isFullPage" class="yzp-main">
-      <YzpHeader :breadcrumbs="breadcrumbs" @collapseMenu="collapseMenu" />
+      <div v-if="isFullPage" class="yzp-main">
+        <yzp-header :breadcrumbs="breadcrumbs" @collapseMenu="collapseMenu" ></yzp-header>
 
-      <section class="yzp-section">
-        <div class="yzp-content">
-          <router-view />
-        </div>
-      </section>
-    </div>
+        <section class="yzp-section">
+          <div class="yzp-content">
+            <router-view />
+          </div>
+        </section>
+      </div>
 
-    <!--未登录显示-->
-    <div v-else class="yzp-main no-margin">
-      <router-view />
-    </div>
-
+      <!--未登录显示-->
+      <div v-else class="yzp-main no-margin">
+        <router-view />
+      </div>
+    </a-config-provider>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, watch, toRefs, reactive } from 'vue'
 import { useRouter, useRoute  } from 'vue-router'
+import zhCN from 'ant-design-vue/es/locale/zh_CN'
 
 export default defineComponent({
   setup() {
@@ -84,6 +86,7 @@ export default defineComponent({
       menus,
       isFullPage,
       collapseMenu,
+      locale: zhCN
     }
   }
 })
