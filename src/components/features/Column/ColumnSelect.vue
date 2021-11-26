@@ -56,7 +56,8 @@
     ref="select"
     v-model:value="id"
     style="width: 100%;"
-    placeholder="请选择"
+    allowClear
+    placeholder="请选择分类"
     @change="onChange"
   >
     <a-select-option

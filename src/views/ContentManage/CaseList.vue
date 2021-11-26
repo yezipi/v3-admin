@@ -1,3 +1,3 @@
 <template>
-  <div></div>
+  <article-table type="case"></article-table>
 </template>

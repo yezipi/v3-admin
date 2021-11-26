@@ -53,9 +53,17 @@ export default defineComponent({
       type: Number,
       default: 20,
     },
-    childrenColumnName: String
+    childrenColumnName: String,
+
+    // 额外条件
+    condition: {
+      type: Object,
+      default: () => {}
+    }
   },
-  setup({ url, scrollWidth, columns, size, childrenColumnName }, { emit, slots }) {
+  setup(props, { emit, slots }) {
+
+    const { url, scrollWidth, columns, size, childrenColumnName } = props
 
     const tableConfig = reactive({
       dataSource: [] as any,
@@ -81,7 +89,7 @@ export default defineComponent({
     }
 
     // 获取列表
-    const init = async (condition?: object) => {
+    const init = async (filters?: object) => {
       if (!url) {
         return
       }
@@ -89,7 +97,7 @@ export default defineComponent({
         const str = url.split('.')
         const obj: AnyKey = api[str[0] as keyof ApiConfig] // class对象
         const fn = str[1] // 对象下面的方法
-        const { data } = await obj[fn]({ size, page: page.value, ...condition })
+        const { data } = await obj[fn]({ size, page: page.value, ...props.condition, ...filters })
         const { rows, count } = data
         // 匹配字典
         tableConfig.dataSource = rows.map((e: any[]) => {
