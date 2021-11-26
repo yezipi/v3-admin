@@ -35,7 +35,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/content-edit',
     name: 'ContentEdit',
     meta: { title: '内容发布', noLink: true, role: [1, 2], icon: EditOutlined },
-    component: () => import('@/views/ContentEdit/Index.vue'),
+    component: () => {},
     children: [
       {
         path: '/article/add',
@@ -61,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/content-list',
     name: 'ContentList',
     meta: { title: '内容管理', noLink: true, role: [1, 2], icon: CopyOutlined },
-    component: () => import('@/views/ContentList/Index.vue'),
+    component: () => {},
     children: [
       {
         path: '/article/list',
@@ -99,7 +99,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/comments',
     name: 'Comments',
     meta: { title: '互动管理', noLink: true, role: [1, 2], icon: CommentOutlined },
-    component: () => import('@/views/Comments/Index.vue'),
+    component: () => {},
     children: [
       {
         path: '/comment/list',
@@ -119,7 +119,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/blogroll',
     name: 'BlogrollIndex',
     meta: { title: '友链管理', noLink: true, role: [1, 2], icon: LinkOutlined },
-    component: () => import('@/views/Blogroll/Index.vue'),
+    component: () => {},
     children: [
       {
         path: '/blogroll/list',
@@ -133,7 +133,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/albums',
     name: 'AlbumIndex',
     meta: { title: '相册管理', noLink: true, role: [1, 2], icon: PictureOutlined },
-    component: () => import('@/views/Album/Index.vue'),
+    component: () => {},
     children: [
       {
         path: '/albums/list',
@@ -153,7 +153,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/columns',
     name: 'ColumnIndex',
     meta: { title: '栏目管理', noLink: true, role: [1, 2], icon: AppstoreOutlined },
-    component: () => import('@/views/Column/Index.vue'),
+    component: () => {},
     children: [
       {
         path: '/columns/list',
