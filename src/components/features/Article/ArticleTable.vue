@@ -25,8 +25,18 @@
         </a-button>
       </template>
 
-      <template #title="{ scope }">
-        <a>{{ scope.record }}</a>
+      <template #articleTitle="{ scope }">
+        <a>{{ scope.record.title }}</a>
+      </template>
+
+      <template #subcolumn="{ scope }">
+        <span v-if="scope.record.subcolumn">{{ scope.record.subcolumn.name }}</span>
+        <span v-else style="color: red">分类已删除</span>
+      </template>
+
+      <template #tags="{ scope }">
+        <span v-if="scope.record.tags">{{ scope.record.subcolumn.tags }}</span>
+        <span v-else>-</span>
       </template>
 
       <template #status="{ scope }">
@@ -47,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRaw, watch } from 'vue'
+import { defineComponent, reactive, ref, toRaw } from 'vue'
 import { useRouter } from 'vue-router'
 import { EditOutlined } from '@ant-design/icons-vue'
 import { formatDate } from '@/utils/index'
@@ -68,7 +78,7 @@ export default defineComponent({
         title: '标题',
         dataIndex: 'title',
         width: 400,
-        slots: { customRender: 'title' },
+        slots: { customRender: 'articleTitle' },
       },
       {
         title: '评论',
@@ -86,9 +96,16 @@ export default defineComponent({
         width: 100,
       },
       {
+        title: '分类',
+        dataIndex: 'subcolumn',
+        width: 100,
+        slots: { customRender: 'subcolumn' },
+      },
+      {
         title: '标签',
         dataIndex: 'tags',
         width: 100,
+        slots: { customRender: 'tags' },
       },
       {
         title: '状态',
