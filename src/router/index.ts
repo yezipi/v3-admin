@@ -32,66 +32,66 @@ const routes: Array<RouteRecordRaw> = [
     meta: { noAuth: true, title: '登录', noMenu: true },
   },
   {
-    path: '/content-edit',
-    name: 'ContentEdit',
+    path: '/content-publish',
+    name: 'ContentPublish',
     meta: { title: '内容发布', noLink: true, role: [1, 2], icon: EditOutlined },
-    component: () => {},
+    component: () => import('@/views/ContentPublish/ArticleEdit.vue'),
     children: [
       {
         path: '/article/add',
         name: 'ArticleAdd',
         meta: { title: '发布文章' },
-        component: () => import('@/views/ContentEdit/ArticleEdit.vue'),
+        component: () => import('@/views/ContentPublish/ArticleEdit.vue'),
       },
       {
         path: '/article/edit',
         name: 'ArticleEdit',
         meta: { title: '编辑文章', noMenu: true },
-        component: () => import('@/views/ContentEdit/ArticleEdit.vue'),
+        component: () => import('@/views/ContentPublish/ArticleEdit.vue'),
       },
       {
         path: '/mood/edit',
         name: 'MoodEdit',
         meta: { title: '微语发布' },
-        component: () => import('@/views/ContentEdit/MoodEdit.vue'),
+        component: () => import('@/views/ContentPublish/MoodEdit.vue'),
       },
     ],
   },
   {
-    path: '/content-list',
-    name: 'ContentList',
+    path: '/content-manage',
+    name: 'ContentManage',
     meta: { title: '内容管理', noLink: true, role: [1, 2], icon: CopyOutlined },
-    component: () => {},
+    component: () => import('@/views/ContentManage/ArticleList.vue'),
     children: [
       {
         path: '/article/list',
         name: 'ArticleList',
         meta: { title: '文章管理', icon: 'el-icon-notebook-1' },
-        component: () => import('@/views/ContentList/ArticleList.vue'),
+        component: () => import('@/views/ContentManage/ArticleList.vue'),
       },
       {
         path: '/case/list',
         name: 'CaseList',
         meta: { title: '案例管理', icon: 'el-icon-ice-cream-round' },
-        component: () => import('@/views/ContentList/CaseList.vue'),
+        component: () => import('@/views/ContentManage/CaseList.vue'),
       },
       {
         path: '/mood/list',
         name: 'MoodList',
         meta: { title: '微语管理', icon: 'el-icon-chat-dot-round' },
-        component: () => import('@/views/ContentList/MoodList.vue'),
+        component: () => import('@/views/ContentManage/MoodList.vue'),
       },
       {
         path: '/log/list',
         name: 'LogList',
         meta: { title: '日志管理', icon: 'el-icon-notebook-2' },
-        component: () => import('@/views/ContentList/LogList.vue'),
+        component: () => import('@/views/ContentManage/LogList.vue'),
       },
       {
         path: '/tag/list',
         name: 'TagList',
         meta: { title: '标签管理', icon: 'el-icon-collection-tag' },
-        component: () => import('@/views/ContentList/TagList.vue'),
+        component: () => import('@/views/ContentManage/TagList.vue'),
       },
     ],
   },
@@ -99,7 +99,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/comments',
     name: 'Comments',
     meta: { title: '互动管理', noLink: true, role: [1, 2], icon: CommentOutlined },
-    component: () => {},
+    component: () => import('@/views/Comments/CommentList.vue'),
     children: [
       {
         path: '/comment/list',
@@ -119,7 +119,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/blogroll',
     name: 'BlogrollIndex',
     meta: { title: '友链管理', noLink: true, role: [1, 2], icon: LinkOutlined },
-    component: () => {},
+    component: () => mport('@/views/Blogroll/BlogrollList.vue'),
     children: [
       {
         path: '/blogroll/list',
@@ -133,7 +133,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/albums',
     name: 'AlbumIndex',
     meta: { title: '相册管理', noLink: true, role: [1, 2], icon: PictureOutlined },
-    component: () => {},
+    component: () => import('@/views/Album/AlbumList.vue'),
     children: [
       {
         path: '/albums/list',
@@ -153,7 +153,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/columns',
     name: 'ColumnIndex',
     meta: { title: '栏目管理', noLink: true, role: [1, 2], icon: AppstoreOutlined },
-    component: () => {},
+    component: () => import('@/views/Column/ColumnList.vue'),
     children: [
       {
         path: '/columns/list',
@@ -191,12 +191,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/users',
     name: 'UserIndex',
     meta: { title: '用户管理', noLink: true, role: [1, 2], icon: UserOutlined },
-    component: () => import('@/views/User/Index.vue'),
+    component: () => {},
     children: [
       {
         path: '/users/list',
         name: 'UserList',
-        meta: { title: '用户列表', noLink: true, role: [1, 2], icon: 'el-icon-s-custom' },
+        meta: { title: '用户列表', noLink: true, icon: 'el-icon-s-custom' },
         component: () => import('@/views/User/UserList.vue'),
       },
     ],
@@ -205,37 +205,37 @@ const routes: Array<RouteRecordRaw> = [
     path: '/settings',
     name: 'SettingsIndex',
     meta: { title: '系统设置', noLink: true, role: [1, 2], icon: SettingOutlined },
-    component: () => import('@/views/Settings/Index.vue'),
+    component: () => import('@/views/Settings/Base.vue'),
     children: [
+      {
+        path: '/settings/base',
+        name: 'BaseSettings',
+        meta: { title: '基本设置', icon: 'el-icon-s-tools' },
+        component: () => import('@/views/Settings/Base.vue'),
+      },
       {
         path: '/settings/ad',
         name: 'AdSettings',
-        meta: { title: '广告设置', role: [1, 2], icon: 'el-icon-s-flag' },
+        meta: { title: '广告设置', icon: 'el-icon-s-flag' },
         component: () => import('@/views/Settings/Ad.vue'),
       },
       {
         path: '/settings/mail',
         name: 'MailSettings',
-        meta: { title: '邮件设置', role: [1, 2], icon: 'el-icon-message' },
+        meta: { title: '邮件设置', icon: 'el-icon-message' },
         component: () => import('@/views/Settings/Mail.vue'),
       },
       {
         path: '/settings/security',
         name: 'SecuritySettings',
-        meta: { title: '安全设置', role: [1, 2], icon: 'el-icon-message' },
+        meta: { title: '安全设置', icon: 'el-icon-message' },
         component: () => import('@/views/Settings/Security.vue'),
       },
       {
         path: '/settings/custom',
         name: 'CustomSettings',
-        meta: { title: '个性化设置', role: [1, 2], icon: 'el-icon-s-open' },
+        meta: { title: '个性化设置', icon: 'el-icon-s-open' },
         component: () => import('@/views/Settings/Personalize.vue'),
-      },
-      {
-        path: '/settings/base',
-        name: 'BaseSettings',
-        meta: { title: '基本设置', role: [1, 2], icon: 'el-icon-s-tools' },
-        component: () => import('@/views/Settings/Base.vue'),
       },
     ],
   },
