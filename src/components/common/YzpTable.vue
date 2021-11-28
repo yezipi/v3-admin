@@ -24,6 +24,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs, ref, nextTick } from 'vue'
 import { message } from 'ant-design-vue'
+import { formatDate } from '@/utils/index'
 import api, { ApiConfig } from '@/api/index'
 
 interface AnyKey {
@@ -81,8 +82,13 @@ export default defineComponent({
       columns.forEach((i: any) => {
         const key = i.dataIndex
         const item = e[key]
+        // 匹配字典
         if (i.dict) {
           e[key] = i.dict[item]
+        }
+        // 格式化时间，如果传入的是布尔值，则默认YYYY-MM-DD，否则就传入时间格式
+        if (i.format) {
+          e[key] = formatDate(e[key], typeof i.format === 'boolean' ? 'YYYY-MM-DD' : i.format)
         }
       })
       return e
@@ -122,19 +128,30 @@ export default defineComponent({
         tableConfig.total = count
         emit('load', rows)
       } catch (e: any) {
-        const noFnMsg = url + '方法不存在，请检查'
-        const errMsg = e.toString().indexOf('fn') > -1 ? noFnMsg : e.toString()
-        message.error(errMsg)
-        console.log(e)
-        throw { errMsg }
+        if (!e.msg) {
+          const noFnMsg = url + '方法不存在，请检查'
+          const errMsg = e.toString().indexOf('fn') > -1 ? noFnMsg : e.toString()
+          message.error(errMsg)
+          console.log(e)
+          throw { errMsg }
+        }
       } finally {
+        loadEnd.value = true
         nextTick(() => {
-          if (!loadEnd.value) {
+          if (loadEnd.value) {
             const filterEle: any = document.querySelector('#list-filter') // 列表的筛选统一加这个id
+            const sectionEle: any = document.querySelector('.yzp-section')
+            const otherHeight = 230
             const filterHeight = filterEle ? (filterEle.offsetHeight) : 0
-            tableHeight.value = tableConfig.total >= size ? (screen.height - 350 - filterHeight) : undefined
+            const sectionHeight = sectionEle.offsetHeight - 180
+            const maxHeight = innerHeight - otherHeight - filterHeight
+            const isOuter = sectionHeight > maxHeight
+            tableHeight.value = isOuter ? maxHeight : undefined
+            if (tableConfig.total < size && !isOuter) {
+              tableHeight.value = undefined
+            }
+            console.log(sectionHeight, maxHeight)
             tableWidth.value = scrollWidth
-            loadEnd.value = true
           }
         })
       }
