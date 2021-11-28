@@ -27,8 +27,8 @@
 
       <template #cover_thumb="{ scope }">
         <div class="article-cover">
-          <div class="cover-bg" :style="{ background: `url(${scope.record.cover_thumb || noPicUrl}) center` }"></div>
-          <img class="cover-default" :src="noPicUrl" />
+          <div class="cover-bg" :style="{ background: `url(${scope.record.cover_thumb || defaultPic}) center` }"></div>
+          <img class="cover-default" :src="defaultPic" />
         </div>
       </template>
 
@@ -164,7 +164,7 @@ export default defineComponent({
       title: undefined as any,
       type: props.type
     })
-    const noPicUrl = '/src/assets/img/nopic.jpg'
+    const defaultPic = '/src/assets/img/nopic.jpg'
     const tagsColors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
 
     // 隐藏显示
@@ -208,7 +208,7 @@ export default defineComponent({
       columns,
       condition,
       tableRef,
-      noPicUrl,
+      defaultPic,
       tagsColors,
       updateArticle,
       confirmDelete,

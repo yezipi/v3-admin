@@ -24,7 +24,14 @@
           <EditOutlined />
         </a>
         <div v-else class="sort-wrap">
-          <a-input v-model:value="scope.record.sort" class="sort-input" size="small" type="number" placeholder="请输入数字" @pressEnter="confirmSortChange(scope.record)" />
+          <a-input
+            v-model:value="scope.record.sort"
+            class="sort-input"
+            size="small"
+            type="number"
+            placeholder="请输入数字"
+            @pressEnter="confirmSortChange(scope.record)"
+          />
           <a @click="confirmSortChange(scope.record)"><CheckOutlined /></a>
         </div>
       </template>
@@ -48,10 +55,11 @@
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { EditOutlined, CheckOutlined } from '@ant-design/icons-vue'
-import ColumnApi from '@/api/column'
-import confirm from '@/utils/confirm'
+import { message } from 'ant-design-vue'
 import { formatDate } from '@/utils/index'
 import DICT, { ColumnType } from '@/dict/index'
+import ColumnApi from '@/api/column'
+import confirm from '@/utils/confirm'
 
 export default defineComponent({
   components: {
@@ -117,7 +125,7 @@ export default defineComponent({
     // 删除
     const confirmDelete = (item: { id: number, column_id: number, name: string }) => {
       const { id, column_id, name } = item
-      confirm(`确定删除${name}吗？`, async () => {
+      confirm(`确定删除【${name}】吗？`, async () => {
         if (!column_id) {
           await ColumnApi.destoryColumn(id)
         } else {
@@ -151,6 +159,10 @@ export default defineComponent({
     }
 
     const confirmSortChange = async (e: any) => {
+      if (typeof e.sort !== 'number') {
+        message.error('请输入数字')
+        return
+      }
       await ColumnApi.updateColumn(e.id, { sort: e.sort })
       e.showSortInput = false
       tableRef.value.init()

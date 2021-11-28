@@ -27,6 +27,18 @@ export default defineConfig({
   //   }
   // },
   server: {
-    host: '0.0.0.0'
-  }
+    host: '0.0.0.0',
+    proxy: {
+      '^/api/.*': {
+        target: 'http://localhost:7001',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
+      '^/public/.*': {
+        target: 'http://localhost:7001/public',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/public/, '')
+      },
+    },
+  },
 })

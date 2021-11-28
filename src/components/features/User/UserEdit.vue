@@ -125,29 +125,34 @@ export default defineComponent({
         .validate()
         .then(async () => {
           btnLoading.value = true
-          if (!props.id) {
-            await UserApi.create(ruleForm.value)
-          } else {
-            await UserApi.update(props.id as any, ruleForm.value)
-            const { password } = ruleForm.value
-            if (password && props.id === user.value.id) {
-              Modal.warning({
-                title: '温馨提示',
-                content: '您已更改当前登录账号密码，请重新登录',
-                centered: true,
-                onOk: () => {
-                  Store.dispatch('clearUser')
-                  useRouter().replace({ name: 'Login' })
-                }
-              })
+          try {
+            if (!props.id) {
+              await UserApi.create(ruleForm.value)
+            } else {
+              await UserApi.update(props.id as any, ruleForm.value)
+              const { password } = ruleForm.value
+              if (password && props.id === user.value.id) {
+                Modal.warning({
+                  title: '温馨提示',
+                  content: '您已更改当前登录账号密码，请重新登录',
+                  centered: true,
+                  onOk: () => {
+                    Store.dispatch('clearUser')
+                    useRouter().replace({ name: 'Login' })
+                  }
+                })
+              }
+              if (!password && props.id === user.value.id) {
+                Store.commit('updateUser', ruleForm.value)
+              }
             }
-            if (!password && props.id === user.value.id) {
-              Store.commit('updateUser', ruleForm.value)
-            }
+            closeDraw()
+            emit('finish', true)
+          } catch (e) {
+            console.log(e)
+          } finally {
+            btnLoading.value = false
           }
-          closeDraw()
-          emit('finish', true)
-          btnLoading.value = false
         })
     }
 

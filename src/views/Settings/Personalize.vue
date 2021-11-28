@@ -23,7 +23,7 @@
           <li v-if="imgs.length < 5">
             <yzp-upload
               class="list-upload-btn"
-              :autoWidth="true"
+              :with-parent-with="true"
               :thumb="false"
               :clip="false"
               :width="1366"

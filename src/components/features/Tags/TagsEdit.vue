@@ -87,14 +87,19 @@ export default defineComponent({
         .validate()
         .then(async () => {
           btnLoading.value = true
-          if (!props.id) {
-            await TagsApi.create(ruleForm.value)
-          } else {
-            await TagsApi.update(props.id as any, ruleForm.value)
+          try {
+            if (!props.id) {
+              await TagsApi.create(ruleForm.value)
+            } else {
+              await TagsApi.update(props.id as any, ruleForm.value)
+            }
+            closeDraw()
+            emit('finish', true)
+          } catch(e) {
+            console.log(e)
+          } finally {
+            btnLoading.value = false
           }
-          closeDraw()
-          emit('finish', true)
-          btnLoading.value = false
         })
     }
 

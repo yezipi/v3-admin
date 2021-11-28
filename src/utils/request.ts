@@ -9,11 +9,12 @@ import { message } from 'ant-design-vue';
 // }
 
 axios.defaults.timeout = 30000
-axios.defaults.baseURL = config.REQ_URL
+axios.defaults.baseURL = '/api/admin/'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
-  config.headers.common.Authorization = store.state.token;
+  const headers: any = config.headers
+  headers.common.Authorization = store.state.token;
   const { params, data } = config
   if (config.method) {
     const paramsLoading = params && params.loading

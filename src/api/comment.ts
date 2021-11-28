@@ -36,7 +36,7 @@ export default new class Comment extends Request {
    * @version 2021-11-05 zzc
    */
    public destory(id: string) {
-    const url = `v1/admin/comment/${id}`
+    const url = `v1/comment/${id}`
     return this.delete(url, { loading: true, showMsg: true })
   }
 
@@ -47,7 +47,7 @@ export default new class Comment extends Request {
    * @version 2021-11-05 zzc
    */
    public update(id: string, data?: { content: string }) {
-    const url = `v1/admin/comment/${id}`
+    const url = `v1/comment/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
 
@@ -57,7 +57,7 @@ export default new class Comment extends Request {
    * @version 2021-11-05 zzc
    */
    public detail(id: string) {
-    const url = `v1/admin/comment/${id}`
+    const url = `v1/comment/${id}`
     return this.get(url, { loading: true })
   }
 
@@ -69,7 +69,7 @@ export default new class Comment extends Request {
    * @version 2021-11-05 zzc
    */
    public getList(params?: CommentListConfig) {
-    const url = 'v1/admin/comment'
+    const url = 'v1/comment'
     return this.get(url, { ...params, loading: true })
   }
 }

@@ -59,7 +59,7 @@ export default new class Settings extends Request {
    * @version 2021-10-21 zzc
    */
    public getBaseSettings() {
-    const url = 'v1/admin/settings/getBaseSettings'
+    const url = 'v1/settings/getBaseSettings'
     return this.get(url, { loading: true })
   }
 
@@ -68,7 +68,7 @@ export default new class Settings extends Request {
    * @version 2021-10-21 zzc
    */
    public getMailSettings() {
-    const url = 'v1/admin/settings/getMailSettings'
+    const url = 'v1/settings/getMailSettings'
     return this.get(url, { loading: true })
   }
 
@@ -77,7 +77,7 @@ export default new class Settings extends Request {
    * @version 2021-10-30 zzc
    */
    public getAdSettings() {
-    const url = 'v1/admin/settings/getAdSettings'
+    const url = 'v1/settings/getAdSettings'
     return this.get(url, { loading: true })
   }
 
@@ -86,7 +86,7 @@ export default new class Settings extends Request {
    * @version 2021-10-30 zzc
    */
    public getPersonalizeSettings() {
-    const url = 'v1/admin/settings/getPersonalizeSettings'
+    const url = 'v1/settings/getPersonalizeSettings'
     return this.get(url, { loading: true })
   }
 
@@ -95,7 +95,7 @@ export default new class Settings extends Request {
    * @version 2021-10-30 zzc
    */
    public getSecuritySettings() {
-    const url = 'v1/admin/settings/getSecuritySettings'
+    const url = 'v1/settings/getSecuritySettings'
     return this.get(url, { loading: true })
   }
 
@@ -122,7 +122,7 @@ export default new class Settings extends Request {
    * @version 2021-10-29 zzc
    */
    public saveBaseSettings(data: BaseSettingsConfig) {
-    const url = 'v1/admin/settings/saveBaseSettings'
+    const url = 'v1/settings/saveBaseSettings'
     return this.put(url, { loading: true, ...data })
   }
 
@@ -141,7 +141,7 @@ export default new class Settings extends Request {
    * @version 2021-10-29 zzc
    */
    public saveMailSettings(data: MailSettingsConfig) {
-    const url = 'v1/admin/settings/saveMailSettings'
+    const url = 'v1/settings/saveMailSettings'
     return this.put(url, { loading: true, ...data })
   }
 
@@ -155,7 +155,7 @@ export default new class Settings extends Request {
    * @version 2021-10-30 zzc
    */
    public saveAdSettings(data: AdSettingsConfig) {
-    const url = 'v1/admin/settings/saveAdSettings'
+    const url = 'v1/settings/saveAdSettings'
     return this.put(url, { loading: true, ...data })
   }
 
@@ -170,7 +170,7 @@ export default new class Settings extends Request {
    * @version 2021-10-30 zzc
    */
    public savePersonalizeSettings(data: PersonalizeSettingsConfig) {
-    const url = 'v1/admin/settings/savePersonalizeSettings'
+    const url = 'v1/settings/savePersonalizeSettings'
     return this.put(url, { loading: true, ...data })
   }
 
@@ -181,7 +181,7 @@ export default new class Settings extends Request {
    * @version 2021-10-30 zzc
    */
    public saveSecuritySettings(data: SecuritySettingsConfig) {
-    const url = 'v1/admin/settings/saveSecuritySettings'
+    const url = 'v1/settings/saveSecuritySettings'
     return this.put(url, { loading: true, ...data })
   }
 }

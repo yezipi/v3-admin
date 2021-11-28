@@ -16,7 +16,6 @@ import Editor from '@tinymce/tinymce-vue'
 import { message } from 'ant-design-vue'
 import { useStore } from 'vuex'
 import CommonApi from '@/api/common'
-import CONFIG from '@/config'
 
 import 'tinymce/themes/silver/theme.min.js'
 import 'tinymce/icons/default/icons'
@@ -71,7 +70,7 @@ export default defineComponent({
       images_upload_handler: (blobInfo: any, success: any) => {
         const file = blobInfo.blob()
         uploadFiles(file).then((url: any) => {
-          success(CONFIG.REQ_URL + url)
+          success(url)
         })
       },
     }

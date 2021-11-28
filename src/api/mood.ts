@@ -15,7 +15,7 @@ export default new class Mood extends Request {
    * @version 2021-11-05 zzc
    */
    public create(data?: { content: string }) {
-    const url = 'v1/admin/mood'
+    const url = 'v1/mood'
     return this.post(url, { ...data, loading: true })
   }
 
@@ -26,7 +26,7 @@ export default new class Mood extends Request {
    * @version 2021-11-05 zzc
    */
    public destory(id: string) {
-    const url = `v1/admin/mood/${id}`
+    const url = `v1/mood/${id}`
     return this.delete(url, { loading: true, showMsg: true })
   }
 
@@ -37,7 +37,7 @@ export default new class Mood extends Request {
    * @version 2021-11-05 zzc
    */
    public update(id: string, data?: { content: string }) {
-    const url = `v1/admin/mood/${id}`
+    const url = `v1/mood/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
 
@@ -46,8 +46,8 @@ export default new class Mood extends Request {
    * @param { String } id 文章id
    * @version 2021-11-05 zzc
    */
-   public detail(id: string) {
-    const url = `v1/admin/mood/${id}`
+   public getDetail(id: string) {
+    const url = `v1/mood/${id}`
     return this.get(url, { loading: true })
   }
 
@@ -59,7 +59,7 @@ export default new class Mood extends Request {
    * @version 2021-11-05 zzc
    */
    public getList(params?: MoodListConfig) {
-    const url = 'v1/admin/mood'
+    const url = 'v1/mood'
     return this.get(url, { ...params, loading: true })
   }
 }

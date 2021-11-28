@@ -9,20 +9,25 @@
     >
 
       <a-form-item label="logo" :wrapperCol="wrapperCol">
-        <yzp-upload
-          v-model:value="formState.web_logo"
-          :clip="true"
-          :width="200"
-          filename="author_avatar"
-        >
-        </yzp-upload>
+        <div style="height: 58px;width:158px">
+          <yzp-upload
+            v-model:value="formState.web_logo"
+            :clip="true"
+            :width="150"
+            :height="58"
+            :with-parent-with="true"
+            filename="author_avatar"
+          >
+          </yzp-upload>
+        </div>
       </a-form-item>
 
       <a-form-item label="头像" :wrapperCol="wrapperCol">
         <yzp-upload
           v-model:value="formState.web_avatar"
           :clip="true"
-          :width="200"
+          :width="100"
+          :height="100"
           filename="logo"
         >
         </yzp-upload>

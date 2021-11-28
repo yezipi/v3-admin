@@ -83,6 +83,7 @@ export default defineComponent({
     padding-right: 24px;
     height: calc(100vh - 170px);
     overflow-y: auto;
+    position: relative;
   }
   .draw-footer {
     margin-top: 24px;

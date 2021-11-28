@@ -31,7 +31,6 @@
  * @param { String } type 例如YYYY-MM-DD
  * @version 2021-10-29 zzc
  */
-
 const formatDate = (date: string, type?: string) => {
   const time = new Date(date)
   const week = ['日', '一', '二', '三', '四', '五', '六']
@@ -58,7 +57,70 @@ const formatDate = (date: string, type?: string) => {
   return str
 }
 
+/**
+ * file文件转blob
+ * @param { File } file 文件对象
+ * @version 2021-11-28 zzc
+ */
+const dataURItoBlob = (file: File) => {
+  return new Promise((resolve: any) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = ({ target }: any) => {
+      const base64 = target.result
+      const byteString = atob(base64.split(',')[1]);
+      const mimeString = base64.split(',')[0].split(':')[1].split(';')[0];
+      const buffs = new ArrayBuffer(byteString.length);
+      const u8a = new Uint8Array(buffs);
+      for (let i = 0; i < byteString.length; i++) {
+        u8a[i] = byteString.charCodeAt(i);
+      }
+      const blob = new Blob([buffs], {type: mimeString});
+      resolve(URL.createObjectURL(blob))
+    }
+  })
+}
+
+/**
+ * 复制文本内容
+ * @param { String } text 文本内容
+ * @version 2021-11-18 zzc
+ */
+ const copyText = (text: string | number) => {
+  const inputEle: any = document.createElement('input')
+  inputEle.id = 'copyId'
+  inputEle.value = text
+  inputEle.type = 'text'
+  inputEle.style="opacity: 0;position: fixed;left:-100px;bottom: -100px"
+  document.body.appendChild(inputEle)
+  inputEle.select()
+  document.execCommand('copy')
+  alert('复制成功')
+  document.querySelector('#copyId')?.remove()
+}
+
+/**
+ * 防抖函数：高频事件触发，但在n秒内只会执行一次
+ * @param { Function } fn 回调函数
+ * @param { Number } delay 延迟时间
+ * @param { Boolean } immediate 是否立即执行
+ * @description 如果短时间内大量触发同一事件，只会执行一次函数
+ * @version 2021-11-28 zzc
+ */
+ const debounce = function (fn: Function, delay: number = 300) {
+  let timer: any = null
+  return function (this: any, ...args: any) {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => {
+      fn.apply(this, args)
+    }, delay)
+  }
+}
+
 export {
   db,
-  formatDate
+  dataURItoBlob,
+  formatDate,
+  copyText,
+  debounce
 }

@@ -12,7 +12,7 @@ class AliyunUpload {
    */
   async start(file: any, fileName?: string) {
     try {
-      const { data } = await common.OssPolicy('competition')
+      const { data }: any = await common.ossPolicy('competition')
       console.log(data)
       const formData: any = new FormData()
       const newFileName = fileName || new Date().getTime()
@@ -38,12 +38,12 @@ class AliyunUpload {
   // 上传到oss
   async upload(url: string, formData: string) {
     try {
-      const res = await common.OssUpload(url, formData)
+      const res = await common.ossUpload(url, formData)
       if (res.status !== 200) {
         throw { message: '图片上传失败~' }
       }
     } catch (e) {
-      alert(e.toString())
+      console.log(e)
     }
   }
 }

@@ -10,12 +10,11 @@
         <div style="width:150px;height:71px">
           <yzp-upload
             v-model:value="formState.cover_thumb"
-            :thumb="true"
             :clip="true"
             :width="525"
             :height="250"
             :withParentWith="true"
-            dir="article_cover"
+            dir="cover"
           >
           </yzp-upload>
         </div>

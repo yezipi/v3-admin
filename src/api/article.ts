@@ -35,6 +35,8 @@ export interface ArticleListConfig {
   page?: number,
   size?: number,
   title?: string,
+  type?: string,
+  loading?: boolean,
 }
 
 export default new class Article extends Request {
@@ -64,7 +66,7 @@ export default new class Article extends Request {
    * @version 2021-10-20 zzc
    */
    public create(data: ArticleSaveConfig) {
-    const url = 'v1/admin/article'
+    const url = 'v1/article'
     return this.post(url, { ...data, loading: true })
   }
 
@@ -74,7 +76,7 @@ export default new class Article extends Request {
    * @version 2021-10-20 zzc
    */
    public destory(id: string) {
-    const url = `v1/admin/article/${id}`
+    const url = `v1/article/${id}`
     return this.delete(url, { loading: true, showMsg: true })
   }
 
@@ -85,7 +87,7 @@ export default new class Article extends Request {
    * @version 2021-10-20 zzc
    */
    public update(id: any, data: ArticleUpdateConfig) {
-    const url = `v1/admin/article/${id}`
+    const url = `v1/article/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
 
@@ -94,8 +96,8 @@ export default new class Article extends Request {
    * @param { String } id 文章id
    * @version 2021-10-26 zzc
    */
-   public detail(id: any) {
-    const url = `v1/admin/article/${id}`
+   public getDetail(id: any) {
+    const url = `v1/article/${id}`
     return this.get(url, { loading: true })
   }
 
@@ -108,7 +110,7 @@ export default new class Article extends Request {
    * @version 2021-10-19 zzc
    */
    public getList(params?: ArticleListConfig) {
-    const url = 'v1/admin/article'
-    return this.get(url, { ...params, loading: true })
+    const url = 'v1/article'
+    return this.get(url, { loading: true, ...params })
   }
 }

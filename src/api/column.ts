@@ -42,7 +42,7 @@ export default new class Column extends Request {
    * @version 2021-10-21 zzc
    */
   public createColumn(data: ColumnSaveConfig) {
-    const url = 'v1/admin/column/createColumn'
+    const url = 'v1/column/createColumn'
     return this.post(url, { ...data, loading: true, showMsg: true })
   }
 
@@ -58,7 +58,7 @@ export default new class Column extends Request {
    * @version 2021-10-21 zzc
    */
    public createSubColumn(data: ColumnSaveConfig) {
-    const url = 'v1/admin/column/createSubcolumn'
+    const url = 'v1/column/createSubcolumn'
     return this.post(url, { ...data, loading: true, showMsg: true })
   }
 
@@ -68,7 +68,7 @@ export default new class Column extends Request {
    * @version 2021-11-25 zzc
    */
    public destoryColumn(id: any) {
-    const url = `v1/admin/column/destoryColumn/${id}`
+    const url = `v1/column/destoryColumn/${id}`
     return this.delete(url, { loading: true, showMsg: true })
   }
 
@@ -78,7 +78,7 @@ export default new class Column extends Request {
    * @version 2021-10-21 zzc
    */
    public destorySubColumn(id: any) {
-    const url = `v1/admin/column/destorySubColumn/${id}`
+    const url = `v1/column/destorySubColumn/${id}`
     return this.delete(url, { loading: true, showMsg: true })
   }
 
@@ -89,7 +89,7 @@ export default new class Column extends Request {
    * @version 2021-10-21 zzc
    */
    public updateSubColumn(id: any, data?: ColumnUpdateConfig) {
-    const url = `v1/admin/column/updateSubColumn/${id}`
+    const url = `v1/column/updateSubColumn/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
 
@@ -100,7 +100,7 @@ export default new class Column extends Request {
    * @version 2021-10-21 zzc
    */
    public updateColumn(id: any, data?: ColumnUpdateConfig) {
-    const url = `v1/admin/column/updateColumn/${id}`
+    const url = `v1/column/updateColumn/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
 
@@ -110,7 +110,7 @@ export default new class Column extends Request {
    * @version 2021-10-21 zzc
    */
    public getColumnDetail(id: any) {
-    const url = `v1/admin/column/getColumnDetail/${id}`
+    const url = `v1/column/getColumnDetail/${id}`
     return this.get(url, { loading: true })
   }
 
@@ -121,7 +121,7 @@ export default new class Column extends Request {
    * @version 2021-10-21 zzc
    */
    public getSubColumnDetail(id: any, loading?: boolean) {
-    const url = `v1/admin/column/getSubColumnDetail/${id}`
+    const url = `v1/column/getSubColumnDetail/${id}`
     return this.get(url, { loading })
   }
 
@@ -133,7 +133,7 @@ export default new class Column extends Request {
    * @version 2021-10-21 zzc
    */
    public getList(params?: { size?: number, page?: number }) {
-    const url = 'v1/admin/column'
+    const url = 'v1/column'
     return this.get(url, { ...params })
   }
 
@@ -146,7 +146,7 @@ export default new class Column extends Request {
    * @version 2021-10-21 zzc
    */
   public getSubList(params?: { size?: number, page?: number, type: string }) {
-    const url = 'v1/admin/subColumn'
+    const url = 'v1/subColumn'
     return this.get(url, { ...params })
   }
 }

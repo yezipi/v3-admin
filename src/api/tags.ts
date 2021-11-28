@@ -4,6 +4,7 @@ import Request from '@/utils/request'
 export interface TagsListConfig {
   page?: number,
   size?: number,
+  loading?: boolean,
 }
 
 export default new class Tags extends Request {

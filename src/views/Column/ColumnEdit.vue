@@ -26,7 +26,7 @@
       </a-form-item>
 
       <a-form-item label="栏目排序" name="sort">
-        <a-input v-model:value="ruleForm.sort" type="number" placeholder="填写栏目排序"></a-input>
+        <a-input-number v-model:value="ruleForm.sort" placeholder="填写栏目排序" style="width: 100%"></a-input-number>
       </a-form-item>
 
       <a-form-item label="关键词">
