@@ -8,6 +8,10 @@
         <a-button type="primary" @click="toCreate">+ 创建账号</a-button>
       </template>
 
+      <template #avatar="{ scope }">
+        <a-avatar :size="40" :src="scope.record.avatar"></a-avatar>
+      </template>
+
       <template #status="{ scope }">
         <a-switch v-if="scope.record.role === 'admin'" :checked="scope.record.status" @change="changeStatus(scope.record, $event)" />
         <span v-else>正常</span>
@@ -17,38 +21,38 @@
         <span>{{ setUserRole(scope.record.role) }}</span>
       </template>
 
-      <template #createdAt="{ scope }">
-        <span>{{ formatDate(scope.record.createdAt, 'YYYY-MM-DD hh:mm') }}</span>
-      </template>
-
       <template #action="{ scope }">
         <span>
           <a @click="toEdit(scope.record.id)">编辑</a>
           <template v-if="scope.record.role === 'admin'">
             <a-divider type="vertical" />
-            <a @click="confirmDelete(scope.record.id)">删除</a>
+            <a @click="confirmDelete(scope.record)">删除</a>
           </template>
         </span>
       </template>
     </yzp-table>
 
-    <user-edit v-model:visible="drawVisible" :id="userId" @change="initList"></user-edit>
+    <user-edit v-model:visible="drawVisible" :id="userId" @finish="initList"></user-edit>
 
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive, ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { Modal } from 'ant-design-vue'
 import UserApi from '@/api/user'
 import confirm from '@/utils/confirm'
-import { formatDate } from '@/utils/index'
 import DICT, { UserRole } from '@/dict/index'
 
 export default defineComponent({
   setup() {
     const columns = reactive([
+      {
+        title: '头像',
+        dataIndex: 'avatar',
+        slots: { customRender: 'avatar' },
+      },
       {
         title: '账号',
         dataIndex: 'name',
@@ -70,7 +74,7 @@ export default defineComponent({
       {
         title: '时间',
         dataIndex: 'createdAt',
-        slots: { customRender: 'createdAt' },
+        format: 'YYYY-MM-DD'
       },
       {
         title: '操作',
@@ -83,6 +87,8 @@ export default defineComponent({
     const userId = ref()
     const drawVisible = ref(false)
     const setUserRole = (role: UserRole) => DICT.USER_ROLE[role]
+    const Store = useStore()
+    const user = computed(() => Store.state.user)
 
     // 隐藏显示
     const changeStatus = async (item: any, checked: boolean) => {
@@ -106,15 +112,16 @@ export default defineComponent({
     }
 
     // 删除
-    const confirmDelete = (id: any) => {
-      if (useStore().state.user.id === id) {
+    const confirmDelete = (item: any) => {
+      const { name, id } = item
+      if (user.value.id === id) {
         Modal.info({
           title: '温馨提示',
           content: '这是您当前登录的用户，不能删除'
         })
         return
       }
-      confirm('确定删除该用户吗？', async () => {
+      confirm(`确定删除【${name}】这个账号吗？`, async () => {
         await UserApi.destory(id)
         initList()
       })
@@ -132,7 +139,6 @@ export default defineComponent({
       changeStatus,
       confirmDelete,
       toEdit,
-      formatDate,
       setUserRole,
       toCreate,
       initList,

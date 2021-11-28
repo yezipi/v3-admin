@@ -19,7 +19,7 @@ export default new class User extends Request {
    * @version 2021-10-10 zzc
    */
   public login(data: { name: string, password: string }) {
-    const url = 'v1/admin/user/login'
+    const url = 'v1/user/login'
     return this.post(url, data)
   }
 
@@ -29,7 +29,7 @@ export default new class User extends Request {
    * @version 2021-11-25 zzc
    */
   public create(data: UserBaseConfig) {
-    const url = 'v1/admin/user'
+    const url = 'v1/user'
     return this.post(url, { ...data, showMsg: true })
   }
 
@@ -40,7 +40,7 @@ export default new class User extends Request {
    * @version 2021-11-25 zzc
    */
    public destory(id: Number) {
-    const url = `v1/admin/user/${id}`
+    const url = `v1/user/${id}`
     return this.delete(url, { loading: true, showMsg: true })
   }
 
@@ -51,7 +51,7 @@ export default new class User extends Request {
    * @version 2021-11-25 zzc
    */
   public update(id: number, data: any) {
-    const url = `v1/admin/user/${id}`
+    const url = `v1/user/${id}`
     return this.put(url, { ...data, showMsg: true })
   }
 
@@ -60,7 +60,7 @@ export default new class User extends Request {
    * @version 2021-10-19 zzc
    */
   public getList() {
-    const url = 'v1/admin/user'
+    const url = 'v1/user'
     return this.get(url, { loading: true })
   }
 
@@ -70,7 +70,7 @@ export default new class User extends Request {
    * @version 2021-11-25 zzc
    */
   public getDetail(id: number) {
-    const url = `v1/admin/user/${id}`
+    const url = `v1/user/${id}`
     return this.get(url)
   }
 
