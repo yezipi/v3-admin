@@ -14,7 +14,7 @@ export default new class Tags extends Request {
    * @param { String } params.name 内容
    * @version 2021-11-05 zzc
    */
-   public create(data?: { name: string, sort: number }) {
+   public create(data: { name: string, sort: number }) {
     const url = 'v1/tags'
     return this.post(url, data)
   }
@@ -58,7 +58,7 @@ export default new class Tags extends Request {
    * @param { Number } params.size 页数
    * @version 2021-11-05 zzc
    */
-   public getList(params?: tagsListConfig) {
+   public getList(params?: TagsListConfig) {
     const url = 'v1/tags'
     return this.get(url, { ...params, loading: true })
   }
