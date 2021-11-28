@@ -6,15 +6,19 @@
       :rules="rules"
       :label-col="labelCol"
     >
-      <a-form-item label="封面" style="margin-bottom: 0;">
-        <yzp-upload
-          v-model:value="formState.cover_thumb"
-          :thumb="true"
-          :clip="true"
-          :width="800"
-          dir="article_cover"
-        >
-        </yzp-upload>
+      <a-form-item label="封面" style="margin-bottom: 12px;">
+        <div style="width:150px;height:71px">
+          <yzp-upload
+            v-model:value="formState.cover_thumb"
+            :thumb="true"
+            :clip="true"
+            :width="525"
+            :height="250"
+            :withParentWith="true"
+            dir="article_cover"
+          >
+          </yzp-upload>
+        </div>
       </a-form-item>
 
       <a-form-item label="类型" name="type">
@@ -44,16 +48,20 @@
         <yzp-editor ref="editor" v-model="formState.content"></yzp-editor>
       </a-form-item>
 
+      <a-form-item label="标签">
+        <a-select v-model:value="formState.tags" :options="tags" mode="tags" placeholder="请选择标签"></a-select>
+      </a-form-item>
+
       <a-form-item label="来源">
         <a-input v-model:value="formState.author_name" placeholder="请输入文章来源" />
       </a-form-item>
       
       <a-form-item label="点赞">
-        <a-input v-model:value="formState.like" type="number" placeholder="请输入点赞数" />
+        <a-input-number v-model:value="formState.like" placeholder="请输入点赞数" style="width: 100%" />
       </a-form-item>
       
       <a-form-item label="浏览">
-        <a-input v-model:value="formState.view" type="number" placeholder="请输入浏览数" />
+        <a-input-number v-model:value="formState.view" placeholder="请输入浏览数" style="width: 100%" />
       </a-form-item>
 
       <a-form-item label="设置">
@@ -73,12 +81,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRaw, onMounted } from 'vue'
+import { defineComponent, ref, toRaw, onMounted, computed } from 'vue'
 import { message } from 'ant-design-vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import ArticleApi from '@/api/article'
-
+import TagsApi from '@/api/tags'
 
 export default defineComponent({
 
@@ -100,7 +108,8 @@ export default defineComponent({
       open_comment: true,
       recommend: false,
       top: false,
-      type: 'article'
+      type: 'article',
+      tags: []
     })
 
     const rules = {
@@ -115,40 +124,55 @@ export default defineComponent({
       subcolumn_id:[ { required: true, message: '请选择分类', trigger: 'blur' } ]
     };
 
-    const { state } = useStore()
+    const store = useStore()
     const router = useRouter()
     const route = useRoute()
     const id = route.query.id
+    const user: any = computed(() => store.state.user)
+    const tags = ref<any>([])
 
     // 获取详情
     const getDetail = async () => {
       if (!id) {
         return
       }
-      const { data } = await ArticleApi.detail(id)
+      const { data } = await ArticleApi.getDetail(id)
       data.subcolumn_id = String(data.subcolumn_id)
+      data.tags = data.tags ? data.tags.split(',') : []
       formState.value = data
+    }
+
+    // 获取标签
+    const getTags = async () => {
+      const { data } = await TagsApi.getList({ size: 100, page: 1, loading: false })
+      tags.value = data.rows.map((e: any) => {
+        return {
+          value: e.name,
+          label: e.name
+        }
+      })
     }
 
     const onSubmit = () => {
       formRef.value
         .validate()
         .then(async () => {
-          formState.value.cover_origin = formState.value.cover_thumb.replace('thumb_', 'origin_')
+          const { cover_thumb, tags } = formState.value
+          formState.value.cover_origin = cover_thumb.replace('thumb_', 'origin_')
           console.log(toRaw(formState))
           const data = {
             ...toRaw(formState.value),
-            user_id: state.user.id
+            tags: tags.length ? tags.join() : '',
+            user_id: user.id
           }
-          const msg = id ? '保存成功' : '发布成功'
           if (!id) {
             await ArticleApi.create(data)
           } else {
             await ArticleApi.update(id, data)
           }
-          message.success(msg, 1.5, () => {
+         setTimeout(() => {
             router.push({ name: 'ArticleList' })
-          })
+          }, 1200)
         })
     }
 
@@ -158,6 +182,7 @@ export default defineComponent({
 
     onMounted(() => {
       getDetail()
+      getTags()
     })
 
     return {
@@ -165,9 +190,10 @@ export default defineComponent({
       labelCol: { style: { width: '100px' } },
       formState,
       rules,
+      id,
+      tags,
       onSubmit,
       resetForm,
-      id,
     }
   },
 })
