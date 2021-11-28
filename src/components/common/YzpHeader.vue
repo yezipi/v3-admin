@@ -15,7 +15,7 @@
     <div class="head-right">
       <a-dropdown>
         <div class="right-avatar">
-          <a-avatar :size="40">
+          <a-avatar :size="40" :src="user.avatar">
             <template #icon><UserOutlined /></template>
           </a-avatar>
           <span>{{ user.nickname }}</span>
@@ -23,7 +23,7 @@
         <template #overlay>
           <a-menu>
             <a-menu-item>
-              <a href="javascript:;">退出</a>
+              <a @click="logout">退出</a>
             </a-menu-item>
           </a-menu>
         </template>
@@ -33,9 +33,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import { MenuFoldOutlined, MenuUnfoldOutlined, ReloadOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   components: {
@@ -58,12 +59,20 @@ export default defineComponent({
       emit('collapseMenu', collapsed.value)
     }
 
-    const { state: { user } } = useStore()
+    const Store = useStore()
+    const Router = useRouter()
+    const user = computed(() => Store.state.user)
+
+    const logout = () => {
+      Store.dispatch('clearUser')
+      Router.replace('/login')
+    }
 
     return {
       collapsed,
+      user,
       toggleMenu,
-      user: reactive(user)
+      logout,
     }
 
   }
