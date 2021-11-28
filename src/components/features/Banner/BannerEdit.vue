@@ -1,5 +1,5 @@
 <template>
-  <yzp-draw v-model:visible="drawState" :title="id ? '编辑用户' : '添加用户'" @hide="closeDraw">
+  <yzp-draw v-model:visible="drawState" :title="id ? '编辑轮播图' : '添加轮播图'" @hide="closeDraw">
     <template #content>
       <a-spin :spinning="wrapLoading" tip="加载中..."></a-spin>
       <a-form v-show="!wrapLoading" ref="formRef" :model="ruleForm" :rules="rules" :label-col="labelCol">
