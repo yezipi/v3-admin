@@ -25,7 +25,7 @@
           <a-input-number v-model:value="ruleForm.sort" autocomplete="off" placeholder="请填写序号" style="width: 100%"></a-input-number>
         </a-form-item>
 
-        <a-form-item label="类型" name="role">
+        <a-form-item label="类型" name="type">
           <a-radio-group v-model:value="ruleForm.type" @change="onTypeChange">
             <a-radio :value="1">文章</a-radio>
             <a-radio :value="2">案例</a-radio>

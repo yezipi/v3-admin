@@ -13,9 +13,10 @@ axios.defaults.baseURL = '/api/admin/'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
+  console.log(config)
   const headers: any = config.headers
-  headers.common.Authorization = store.state.token;
   const { params, data } = config
+  headers.common.Authorization = store.state.token;
   if (config.method) {
     const paramsLoading = params && params.loading
     const dataLoading = data && data.loading
@@ -36,28 +37,27 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   const { code, msg } = res
   const dataLoading = typeof data === 'string' ? (data && data.indexOf('loading') > -1) : false
   const paramsLoading = params && params.loading
+  const showMsg = (data && typeof data === 'string' && data.indexOf('showMsg') > -1) || res && res.msg && params && params.showMsg
 
   if (dataLoading || paramsLoading) {
     store.commit('hideLoading')
   }
 
   if (code === 401) {
-    alert('请重新授权')
+    message.error('请重新登录')
     store.dispatch('clearUser')
     location.replace('/login')
     return Promise.reject(res)
   }
 
   if (code !== 1) {
-    message.error(msg)
+    if (showMsg) {
+      message.error(msg)
+    }
     return Promise.reject(res)
   }
 
-  if (data && typeof data === 'string' && data.indexOf('showMsg') > -1) {
-    message.success(msg)
-  }
-
-  if (res && res.msg && params && params.showMsg) {
+  if (showMsg) {
     message.success(msg)
   }
 
