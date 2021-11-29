@@ -10,6 +10,7 @@
       :inline-collapsed="collapsed"
       v-model:openKeys="openKeys"
       v-model:selectedKeys="selectedKeys"
+      @openChange="onOpenChange"
     >
       <template v-for="(item) in menus">
         <a-menu-item v-if="!item.children" :key="item.name" @click="onMenuClick(item)">
@@ -37,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, watch } from 'vue'
+import { defineComponent, reactive, toRaw, toRefs, watch } from 'vue'
 import { useRouter  } from 'vue-router'
 
 export default defineComponent({
@@ -56,33 +57,33 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const router = useRouter()
+
     const state = reactive({
       collapsed: false,
       selectedKeys: props.selectName,
       openKeys: props.openName,
       preOpenKeys: [] as any,
-    });
-
-    const router = useRouter()
+      rootSubmenuKeys: router.options.routes.map((e: any) => e.name)
+    })
 
     watch(() => [
-      state.openKeys,
       props.selectName,
       props.openName,
     ], (
-        [ newPre, newSelect, newOpen],
+        [ newSelect, newOpen],
         [ oldPre ],
       ) => {
         state.preOpenKeys = oldPre;
         state.selectedKeys = newSelect,
         state.openKeys = newOpen
       },
-    );
+    )
 
     const toggleCollapsed = () => {
-      state.collapsed = !state.collapsed;
-      state.openKeys = state.collapsed ? [] : state.preOpenKeys;
-    };
+      state.collapsed = !state.collapsed
+      state.openKeys = state.collapsed ? [] : state.preOpenKeys
+    }
 
     const onMenuClick = ({ path }: { path: string }) => {
       if (!path) {
@@ -94,10 +95,19 @@ export default defineComponent({
       router.push(path)
     }
 
+    const onOpenChange = (openKeys: string[]) => {
+      if (openKeys.length) {
+        state.openKeys = [openKeys[openKeys.length - 1]]
+      } else {
+        state.openKeys = []
+      }
+    }
+
     return {
       ...toRefs(state),
       toggleCollapsed,
       onMenuClick,
+      onOpenChange,
     };
   }
 })
