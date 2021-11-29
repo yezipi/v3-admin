@@ -124,6 +124,10 @@ export default defineComponent({
     height: {
       type: [Number, String],
       default: ''
+    },
+    compress: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, { emit }) {
@@ -211,6 +215,7 @@ export default defineComponent({
       formData.append('thumb', props.thumb ? '1' : '0')
       formData.append('maxWidth', String(props.width))
       formData.append('watermark', props.watermark ? '1' : '0')
+      formData.append('compress', props.compress ? '1' : '0')
 
       try {
         const { data } = await CommonApi.uploadImg(formData, config)

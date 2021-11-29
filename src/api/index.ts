@@ -6,6 +6,7 @@ import Column from './column'
 import Tags from './tags'
 import Banner from './banner'
 import Mood from './mood'
+import Album from './album'
 
 export interface ApiConfig {
   User: object,
@@ -16,6 +17,7 @@ export interface ApiConfig {
   Tags: object,
   Banner: object,
   Mood: object,
+  Album: object,
 }
 
 export default {
@@ -27,4 +29,5 @@ export default {
   Tags,
   Banner,
   Mood,
+  Album
 }

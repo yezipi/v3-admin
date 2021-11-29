@@ -10,8 +10,9 @@ export interface MoodSaveConfig {
   content?: string,
   view?: number,
   author_name?: string,
-  comment_open?: boolean,
+  open_comment?: boolean,
   status?: boolean
+  user_id?: any
 }
 
 export default new class Mood extends Request {
@@ -21,7 +22,7 @@ export default new class Mood extends Request {
    * @param { Object } params 参数
    * @param { String } params.content 内容
    * @param { String } params.author_name 来源
-   * @param { String } params.comment_open 内容
+   * @param { String } params.open_comment 内容
    * @param { Boolean } params.status 显示隐藏
    * @param { Number } params.view 浏览数
    * @version 2021-11-05 zzc

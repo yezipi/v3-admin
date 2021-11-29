@@ -81,7 +81,7 @@ export default defineComponent({
   margin-right: -24px;
   .draw-content {
     padding-right: 24px;
-    height: calc(100vh - 10px);
+    height: calc(100vh - 170px);
     overflow-y: auto;
     position: relative;
   }

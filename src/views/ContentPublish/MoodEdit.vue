@@ -78,7 +78,7 @@ export default defineComponent({
       formRef.value
         .validate()
         .then(async () => {
-          const data = toRaw(formState.value)
+          const data = { ...toRaw(formState.value), user_id: user.id }
           if (!id) {
             await MoodApi.create(data)
           } else {

@@ -2,7 +2,7 @@
   <yzp-draw v-model:visible="drawState" :title="id ? '编辑标签' : '添加标签'" @hide="closeDraw">
     <template #content>
       <a-spin class="center-spin" :spinning="wrapLoading" tip="加载中..."></a-spin>
-      <a-form v-show="!wrapLoading" ref="formRef" :model="ruleForm" :rules="rules" :label-col="labelCol">
+      <a-form v-if="!wrapLoading" ref="formRef" :model="ruleForm" :rules="rules" :label-col="labelCol">
         <a-form-item label="名称" name="name">
           <a-input v-model:value="ruleForm.name" autocomplete="off" :maxlength="20" placeholder="请填写标签名称"></a-input>
         </a-form-item>
@@ -12,11 +12,9 @@
         </a-form-item>
       </a-form>
     </template>
-    <template #footer>
-      <div v-show="!wrapLoading" style="display: flex;flex: 1">
-        <a-button :loading="btnLoading" style="flex: 1" type="primary" @click="onSubmit">{{ id ? '立即保存' : '立即添加' }}</a-button>
-        <a-button style="flex: 1;margin-left: 10px" @click="closeDraw">取消</a-button>
-      </div>
+    <template v-if="!wrapLoading" #footer>
+      <a-button style="flex: 1;margin-right: 10px" @click="closeDraw">取消</a-button>
+      <a-button :loading="btnLoading" style="flex: 1" type="primary" @click="onSubmit">{{ id ? '立即保存' : '立即添加' }}</a-button>
     </template>
   </yzp-draw>
 </template>
@@ -48,9 +46,10 @@ export default defineComponent({
       sort: 100,
     })
 
-    const rules = reactive({
-      name: [{ message: '账号必须', required: true, trigger: 'blur' }],
-    })
+    const rules = {
+      name: [{ message: '名称必须', required: true, trigger: 'blur' }],
+      cover: [{ message: '封面必须', required: true, trigger: 'change' }],
+    }
 
     watch(() => props.visible, (val: boolean) => {
       drawState.value = val

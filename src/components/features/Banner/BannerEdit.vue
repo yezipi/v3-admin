@@ -2,7 +2,7 @@
   <yzp-draw v-model:visible="drawState" :title="id ? '编辑轮播图' : '添加轮播图'" @hide="closeDraw">
     <template #content>
       <a-spin :spinning="wrapLoading" tip="加载中..."></a-spin>
-      <a-form v-show="!wrapLoading" ref="formRef" :model="ruleForm" :rules="rules" :label-col="labelCol">
+      <a-form v-if="!wrapLoading" ref="formRef" :model="ruleForm" :rules="rules" :label-col="labelCol">
         <a-form-item label="封面" name="cover">
           <div style="width:150px;height:71px">
             <yzp-upload
@@ -51,11 +51,9 @@
         </a-form-item>
       </a-form>
     </template>
-    <template #footer>
-      <div v-show="!wrapLoading" style="display: flex;flex: 1">
-        <a-button :loading="btnLoading" style="flex: 1" type="primary" @click="onSubmit">{{ id ? '立即保存' : '立即添加' }}</a-button>
-        <a-button style="flex: 1;margin-left: 10px" @click="closeDraw">取消</a-button>
-      </div>
+    <template v-if="!wrapLoading" #footer>
+      <a-button style="flex: 1;margin-right: 10px" @click="closeDraw">取消</a-button>
+      <a-button :loading="btnLoading" style="flex: 1" type="primary" @click="onSubmit">{{ id ? '立即保存' : '立即添加' }}</a-button>
     </template>
   </yzp-draw>
 </template>
