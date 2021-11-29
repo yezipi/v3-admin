@@ -55,6 +55,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: '微语发布' },
         component: () => import('@/views/ContentPublish/MoodEdit.vue'),
       },
+      {
+        path: '/mood/add',
+        name: 'MoodAdd',
+        meta: { title: '编辑微语' },
+        component: () => import('@/views/ContentPublish/MoodEdit.vue'),
+      },
     ],
   },
   {

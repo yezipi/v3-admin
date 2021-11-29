@@ -1,6 +1,6 @@
 <template>
   <div class="page-list">
-    <yzp-table :columns="columns" ref="tableRef" url="Column.getList" childrenColumnName="subcolumn">
+    <yzp-table :columns="columns" ref="tableRef" url="Column.getList" childrenColumnName="subcolumns">
       <template #filter>
         <div></div>
         <a-button type="primary" @click="$router.push({ name: 'ColumnEdit' })">+ 创建栏目</a-button>

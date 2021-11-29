@@ -13,7 +13,6 @@ axios.defaults.baseURL = '/api/admin/'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
-  console.log(config)
   const headers: any = config.headers
   const { params, data } = config
   headers.common.Authorization = store.state.token;

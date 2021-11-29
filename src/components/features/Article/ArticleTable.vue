@@ -34,9 +34,9 @@
 
       <template #articleTitle="{ scope }">
         <a class="article-title">
+          <span v-if="scope.record.recommend" class="at-recommend">【推荐】</span>
+          <span v-if="scope.record.top" class="at-top">【置顶】</span>
           <span class="at-text">{{ scope.record.title }}</span>
-          <span v-if="scope.record.recommend" class="at-recommend">[推荐]</span>
-          <span v-if="scope.record.top" class="at-top">[置顶]</span>
         </a>
       </template>
 
@@ -106,7 +106,7 @@ export default defineComponent({
       },
       {
         title: '评论',
-        dataIndex: 'comments',
+        dataIndex: 'comments_count',
         width: 100,
       },
       {
@@ -245,10 +245,10 @@ export default defineComponent({
 }
 .article-title {
   .at-recommend {
-    color: #ff9100;
+    color: red;
   }
   .at-top {
-    color: red;
+    color: rgb(69, 184, 3);
   }
 }
 </style>
