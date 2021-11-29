@@ -3,23 +3,29 @@
     <a-upload
       v-model:file-list="fileList"
       name="file"
-      list-type="picture-card"
+      :list-type="isButton ? undefined : 'picture-card'"
+      :accept="fileAccept"
       :class="{ withParentWith }"
       :show-upload-list="false"
       :before-upload="beforeUpload"
       :customRequest="startUpload"
     >
-      <img v-if="imageUrl" class="img-privew" :src="imageUrl" />
-      <div v-else class="upload-tips">
-        <loading-outlined v-if="loading"></loading-outlined>
-        <plus-outlined v-else></plus-outlined>
-        <div class="ant-upload-text"></div>
-      </div>
+      <template v-if="!isButton">
+        <img v-if="imageUrl" class="img-privew" :src="imageUrl" />
+        <div v-else class="upload-tips">
+          <loading-outlined v-if="loading"></loading-outlined>
+          <plus-outlined v-else></plus-outlined>
+          <div class="ant-upload-text"></div>
+        </div>
+      </template>
+      <template v-else>
+        <a-button :loading="loading" class="ku-btn" type="primary">选择文件</a-button>
+      </template>
     </a-upload>
 
     <!--图片裁剪-->
     <a-modal
-      v-if="clip"
+      v-if="clip && !isButton"
       v-model:visible="cropperState.visible"
       :width="width > 500 ? (Number(width) + 48) : 500"
       :centered="true"
@@ -46,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, reactive } from 'vue'
+import { defineComponent, ref, watch, reactive, computed } from 'vue'
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue'
 import { VueCropper }  from 'vue-cropper'
 import { message } from 'ant-design-vue'
@@ -75,6 +81,16 @@ export default defineComponent({
       type: String,
       default: ''
     },
+    // 按钮类型：button, picture
+    type: {
+      type: String,
+      default: 'picture'
+    },
+    // 文件接受类型
+    accept: {
+      type: String,
+      default: 'image/gif,image/jpeg,image/png'
+    },
     dir: {
       type: String,
       default: ''
@@ -99,7 +115,7 @@ export default defineComponent({
     // 是否需要裁剪
     clip: {
       type: Boolean,
-      default: true
+      default: false
     },
     width:  {
       type: [Number, String],
@@ -113,28 +129,34 @@ export default defineComponent({
   setup(props, { emit }) {
     const fileList = ref([])
     const loading = ref<boolean>(false)
-    const imageUrl = ref<any>('')
+    const imageUrl = ref<any>(props.value)
     const cropperRef = ref()
     const cropperState = reactive({
       url: '' as any,
       visible: false
     })
     const currFile = ref<any>({})
+    const fileAccept = ref(props.accept)
+    const isButton = computed(() => props.type === 'button')
 
-    watch(() => props.value, (val) => {
+    watch(() => props.accept, (val: string) => {
+      fileAccept.value = val
+    })
+
+    watch(() => props.value, (val: string) => {
       imageUrl.value = val
     })
 
     const beforeUpload = (file: FileItem) => {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-      if (!isJpgOrPng) {
-        message.error('只能上传图片哦！')
+      const isInType = fileAccept.value.indexOf(file.type as any) > -1
+      if (!isInType) {
+        message.error('不符合上传的文件类型')
       }
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isLt2M) {
         message.error('不能超过2m大小哦!')
       }
-      return isJpgOrPng && isLt2M
+      return isInType && isLt2M
     }
 
     // 确定开始执行裁剪
@@ -208,6 +230,8 @@ export default defineComponent({
     }
 
     return {
+      fileAccept,
+      isButton,
       fileList,
       loading,
       imageUrl,
@@ -223,7 +247,11 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-
+:deep(.yu-btn) {
+  padding-top: 6px!important;
+  padding-bottom: 6px!important;
+  height: 40px;
+}
 :deep(.ant-upload.ant-upload-select-picture-card > .ant-upload) {
   padding: 0;
 }
