@@ -75,12 +75,7 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-
-    const drawState = ref(false)
-    const btnLoading = ref(false)
-    const wrapLoading = ref(!!props.id)
-    const formRef = ref()
-    const ruleForm = ref({
+    const initForm = {
       name: '',
       cover: '',
       type: 1,
@@ -88,7 +83,12 @@ export default defineComponent({
       target: undefined as any, // 1文章，2案例，3外部url, 0不跳转
       sort: 100,
       url: undefined,
-    })
+    }
+    const drawState = ref(false)
+    const btnLoading = ref(false)
+    const wrapLoading = ref(!!props.id)
+    const formRef = ref()
+    const ruleForm = ref(initForm)
 
     const checkUrl = async (rule: any) => {
       if (ruleForm.value.type !== 0 && !ruleForm.value[rule.field as keyof typeof ruleForm.value]) {
@@ -111,29 +111,17 @@ export default defineComponent({
 
     watch(() => props.visible, (val: boolean) => {
       drawState.value = val
+      restFrom()
     })
 
     watch(() => props.id, (val: any) => {
       if (val) {
         getInfo(val)
-      } else {
-        wrapLoading.value = false
-        nextTick(() => {
-          restFrom()
-        })
       }
     })
 
     const restFrom = () => {
-      ruleForm.value = {
-        name: '',
-        cover: '',
-        type: 1,
-        status: true,
-        target: undefined,
-        url: undefined,
-        sort: 100,
-      }
+      ruleForm.value = { ...initForm }
     }
 
     const getInfo = async (id: any) => {

@@ -53,19 +53,15 @@ export default defineComponent({
 
     watch(() => props.visible, (val: boolean) => {
       drawState.value = val
+      ruleForm.value = {
+        name: '',
+        sort: 100,
+      }
     })
 
     watch(() => props.id, (val: any) => {
       if (val) {
         getInfo(val)
-      } else {
-        wrapLoading.value = false
-        nextTick(() => {
-          ruleForm.value = {
-            name: '',
-            sort: 100,
-          }
-        })
       }
     })
 

@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, reactive, nextTick, toRaw, computed } from 'vue'
+import { defineComponent, ref, watch, reactive, toRaw, computed } from 'vue'
 import AlbumApi from '@/api/album'
 import { useStore } from 'vuex'
 
@@ -77,7 +77,7 @@ export default defineComponent({
       lock: false,
       password: '',
     }
-    const ruleForm = ref(initForm)
+    const ruleForm = ref({ ...initForm })
 
     const checkPassword = async (rule: any, val: string) => {
       if (ruleForm.value.lock && !val) {
@@ -94,17 +94,13 @@ export default defineComponent({
     const user: any = computed(() => store.state.user) 
 
     watch(() => props.visible, (val: boolean) => {
+      console.log(111)
       drawState.value = val
     })
 
     watch(() => props.id, (val: any) => {
       if (val) {
         getInfo(val)
-      } else {
-        wrapLoading.value = false
-        nextTick(() => {
-          ruleForm.value = initForm
-        })
       }
     })
 

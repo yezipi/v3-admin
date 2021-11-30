@@ -59,19 +59,19 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-
-    const drawState = ref(false)
-    const btnLoading = ref(false)
-    const wrapLoading = ref(!!props.id)
-    const formRef = ref()
-    const ruleForm = ref({
+    const initForm = {
       name: '',
       nickname: '',
       password: undefined,
       status: true,
       role: 'admin',
       avatar: ''
-    })
+    }
+    const drawState = ref(false)
+    const btnLoading = ref(false)
+    const wrapLoading = ref(!!props.id)
+    const formRef = ref()
+    const ruleForm = ref(initForm)
     const Store = useStore()
     const user = computed(() => Store.state.user)
 
@@ -85,23 +85,12 @@ export default defineComponent({
 
     watch(() => props.visible, (val: boolean) => {
       drawState.value = val
+      ruleForm.value = { ...initForm }
     })
 
     watch(() => props.id, (val: any) => {
       if (val) {
         getInfo(val)
-      } else {
-        wrapLoading.value = false
-        nextTick(() => {
-          ruleForm.value = {
-            name: '',
-            nickname: '',
-            password: undefined,
-            status: true,
-            role: 'admin',
-            avatar: ''
-          }
-        })
       }
       rules.password[0].required = !val
     })
