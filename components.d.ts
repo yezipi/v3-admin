@@ -45,6 +45,7 @@ declare module 'vue' {
     AUpload: typeof import('ant-design-vue/es')['Upload']
     BannerEdit: typeof import('./src/components/features/Banner/BannerEdit.vue')['default']
     ColumnSelect: typeof import('./src/components/features/Column/ColumnSelect.vue')['default']
+    PictureEdit: typeof import('./src/components/features/Album/PictureEdit.vue')['default']
     TagsEdit: typeof import('./src/components/features/Tags/TagsEdit.vue')['default']
     UserEdit: typeof import('./src/components/features/User/UserEdit.vue')['default']
     YzpAside: typeof import('./src/components/common/YzpAside.vue')['default']

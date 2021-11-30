@@ -5,10 +5,12 @@
 
       <a-form v-if="!wrapLoading" ref="formRef" :model="ruleForm" :rules="rules" :label-col="labelCol">
         
-        <a-form-item label="图片" name="cover">
-          <div style="width: 180px;height:120px">
-            <yzp-upload v-model:value="ruleForm.cover" :width="360" :height="240" withParentWith clip dir="album"></yzp-upload>
-          </div>
+        <a-form-item label="图片" name="thumb_path">
+          <yzp-upload v-model:value="ruleForm.thumb_path" :width="1366" thumb dir="picture"></yzp-upload>
+        </a-form-item>
+
+        <a-form-item label="分类" name="album_id">
+          <a-select v-model:value="ruleForm.album_id" :options="albums" placeholder="请选择分类"></a-select>
         </a-form-item>
 
         <a-form-item label="标题" name="title">
@@ -19,17 +21,8 @@
           <a-textarea v-model:value="ruleForm.description" :rows="3" placeholder="填写相册描述" :maxlength="100"></a-textarea>
         </a-form-item>
 
-        <a-form-item label="设为私密" name="lock">
-          <a-switch v-model:checked="ruleForm.lock"></a-switch>
-        </a-form-item>
-
-        <a-form-item v-if="ruleForm.lock" label="密码" name="password">
-          <a-input v-model:value="ruleForm.password" :placeholder="id ? '为空则不修改' : '请输入密码'" :maxlength="100"></a-input>
-        </a-form-item>
-
         <a-form-item label="设置">
           <a-checkbox v-model:checked="ruleForm.status">显示</a-checkbox>
-          <a-checkbox v-model:checked="ruleForm.open_comment">开启评论</a-checkbox>
           <a-checkbox v-model:checked="ruleForm.recommend">设为推荐</a-checkbox>
         </a-form-item>
 
@@ -46,7 +39,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, reactive, toRaw, computed } from 'vue'
-import AlbumApi from '@/api/album'
+import PictureApi from '@/api/picture'
 import { useStore } from 'vuex'
 
 export default defineComponent({
@@ -59,7 +52,11 @@ export default defineComponent({
     id: {
       type: [String, Number],
       default: ''
-    }
+    },
+    albums: {
+      type: Array,
+      default: () => [] as Array<any>
+    },
   },
   setup(props, { emit }) {
 
@@ -69,25 +66,19 @@ export default defineComponent({
     const formRef = ref()
     const initForm = {
       title: '',
-      cover: '',
+      origin_path: '',
+      thumb_path: '',
       description: '',
-      open_comment: true,
+      album_id: undefined,
       recommend: false,
       status: true,
-      lock: false,
-      password: '',
     }
     const ruleForm = ref({ ...initForm })
 
-    const checkPassword = async (rule: any, val: string) => {
-      if (ruleForm.value.lock && !val) {
-        return Promise.reject('设置为私密后需要设置密码')
-      }
-    }
-
     const rules = reactive({
       title: [{ message: '标题必须', required: true, trigger: 'blur' }],
-      password: [{ trigger: 'blur', validator: checkPassword }],
+      thumb_path: [{ message: '图片必须', required: true, trigger: 'change' }],
+      album_id: [{ message: '分类必须', required: true, trigger: 'change' }],
     })
 
     const store = useStore()
@@ -107,7 +98,7 @@ export default defineComponent({
     const getInfo = async (id: any) => {
       try {
         wrapLoading.value = true
-        const { data } = await AlbumApi.getDetail(id)
+        const { data } = await PictureApi.getDetail(id)
         ruleForm.value = data
       } catch(e) {
         console.log(e)
@@ -122,11 +113,16 @@ export default defineComponent({
         .then(async () => {
           btnLoading.value = true
           try {
-            const data = { ...toRaw(ruleForm.value), user_id: user.id }
+            const thumb = ruleForm.value.thumb_path
+            const data = { 
+              ...toRaw(ruleForm.value), 
+              user_id: user.id,
+              origin_path: thumb.replace('thumb_', 'origin_')
+            }
             if (!props.id) {
-              await AlbumApi.create(data)
+              await PictureApi.create(data)
             } else {
-              await AlbumApi.update(props.id as any, data)
+              await PictureApi.update(props.id as any, data)
             }
             closeDraw()
             emit('finish', true)

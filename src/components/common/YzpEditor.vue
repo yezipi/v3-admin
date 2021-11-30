@@ -95,7 +95,7 @@ export default defineComponent({
       }
       formData.append('filename', `${new Date().valueOf()}.jpg`)
       formData.append('file', file)
-      formData.append('dir', 'article_content')
+      formData.append('dir', 'article')
       formData.append('maxWidth', '750')
       formData.append('watermark', '1')
       try {

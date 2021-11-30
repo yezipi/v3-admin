@@ -69,7 +69,7 @@
       <template #action="{ scope }">
         <a @click="toEdit(scope.record.id)">编辑</a>
         <a-divider type="vertical" />
-        <a @click="confirmDelete(scope.record.id)">删除</a>
+        <a @click="confirmDelete(scope.record)">删除</a>
       </template>
     </yzp-table>
   </div>
@@ -197,9 +197,9 @@ export default defineComponent({
     }
 
     // 删除
-    const confirmDelete = (id: string) => {
-      confirm('确定删除该文章吗？', async () => {
-        await ArticleApi.destory(id)
+    const confirmDelete = (item: any) => {
+      confirm(`确定删除【${item.title}】吗？`, async () => {
+        await ArticleApi.destory(item.id)
         onSearch()
       })
     }

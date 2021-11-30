@@ -67,7 +67,7 @@ export default new class Article extends Request {
    */
    public create(data: ArticleSaveConfig) {
     const url = 'v1/article'
-    return this.post(url, { ...data, loading: true })
+    return this.post(url, { ...data, loading: true, showMsg: true })
   }
 
   /**

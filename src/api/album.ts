@@ -39,7 +39,7 @@ export default new class Album extends Request {
    * @description 删除相册时把相册封面删除
    * @version 2011-11-29 zzc
    */
-   public destory(id: string) {
+   public destory(id: String) {
     const url = `v1/album/${id}`
     return this.delete(url, { loading: true, showMsg: true })
   }
