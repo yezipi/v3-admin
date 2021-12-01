@@ -9,7 +9,7 @@
       :showQuickJumper="true"
       :showSizeChanger="true"
       :pageSize="size"
-      v-model:current="page"
+      v-model:current="curr"
       @showSizeChange="onSizeChange"
       @change="onPageChange"
     >
@@ -30,9 +30,13 @@ export default defineComponent({
       type: Number,
       default: 30,
     },
+    page: {
+      type: Number,
+      default: 1,
+    }
   },
   setup(props, { emit }) {
-    const page = ref<number>(1)
+    const curr = ref<number>(1)
 
     const onPageChange = (page: number, size: number) => {
       emit('change', { page, size })
@@ -45,7 +49,7 @@ export default defineComponent({
     const totalText = (total: any) => `总共 ${total} 条`
 
     return {
-      page,
+      curr,
       totalText,
       onSizeChange,
       onPageChange,

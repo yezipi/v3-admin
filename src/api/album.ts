@@ -5,6 +5,7 @@ export interface AlbumListConfig {
   page?: number,
   size?: number,
   loading?: boolean,
+  title?: string
 }
 
 export interface AlbumSaveConfig {
