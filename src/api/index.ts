@@ -8,17 +8,31 @@ import Banner from './banner'
 import Mood from './mood'
 import Album from './album'
 import Picture from './picture'
+import Blogroll from './blogroll'
+import Feedback from './feedback'
+import Comment from './comment'
+export interface ApiFn {
+  create?: any,
+  update?: any,
+  destory?: any,
+  getList?: any,
+  getDetail?: any,
+}
+
 export interface ApiConfig {
-  User: object,
-  Article: object,
-  Settings: object,
-  Commoni: object,
-  Column: object,
-  Tags: object,
-  Banner: object,
-  Mood: object,
-  Album: object,
-  Picture: object,
+  User: ApiFn,
+  Article: ApiFn,
+  Settings: any,
+  Commoni: ApiFn,
+  Column: ApiFn,
+  Tags: ApiFn,
+  Banner: ApiFn,
+  Mood: ApiFn,
+  Album: ApiFn,
+  Picture: ApiFn,
+  Blogroll: ApiFn,
+  Feedback: ApiFn,
+  Comment: ApiFn,
 }
 
 export default {
@@ -31,5 +45,8 @@ export default {
   Banner,
   Mood,
   Album,
-  Picture
+  Picture,
+  Blogroll,
+  Feedback,
+  Comment,
 }

@@ -11,6 +11,9 @@
       :scroll="{ x: tableWidth, y: tableHeight }"
       :rowKey="rowKey"
       :childrenColumnName="childrenColumnName"
+      :row-class-name="(_record, index) => (index % 2 === 1 ? 'table-striped' : null)"
+      :bordered="bordered"
+      class="ant-table-striped"
       size="small"
     >
       <template v-for="item in slotsKeys" v-slot:[item]="scope">
@@ -33,6 +36,14 @@ interface AnyKey {
 
 export default defineComponent({
   props: {
+    bordered: {
+      type: Boolean,
+      default: true,
+    },
+    center: {
+      type: Boolean,
+      default: true,
+    },
     columns: {
       type: Array,
       default: () => []
@@ -64,7 +75,7 @@ export default defineComponent({
   },
   setup(props, { emit, slots }) {
 
-    const { url, scrollWidth, columns, size, childrenColumnName } = props
+    const { url, scrollWidth, columns, size, childrenColumnName, center } = props
 
     const tableConfig = reactive({
       dataSource: [] as any,
@@ -77,19 +88,35 @@ export default defineComponent({
     const tableWidth = ref<any>(undefined)
     const loadEnd = ref(false)
     const page = ref(1)
+    const newColumns = ref<Array<any>>(columns)
+
+    if (props.center) {
+      newColumns.value = columns.map((e: any) => {
+        e.align = 'center'
+        return e
+      })
+    }
 
     const mapColumns = (e: any) => {
       columns.forEach((i: any) => {
         const key = i.dataIndex
         const item = e[key]
+
+        // noTransform为false的话就不进行转换
+        if (!e[key] && typeof e[key] !== 'boolean' && !i.noTransform && !i.dict) {
+          e[key] = '-'
+        }
+
         // 匹配字典
         if (i.dict) {
           e[key] = i.dict[item]
         }
+
         // 格式化时间，如果传入的是布尔值，则默认YYYY-MM-DD，否则就传入时间格式
         if (i.format) {
           e[key] = formatDate(e[key], typeof i.format === 'boolean' ? 'YYYY-MM-DD' : i.format)
         }
+        
       })
       return e
     }
@@ -108,18 +135,21 @@ export default defineComponent({
         // 匹配字典
         tableConfig.dataSource = rows.map((e: any[]) => {
           const childKeyName: any = childrenColumnName
+          const sub = e[childKeyName]
 
           mapColumns(e)
 
           // 二级为空的删除属性
-          if (e[childKeyName]) {
-            if (!e[childKeyName].length) {
+          if (sub) {
+            if (!sub.length) {
               delete e[childKeyName]
             } else {
-              e[childKeyName] = e[childKeyName].map((x: any) => {
-                mapColumns(x)
-                return x
-              })
+              if (sub !== '-') {
+                e[childKeyName] = sub.map((x: any) => {
+                  mapColumns(x)
+                  return x
+                })
+              }
             }
           }
 
@@ -169,6 +199,7 @@ export default defineComponent({
 
     return {
       ...toRefs(tableConfig),
+      newColumns,
       init,
       tableHeight,
       tableWidth,

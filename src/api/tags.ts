@@ -17,7 +17,7 @@ export default new class Tags extends Request {
    */
    public create(data: { name: string, sort: number }) {
     const url = 'v1/tags'
-    return this.post(url, data)
+    return this.post(url, { ...data, showMsg: true })
   }
 
   /**

@@ -18,7 +18,7 @@ const condition = reactive({
   page: 1,
   size: 20,
 })
-const defaultPic = 'src/assets/img/nopic.jpg'
+const defaultPic = '/src/assets/img/nopic.jpg'
 const loadEnd = ref(false)
 const modalVisible = ref(false)
 const viewPath = ref('')
