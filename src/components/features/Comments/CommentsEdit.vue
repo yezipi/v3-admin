@@ -64,12 +64,11 @@ const drawTitle = ref('')
 
 const rules = ref<any>({
   nickname: [{ message: '名称必须', required: true, trigger: 'blur' }],
+  content: [{ message: '内容必须', required: true, trigger: 'blur' }]
 })
 
 if (props.type === 'blogroll') {
   rules.site = [{ message: '站点必须', required: true, trigger: 'blur' }]
-} else {
-  rules.content = [{ message: '内容必须', required: true, trigger: 'blur' }]
 }
 
 watch(() => props.visible, (val: boolean) => {
@@ -85,7 +84,7 @@ watch(() => props.id, (val: any) => {
   }
 })
 
-drawTitle.value = id ? `编辑${title}` : `添加${title}`
+drawTitle.value = props.id ? `编辑${title}` : `添加${title}`
 
 const getInfo = async (id: any) => {
   try {
@@ -103,10 +102,10 @@ const onSubmit = () => {
   formRef.value.validate().then(async () => {
     btnLoading.value = true
     try {
-      if (!id) {
+      if (!props.id) {
         await api.create(ruleForm.value)
       } else {
-        await api.update(id as any, ruleForm.value)
+        await api.update(props.id as any, ruleForm.value)
       }
       closeDraw()
       emit('finish', true)
@@ -143,15 +142,15 @@ const closeDraw = () => {
         </a-form-item>
 
         <a-form-item label="名称" name="nickname">
-          <a-input v-model:value="ruleForm.nickname" autocomplete="off" :maxlength="20" placeholder="请填写名称"></a-input>
+          <a-input v-model:value="ruleForm.nickname" :maxlength="20" placeholder="请填写名称"></a-input>
         </a-form-item>
 
         <a-form-item label="站点" name="site">
-          <a-input v-model:value="ruleForm.site" autocomplete="off" placeholder="请填写站点网址"></a-input>
+          <a-input v-model:value="ruleForm.site" placeholder="请填写站点网址"></a-input>
         </a-form-item>
 
         <a-form-item label="邮箱">
-          <a-input v-model:value="ruleForm.email" autocomplete="off" placeholder="请填写邮箱"></a-input>
+          <a-input v-model:value="ruleForm.email" placeholder="请填写邮箱"></a-input>
         </a-form-item>
 
         <a-form-item v-if="id" label="省市区">
@@ -170,7 +169,7 @@ const closeDraw = () => {
           <a-input v-model:value="ruleForm.address" :disabled="!!id" autocomplete="off" placeholder="请填写地址"></a-input>
         </a-form-item>
 
-        <a-form-item label="内容">
+        <a-form-item label="内容" name="content">
           <a-textarea v-model:value="ruleForm.content" :rows="3" placeholder="请填写内容"></a-textarea>
         </a-form-item>
 
@@ -180,7 +179,7 @@ const closeDraw = () => {
 
         <a-form-item label="设置">
           <a-checkbox v-model:checked="ruleForm.status">显示</a-checkbox>
-          <a-checkbox v-model:checked="ruleForm.notice">邮件通知</a-checkbox>
+          <a-checkbox v-model:checked="ruleForm.notice" :disabled="!ruleForm.email">邮件通知TA</a-checkbox>
         </a-form-item>
         
       </a-form>
@@ -192,7 +191,7 @@ const closeDraw = () => {
         style="flex: 1"
         type="primary"
         @click="onSubmit"
-      >{{ id ? '立即保存' : '立即添加' }}</a-button>
+      >{{ props.id ? '立即保存' : '立即添加' }}</a-button>
     </template>
   </yzp-draw>
 </template>

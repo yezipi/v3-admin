@@ -13,7 +13,7 @@
       </a-form-item>
 
       <a-form-item label="发件服务器" :wrapperCol="wrapperCol">
-        <a-input v-model:value="formState.hosts" placeholder="发件邮件服务器,例如：smtp.exmail.qq.com">
+        <a-input v-model:value="formState.host" placeholder="发件邮件服务器,例如：smtp.exmail.qq.com">
         </a-input>
       </a-form-item>
 
@@ -72,7 +72,7 @@ export default defineComponent({
     const formRef = ref();
 
     let formState = ref<MailSettingsConfig> ({
-      hosts: '',
+      host: '',
       port: '',
       send_nickname: '',
       send_mail: '',

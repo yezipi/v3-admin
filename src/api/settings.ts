@@ -22,7 +22,7 @@ export interface BaseSettingsConfig {
 }
 
 export interface MailSettingsConfig {
-  hosts: string,
+  host: string,
   port: string,
   send_nickname: string,
   send_mail: string,
@@ -130,7 +130,7 @@ export default new class Settings extends Request {
    * 保存邮件设置
    * @param { Object } data 邮件设置参数
    * @param { String } data.send_nickname 发送者昵称
-   * @param { String } data.hosts 邮件协议
+   * @param { String } data.host 邮件协议
    * @param { String } data.port 邮件端口
    * @param { String } data.send_mail 发送者邮箱账号
    * @param { String } data.send_pwd 发送者邮箱密码

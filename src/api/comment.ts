@@ -67,7 +67,7 @@ export default new class Comment extends Request {
    */
    public create(data: CommentSaveConfig) {
     const url = 'v1/client/comment'
-    return this.post(url, { ...data, loading: true })
+    return this.post(url, data)
   }
 
   /**
@@ -88,7 +88,7 @@ export default new class Comment extends Request {
    */
    public update(id: string, data: CommentUpdateConfig) {
     const url = `v1/comment/${id}`
-    return this.put(url, { ...data, loading: true, showMsg: true })
+    return this.put(url, { ...data, showMsg: true })
   }
 
   /**
@@ -96,9 +96,9 @@ export default new class Comment extends Request {
    * @param { String } id 评论id
    * @version 2021-11-05 zzc
    */
-   public detail(id: string) {
+   public getDetail(id: string) {
     const url = `v1/comment/${id}`
-    return this.get(url, { loading: true })
+    return this.get(url)
   }
 
   /**

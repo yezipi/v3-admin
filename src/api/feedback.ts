@@ -19,8 +19,8 @@ export default new class Feedback extends Request {
    * @version 2021-11-05 zzc
    */
    public create(data: CommentSaveConfig) {
-    const url = 'v1/client/feedback'
-    return this.post(url, { ...data, loading: true })
+    const url = 'v1/feedback'
+    return this.post(url, data)
   }
 
   /**
@@ -41,7 +41,7 @@ export default new class Feedback extends Request {
    */
    public update(id: string, data: CommentUpdateConfig) {
     const url = `v1/feedback/${id}`
-    return this.put(url, { ...data, loading: true, showMsg: true })
+    return this.put(url, { ...data, showMsg: true })
   }
 
   /**
@@ -49,9 +49,9 @@ export default new class Feedback extends Request {
    * @param { String } id 留言id
    * @version 2021-11-05 zzc
    */
-   public detail(id: string) {
+   public getDetail(id: string) {
     const url = `v1/feedback/${id}`
-    return this.get(url, { loading: true })
+    return this.get(url)
   }
 
   /**

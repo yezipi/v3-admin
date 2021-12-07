@@ -98,7 +98,7 @@ const toCreate = () => {
 
 // 删除
 const toDelete = (item: any) => {
-  confirm(`确定删除【${item.name}】吗？`, async () => {
+  confirm(`确定删除【${item.nickname}】的${title.value}吗？`, async () => {
     await api.destory(item.id)
     initList()
   })
@@ -135,7 +135,7 @@ const fnName = firstToUpper(type) + '.getList'
     <yzp-table :columns="columns" ref="tableRef" :url="fnName">
       <template #filter>
         <div></div>
-        <a-button type="primary" @click="toCreate">+ 创建{{ title }}</a-button>
+        <a-button v-if="type !== 'comment'" type="primary" @click="toCreate">+ 创建{{ title }}</a-button>
       </template>
 
       <template #status="{ scope }">
@@ -151,7 +151,16 @@ const fnName = firstToUpper(type) + '.getList'
       </template>
     </yzp-table>
 
-    <comments-edit v-model:visible="drawVisible" :api="api" :id="currId" :type="type" :title="title" @finish="initList"></comments-edit>
+    <comments-edit
+      v-if="type !== 'comment'"
+      v-model:visible="drawVisible"
+      :api="api"
+      :id="currId"
+      :type="type"
+      :title="title"
+      @finish="initList"
+    >
+    </comments-edit>
 
   </div>
 </template>

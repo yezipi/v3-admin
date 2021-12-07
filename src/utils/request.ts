@@ -32,7 +32,7 @@ axios.interceptors.request.use((config: AxiosRequestConfig) => {
 // 添加响应拦截器
 axios.interceptors.response.use((response: AxiosResponse) => {
   const res = response.data
-  const { params, data } = response.config
+  const { params, data, method } = response.config
   const { code, msg } = res
   const dataLoading = typeof data === 'string' ? (data && data.indexOf('loading') > -1) : false
   const paramsLoading = params && params.loading
@@ -50,7 +50,7 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   }
 
   if (code !== 1) {
-    if (showMsg) {
+    if (method !== 'get') {
       message.error(msg)
     }
     return Promise.reject(res)
