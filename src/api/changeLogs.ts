@@ -1,22 +1,23 @@
 // 标签接口
 import Request from '@/utils/request'
 
-export interface TagsListConfig {
+export interface ChangeLogsListConfig {
   page?: number,
   size?: number,
   loading?: boolean,
 }
 
-export default new class Tags extends Request {
+export default new class ChangeLogs extends Request {
 
   /**
    * 创建标签
    * @param { Object } params 参数
-   * @param { String } params.name 内容
+   * @param { String } params.content 内容
+   * @param { String } params.type 类型，fix, update, add, remove
    * @version 2021-11-05 zzc
    */
-   public create(data: { name: string, sort: number }) {
-    const url = 'v1/tags'
+   public create(data: { content: string, type: string }) {
+    const url = 'v1/changeLogs'
     return this.post(url, { ...data, showMsg: true })
   }
 
@@ -27,7 +28,7 @@ export default new class Tags extends Request {
    * @version 2021-11-05 zzc
    */
    public destory(id: string) {
-    const url = `v1/tags/${id}`
+    const url = `v1/changeLogs/${id}`
     return this.delete(url, { loading: true, showMsg: true })
   }
 
@@ -37,8 +38,8 @@ export default new class Tags extends Request {
    * @param { Obejct } data 同创建的参数
    * @version 2021-11-05 zzc
    */
-   public update(id: string, data: { name?: string, sort?: number }) {
-    const url = `v1/tags/${id}`
+   public update(id: string, data: { content?: string, type?: string }) {
+    const url = `v1/changeLogs/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
 
@@ -48,7 +49,7 @@ export default new class Tags extends Request {
    * @version 2021-11-05 zzc
    */
    public getDetail(id: string) {
-    const url = `v1/tags/${id}`
+    const url = `v1/changeLogs/${id}`
     return this.get(url)
   }
 
@@ -59,8 +60,8 @@ export default new class Tags extends Request {
    * @param { Number } params.size 页数
    * @version 2021-11-05 zzc
    */
-   public getList(params?: TagsListConfig) {
-    const url = 'v1/tags'
+   public getList(params?: ChangeLogsListConfig) {
+    const url = 'v1/changeLogs'
     return this.get(url, { ...params, loading: true })
   }
 }

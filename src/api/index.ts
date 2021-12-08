@@ -11,6 +11,8 @@ import Picture from './picture'
 import Blogroll from './blogroll'
 import Feedback from './feedback'
 import Comment from './comment'
+import ChangeLogs from './changeLogs'
+
 export interface ApiFn {
   create?: any,
   update?: any,
@@ -33,6 +35,7 @@ export interface ApiConfig {
   Blogroll: ApiFn,
   Feedback: ApiFn,
   Comment: ApiFn,
+  ChangeLogs: ApiFn
 }
 
 export default {
@@ -49,4 +52,5 @@ export default {
   Blogroll,
   Feedback,
   Comment,
+  ChangeLogs
 }
