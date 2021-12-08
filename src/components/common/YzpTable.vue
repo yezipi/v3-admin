@@ -102,8 +102,8 @@ export default defineComponent({
         const key = i.dataIndex
         const item = e[key]
 
-        // noTransform为false的话就不进行转换
-        if (!e[key] && typeof e[key] !== 'boolean' && !i.noTransform && !i.dict) {
+        // noTransform为false, 布尔值，数字类型的话就不进行转换
+        if (!e[key] && typeof e[key] !== 'boolean' && typeof e[key] !== 'number' && !i.noTransform && !i.dict) {
           e[key] = '-'
         }
 

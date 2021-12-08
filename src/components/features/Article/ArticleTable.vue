@@ -34,7 +34,7 @@
           </div>
         </template>
 
-        <template v-if="dataIndex === 'articleTitle'">
+        <template v-if="dataIndex === 'title'">
           <a class="article-title">
             <span v-if="record.recommend" class="at-recommend">【推荐】</span>
             <span v-if="record.top" class="at-top">【置顶】</span>
