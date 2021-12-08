@@ -6,47 +6,52 @@
         <a-button type="primary" @click="$router.push({ name: 'ColumnEdit' })">+ 创建栏目</a-button>
       </template>
 
-      <template #status="{ scope }">
-        <a-switch :checked="scope.record.status" @change="changeStatus(scope.record, $event)" />
-      </template>
+      <template #bodyCell="{ scope: { record, column: { dataIndex } } }">
 
-      <template #createdAt="{ scope }">
-        <span>{{ formatDate(scope.record.createdAt, 'YYYY-MM-DD hh:mm') }}</span>
-      </template>
-
-      <template #type="{ scope }">
-        <span>{{ setColumnTypeText(scope.record.type) }}</span>
-      </template>
-
-      <template #sort="{ scope }">
-        <a v-if="!scope.record.showSortInput" class="sort-wrap" @click="showSortInput(scope.record)">
-          <span>{{ scope.record.sort }}</span>
-          <EditOutlined />
-        </a>
-        <div v-else class="sort-wrap">
-          <a-input
-            v-model:value="scope.record.sort"
-            class="sort-input"
-            size="small"
-            type="number"
-            placeholder="请输入数字"
-            @pressEnter="confirmSortChange(scope.record)"
-          />
-          <a @click="confirmSortChange(scope.record)"><CheckOutlined /></a>
-        </div>
-      </template>
-
-      <template #action="{ scope }">
-        <template v-if="(scope.record.type === 'article' || scope.record.type === 'case') && !scope.record.column_id">
-          <a @click="toAdd(scope.record.id)">添加</a>
-          <a-divider type="vertical" />
+        <template v-if="dataIndex === 'status'">
+          <a-switch :checked="record.status" @change="changeStatus(record, $event)" />
         </template>
-        <a @click="toEdit(scope.record)">编辑</a>
-        <template v-if="scope.record.can_delete">
-          <a-divider type="vertical" />
-          <a @click="confirmDelete(scope.record)">删除</a>
+
+        <template v-if="dataIndex === 'createdAt'">
+          <span>{{ formatDate(record.createdAt, 'YYYY-MM-DD hh:mm') }}</span>
         </template>
+
+        <template v-if="dataIndex === 'type'">
+          <span>{{ setColumnTypeText(record.type) }}</span>
+        </template>
+
+        <template v-if="dataIndex === 'sort'">
+          <a v-if="!record.showSortInput" class="sort-wrap" @click="showSortInput(record)">
+            <span>{{ record.sort }}</span>
+            <EditOutlined />
+          </a>
+          <div v-else class="sort-wrap">
+            <a-input
+              v-model:value="record.sort"
+              class="sort-input"
+              size="small"
+              type="number"
+              placeholder="请输入数字"
+              @pressEnter="confirmSortChange(record)"
+            />
+            <a @click="confirmSortChange(record)"><CheckOutlined /></a>
+          </div>
+        </template>
+
+        <template v-if="dataIndex === 'action'">
+          <template v-if="(record.type === 'article' || record.type === 'case') && !record.column_id">
+            <a @click="toAdd(record.id)">添加</a>
+            <a-divider type="vertical" />
+          </template>
+          <a @click="toEdit(record)">编辑</a>
+          <template v-if="record.can_delete">
+            <a-divider type="vertical" />
+            <a @click="confirmDelete(record)">删除</a>
+          </template>
+        </template>
+
       </template>
+
     </yzp-table>
   </div>
 </template>
@@ -79,7 +84,6 @@ export default defineComponent({
       {
         title: '类型',
         dataIndex: 'type',
-        slots: { customRender: 'type' },
       },
       {
         title: '是否新窗口',
@@ -93,17 +97,14 @@ export default defineComponent({
         title: '排序  ',
         dataIndex: 'sort',
         width: 120,
-        slots: { customRender: 'sort' },
       },
       {
         title: '状态',
         dataIndex: 'status',
-        slots: { customRender: 'status' },
       },
       {
         title: '操作',
-        key: 'action',
-        slots: { customRender: 'action' },
+        dataIndex: 'action',
       },
     ])
 

@@ -25,52 +25,57 @@
         </a-button>
       </template>
 
-      <template #cover_thumb="{ scope }">
-        <div class="article-cover">
-          <div class="cover-bg" :style="{ background: `url(${scope.record.cover_thumb || defaultPic}) center` }"></div>
-          <img class="cover-default" :src="defaultPic" />
-        </div>
-      </template>
+      <template v-slot:bodyCell="{ scope: { record, column: { dataIndex } } }">
+        
+        <template v-if="dataIndex === 'cover_thumb'">
+          <div class="article-cover">
+            <div class="cover-bg" :style="{ background: `url(${record.cover_thumb || defaultPic}) center` }"></div>
+            <img class="cover-default" :src="defaultPic" />
+          </div>
+        </template>
 
-      <template #articleTitle="{ scope }">
-        <a class="article-title">
-          <span v-if="scope.record.recommend" class="at-recommend">【推荐】</span>
-          <span v-if="scope.record.top" class="at-top">【置顶】</span>
-          <span class="at-text">{{ scope.record.title }}</span>
-        </a>
-      </template>
+        <template v-if="dataIndex === 'articleTitle'">
+          <a class="article-title">
+            <span v-if="record.recommend" class="at-recommend">【推荐】</span>
+            <span v-if="record.top" class="at-top">【置顶】</span>
+            <span class="at-text">{{ record.title }}</span>
+          </a>
+        </template>
 
-      <template #subcolumn="{ scope }">
-        <span v-if="scope.record.subcolumn">{{ scope.record.subcolumn.name }}</span>
-        <span v-else style="color: red">分类已删除</span>
-      </template>
+        <template v-if="dataIndex === 'subcolumn'">
+          <span v-if="record.subcolumn">{{ record.subname }}</span>
+          <span v-else style="color: red">分类已删除</span>
+        </template>
 
-      <template #tags="{ scope }">
-        <div v-if="scope.record.tags">
-          <a-tag
-            v-for="(sub, idx) in scope.record.tags.split(',')"
-            :key="idx"
-            :color="tagsColors[parseInt(String(Math.random() * 7))]"
-          >
-            {{ sub }}
-          </a-tag>
-        </div>
-        <span v-else>-</span>
-      </template>
+        <template v-if="dataIndex === 'tags'">
+          <div v-if="record.tags">
+            <a-tag
+              v-for="(sub, idx) in record.tags.split(',')"
+              :key="idx"
+              :color="tagsColors[parseInt(String(Math.random() * 7))]"
+            >
+              {{ sub }}
+            </a-tag>
+          </div>
+          <span v-else>-</span>
+        </template>
 
-      <template #recommend="{ scope }">
-        <a-switch :checked="scope.record.recommend" @change="updateArticle(scope.record, $event, 'recommend')" />
-      </template>
+        <template v-if="dataIndex === 'recommend'">
+          <a-switch :checked="record.recommend" @change="updateArticle(record, $event, 'recommend')" />
+        </template>
 
-      <template #status="{ scope }">
-        <a-switch :checked="scope.record.status" @change="updateArticle(scope.record, $event, 'status')" />
-      </template>
+        <template v-if="dataIndex === 'status'">
+          <a-switch :checked="record.status" @change="updateArticle(record, $event, 'status')" />
+        </template>
 
-      <template #action="{ scope }">
-        <a @click="toEdit(scope.record.id)">编辑</a>
-        <a-divider type="vertical" />
-        <a @click="confirmDelete(scope.record)">删除</a>
+        <template v-if="dataIndex === 'action'">
+          <a @click="toEdit(record.id)">编辑</a>
+          <a-divider type="vertical" />
+          <a @click="confirmDelete(record)">删除</a>
+        </template>
+
       </template>
+      
     </yzp-table>
   </div>
 </template>
@@ -96,13 +101,11 @@ export default defineComponent({
         title: '封面',
         dataIndex: 'cover_thumb',
         width: 100,
-        slots: { customRender: 'cover_thumb' },
       },
       {
         title: '标题',
         dataIndex: 'title',
         width: 300,
-        slots: { customRender: 'articleTitle' },
       },
       {
         title: '评论',
@@ -123,24 +126,20 @@ export default defineComponent({
         title: '分类',
         dataIndex: 'subcolumn',
         width: 100,
-        slots: { customRender: 'subcolumn' },
       },
       {
         title: '标签',
         dataIndex: 'tags',
         width: 200,
-        slots: { customRender: 'tags' },
       },
       {
         title: '推荐',
         dataIndex: 'recommend',
-        slots: { customRender: 'recommend' },
         width: 100,
       },
       {
         title: '状态',
         dataIndex: 'status',
-        slots: { customRender: 'status' },
         width: 100,
       },
       {
@@ -151,9 +150,8 @@ export default defineComponent({
       },
       {
         title: '操作',
-        key: 'action',
+        dataIndex: 'action',
         width: 100,
-        slots: { customRender: 'action' },
       },
     ])
     

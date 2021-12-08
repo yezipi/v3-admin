@@ -8,50 +8,55 @@
         <a-button type="primary" @click="toCreate">+ 创建轮播图</a-button>
       </template>
 
-      <template #cover="{ scope }">
-        <div class="article-cover">
-          <div class="cover-bg" :style="{ background: `url(${scope.record.cover || defaultPic}) center` }"></div>
-          <img class="cover-default" :src="defaultPic" />
-        </div>
-      </template>
+      <template #bodyCell="{ scope: { column: { dataIndex }, record } }">
 
-      <template #sort="{ scope }">
-        <a v-if="!scope.record.showSortInput" class="sort-wrap" @click="showSortInput(scope.record)">
-          <span>{{ scope.record.sort }}</span>
-          <EditOutlined />
-        </a>
-        <div v-else class="sort-wrap">
-          <a-input
-            v-model:value="scope.record.sort"
-            class="sort-input"
-            size="small"
-            type="number"
-            placeholder="请输入数字"
-            @pressEnter="confirmSortChange(scope.record)"
-          />
-          <a @click="confirmSortChange(scope.record)"><CheckOutlined /></a>
-        </div>
-      </template>
+        <template v-if="dataIndex === 'cover'">
+          <div class="article-cover">
+            <div class="cover-bg" :style="{ background: `url(${record.cover || defaultPic}) center` }"></div>
+            <img class="cover-default" :src="defaultPic" />
+          </div>
+        </template>
 
-      <template #target="{ scope }">
-        <span v-if="scope.record.article">《{{ scope.record.article.title }}》</span>
-        <a v-else-if="scope.record.url">{{ scope.record.url }}</a>
-        <span v-else>-</span>
-      </template>
+        <template v-if="dataIndex === 'sort'">
+          <a v-if="!record.showSortInput" class="sort-wrap" @click="showSortInput(record)">
+            <span>{{ record.sort }}</span>
+            <EditOutlined />
+          </a>
+          <div v-else class="sort-wrap">
+            <a-input
+              v-model:value="record.sort"
+              class="sort-input"
+              size="small"
+              type="number"
+              placeholder="请输入数字"
+              @pressEnter="confirmSortChange(record)"
+            />
+            <a @click="confirmSortChange(record)"><CheckOutlined /></a>
+          </div>
+        </template>
 
-      <template #status="{ scope }">
-        <a-switch :checked="scope.record.status" @change="changeStatus(scope.record, $event)" />
-      </template>
+        <template v-if="dataIndex === 'target'">
+          <span v-if="record.article">《{{ record.article.title }}》</span>
+          <a v-else-if="record.url">{{ record.url }}</a>
+          <span v-else>-</span>
+        </template>
 
-      <template #action="{ scope }">
-        <span>
-          <a @click="toEdit(scope.record.id)">编辑</a>
-          <template v-if="scope.record.role === 'admin'">
-            <a-divider type="vertical" />
-            <a @click="confirmDelete(scope.record)">删除</a>
-          </template>
-        </span>
+        <template v-if="dataIndex === 'status'">
+          <a-switch :checked="record.status" @change="changeStatus(record, $event)" />
+        </template>
+
+        <template v-if="dataIndex === 'action'">
+          <span>
+            <a @click="toEdit(record.id)">编辑</a>
+            <template v-if="record.role === 'admin'">
+              <a-divider type="vertical" />
+              <a @click="confirmDelete(record)">删除</a>
+            </template>
+          </span>
+        </template>
+
       </template>
+      
     </yzp-table>
 
     <banner-edit v-model:visible="drawVisible" :id="currId" @finish="initList"></banner-edit>
@@ -76,7 +81,6 @@ export default defineComponent({
       {
         title: '封面',
         dataIndex: 'cover',
-        slots: { customRender: 'cover' },
         width: 100,
       },
       {
@@ -87,7 +91,6 @@ export default defineComponent({
         title: '排序',
         dataIndex: 'sort',
         width: 120,
-        slots: { customRender: 'sort' },
       },
       {
         title: '类型',
@@ -102,12 +105,10 @@ export default defineComponent({
       {
         title: '目标',
         dataIndex: 'target',
-        slots: { customRender: 'target' },
       },
       {
         title: '状态',
         dataIndex: 'status',
-        slots: { customRender: 'status' },
       },
       {
         title: '时间',
@@ -116,8 +117,7 @@ export default defineComponent({
       },
       {
         title: '操作',
-        key: 'action',
-        slots: { customRender: 'action' },
+        dataIndex: 'action',
       },
     ])
 

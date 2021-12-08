@@ -8,11 +8,11 @@
         <a-button type="primary" @click="toCreate">+ 创建标签</a-button>
       </template>
 
-      <template #action="{ scope }">
-        <span>
-          <a @click="toEdit(scope.record.id)">编辑</a>
+      <template #bodyCell="{ scope: { record, column } }">
+        <span v-if="column.dataIndex === 'action'">
+          <a @click="toEdit(record.id)">编辑</a>
           <a-divider type="vertical" />
-          <a @click="confirmDelete(scope.record)">删除</a>
+          <a @click="confirmDelete(record)">删除</a>
         </span>
       </template>
     </yzp-table>
@@ -45,8 +45,7 @@ export default defineComponent({
       },
       {
         title: '操作',
-        key: 'action',
-        slots: { customRender: 'action' },
+        dataIndex: 'action',
       },
     ])
 

@@ -9,10 +9,6 @@ const columns = reactive([
     dataIndex: 'nickname',
   },
   {
-    title: '排序',
-    dataIndex: 'sort',
-  },
-  {
     title: '内容',
     dataIndex: 'content',
   },
@@ -39,7 +35,6 @@ const columns = reactive([
   {
     title: '状态',
     dataIndex: 'status',
-    slots: { customRender: 'status' },
   },
   {
     title: '时间',
@@ -48,8 +43,7 @@ const columns = reactive([
   },
   {
     title: '操作',
-    key: 'action',
-    slots: { customRender: 'action' },
+    dataIndex: 'action',
   },
 ])
 
@@ -75,6 +69,10 @@ const title = ref()
 switch (type) {
   case 'blogroll':
     title.value = '友链'
+    columns.unshift({
+      title: '排序',
+      dataIndex: 'sort',
+    })
     break;
   case 'comment':
     title.value = '评论'
@@ -138,17 +136,20 @@ const fnName = firstToUpper(type) + '.getList'
         <a-button v-if="type !== 'comment'" type="primary" @click="toCreate">+ 创建{{ title }}</a-button>
       </template>
 
-      <template #status="{ scope }">
-        <a-switch :checked="scope.record.status" @change="toUpdate(scope.record, $event, 'status')" />
+      <template #bodyCell="{ scope: { column: { dataIndex }, record } }">
+        <template v-if="dataIndex === 'status'">
+          <a-switch :checked="record.status" @change="toUpdate(record, $event, 'status')" />
+        </template>
+
+        <template v-if="dataIndex === 'action'">
+          <span>
+            <a @click="toEdit(record.id)">编辑</a>
+            <a-divider type="vertical" />
+            <a @click="toDelete(record)">删除</a>
+          </span>
+        </template>
       </template>
 
-      <template #action="{ scope }">
-        <span>
-          <a @click="toEdit(scope.record.id)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="toDelete(scope.record)">删除</a>
-        </span>
-      </template>
     </yzp-table>
 
     <comments-edit

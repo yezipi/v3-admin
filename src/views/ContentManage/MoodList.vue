@@ -8,19 +8,21 @@
         <a-button type="primary" @click="toCreate">+ 发布微语</a-button>
       </template>
 
-      <template #content="{ scope }">
-        <span v-if="scope.record.content.indexOf('<img') > -1" style="color: red">【图】</span>
-        <a>
-          {{ scope.record.content.replace(/(<([^>]+)>)/ig, '').substring(0, 30) + '...' }}
-        </a>
-      </template>
+      <template #bodyCell="{ scope: { record, column: { dataIndex } } }">
+        <template v-if="dataIndex === 'content'">
+          <span v-if="record.content.indexOf('<img') > -1" style="color: red">【图】</span>
+          <a>
+            {{ record.content.replace(/(<([^>]+)>)/ig, '').substring(0, 30) + '...' }}
+          </a>
+        </template>
 
-      <template #action="{ scope }">
-        <span>
-          <a @click="toEdit(scope.record.id)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="confirmDelete(scope.record)">删除</a>
-        </span>
+        <template v-if="dataIndex === 'action'">
+          <span>
+            <a @click="toEdit(record.id)">编辑</a>
+            <a-divider type="vertical" />
+            <a @click="confirmDelete(record)">删除</a>
+          </span>
+        </template>
       </template>
     </yzp-table>
 
@@ -39,17 +41,18 @@ export default defineComponent({
       {
         title: '内容',
         dataIndex: 'content',
-        slots: { customRender: 'content' },
       },
       {
         title: '评论',
         dataIndex: 'comments_count',
+        noTransform: true,
         width: 100,
       },
       {
         title: '浏览',
         dataIndex: 'view',
         width: 100,
+        noTransform: true
       },
       {
         title: '状态',
@@ -67,9 +70,8 @@ export default defineComponent({
       },
       {
         title: '操作',
-        key: 'action',
+        dataIndex: 'action',
         width: 200,
-        slots: { customRender: 'action' },
       },
     ])
 
