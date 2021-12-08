@@ -19,13 +19,19 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     },
   },
-  // css: {
-  //   preprocessorOptions: {
-  //     less: {
-  //       javascriptEnabled: false
-  //     }
-  //   }
-  // },
+  // 开启less支持
+  css: {
+    preprocessorOptions: {
+      less: {
+        modifyVars: {
+          'primary-color': '#ff6666',
+          'link-color': '#ff6666',
+          'border-radius-base': '4px',
+        },
+        javascriptEnabled: true
+      }
+    },
+  },
   server: {
     host: '0.0.0.0',
     proxy: {

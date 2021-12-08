@@ -94,7 +94,6 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-@import './assets/css/reset.less';
 
 .halfWhite {
   background: rgba(255,255,255,0.5)!important;

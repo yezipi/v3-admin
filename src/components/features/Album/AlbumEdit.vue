@@ -41,6 +41,7 @@ const checkPassword = async (rule: any, val: string) => {
 
 const rules = reactive({
   title: [{ message: '标题必须', required: true, trigger: 'blur' }],
+  cover: [{ message: '封面必须', required: true, trigger: 'change' }],
   password: [{ trigger: 'blur', validator: checkPassword }],
 })
 

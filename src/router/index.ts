@@ -52,13 +52,13 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/mood/edit',
         name: 'MoodEdit',
-        meta: { title: '微语发布' },
+        meta: { title: '编辑微语', noMenu: true },
         component: () => import('@/views/ContentPublish/MoodEdit.vue'),
       },
       {
         path: '/mood/add',
         name: 'MoodAdd',
-        meta: { title: '编辑微语' },
+        meta: { title: '微语发布' },
         component: () => import('@/views/ContentPublish/MoodEdit.vue'),
       },
     ],
