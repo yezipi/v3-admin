@@ -48,9 +48,9 @@
         </template>
 
         <template v-if="dataIndex === 'tags'">
-          <div v-if="record.tags">
+          <div v-if="record.tags && record.tags.length">
             <a-tag
-              v-for="(sub, idx) in record.tags.split(',')"
+              v-for="(sub, idx) in record.tags"
               :key="idx"
               :color="tagsColors[parseInt(String(Math.random() * 7))]"
             >

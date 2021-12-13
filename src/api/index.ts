@@ -12,6 +12,7 @@ import Blogroll from './blogroll'
 import Feedback from './feedback'
 import Comment from './comment'
 import ChangeLogs from './changeLogs'
+import Role from './role'
 
 export interface ApiFn {
   create?: any,
@@ -36,6 +37,7 @@ export interface ApiConfig {
   Feedback: ApiFn,
   Comment: ApiFn,
   ChangeLogs: ApiFn
+  Role: ApiFn,
 }
 
 export default {
@@ -52,5 +54,6 @@ export default {
   Blogroll,
   Feedback,
   Comment,
-  ChangeLogs
+  ChangeLogs,
+  Role
 }

@@ -8,28 +8,31 @@
         <a-button type="primary" @click="toCreate">+ 创建账号</a-button>
       </template>
 
-      <template #avatar="{ scope }">
-        <a-avatar :size="40" :src="scope.record.avatar"></a-avatar>
-      </template>
+      <template #bodyCell="{ scope: { record, column: { dataIndex } } }">
+        <template v-if="dataIndex === 'avatar'">
+          <a-avatar :size="40" :src="record.avatar"></a-avatar>
+        </template>
 
-      <template #status="{ scope }">
-        <a-switch v-if="scope.record.role === 'admin'" :checked="scope.record.status" @change="changeStatus(scope.record, $event)" />
-        <span v-else>正常</span>
-      </template>
+        <template v-if="dataIndex === 'status'">
+          <a-switch v-if="record.role === 'admin'" :checked="record.status" @change="changeStatus(record, $event)" />
+          <span v-else>正常</span>
+        </template>
 
-      <template #role="{ scope }">
-        <span>{{ setUserRole(scope.record.role) }}</span>
-      </template>
+        <template v-if="dataIndex === 'role'">
+          <span>{{ record.role.name }}</span>
+        </template>
 
-      <template #action="{ scope }">
-        <span>
-          <a @click="toEdit(scope.record.id)">编辑</a>
-          <template v-if="scope.record.role === 'admin'">
-            <a-divider type="vertical" />
-            <a @click="confirmDelete(scope.record)">删除</a>
-          </template>
-        </span>
+        <template v-if="dataIndex === 'action'">
+          <span>
+            <a @click="toEdit(record.id)">编辑</a>
+            <template v-if="record.role.type === 'admin'">
+              <a-divider type="vertical" />
+              <a @click="confirmDelete(record)">删除</a>
+            </template>
+          </span>
+        </template>
       </template>
+      
     </yzp-table>
 
     <user-edit v-model:visible="drawVisible" :id="userId" @finish="initList"></user-edit>
@@ -51,7 +54,6 @@ export default defineComponent({
       {
         title: '头像',
         dataIndex: 'avatar',
-        slots: { customRender: 'avatar' },
       },
       {
         title: '账号',
@@ -64,12 +66,10 @@ export default defineComponent({
       {
         title: '角色',
         dataIndex: 'role',
-        slots: { customRender: 'role' },
       },
       {
         title: '状态',
         dataIndex: 'status',
-        slots: { customRender: 'status' },
       },
       {
         title: '时间',
@@ -78,8 +78,7 @@ export default defineComponent({
       },
       {
         title: '操作',
-        key: 'action',
-        slots: { customRender: 'action' },
+        dataIndex: 'action',
       },
     ])
 

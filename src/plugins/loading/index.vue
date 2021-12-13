@@ -68,9 +68,9 @@ export default defineComponent({
 .yzp-loading {
   position: fixed;
   background: rgba(255,255,255,0);
-  left: 0;
+  left: 200px;
   right: 0;
-  top: 0;
+  top: 70px;
   bottom: 0;
   z-index: 9;
   display: flex;

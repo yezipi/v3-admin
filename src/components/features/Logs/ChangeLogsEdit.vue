@@ -1,14 +1,13 @@
 <template>
-  <yzp-draw v-model:visible="drawState" :title="id ? '编辑日志' : '添加日志'" @hide="closeDraw">
+  <yzp-draw v-model:visible="drawState" :title="id ? '编辑版本' : '添加版本'" @hide="closeDraw">
     <template #content>
       <a-spin class="center-spin" :spinning="wrapLoading" tip="加载中..."></a-spin>
       <a-form v-if="!wrapLoading" ref="formRef" :model="ruleForm" :rules="rules" :label-col="labelCol">
-        <a-form-item label="内容" name="content">
-          <a-input v-model:value="ruleForm.content" autocomplete="off" :maxlength="20" placeholder="请填写日志名称"></a-input>
+        <a-form-item label="版本号" name="version">
+          <a-input v-model:value="ruleForm.version" placeholder="请填写版本号"  :maxlength="20" style="width: 100%"></a-input>
         </a-form-item>
-
-        <a-form-item label="排序" name="type">
-          <a-input v-model:value="ruleForm.type" placeholder="请填写日志排序" style="width: 100%"></a-input>
+        <a-form-item label="更新内容" name="content">
+          <a-textarea v-model:value="ruleForm.content" :rows="5" placeholder="请填写更新内容"></a-textarea>
         </a-form-item>
       </a-form>
     </template>
@@ -43,19 +42,27 @@ export default defineComponent({
     const formRef = ref()
     const ruleForm = ref({
       content: '',
-      type: '',
+      version: '',
     })
 
+    // 检查版本号是否正确
+    const checkVersion = async (rule: any, val: any) => {
+      const str = val ? String(val).split('.') : []
+      if (str.length < 3) {
+        return Promise.reject('版本类型不对，例如：1.0.1')
+      }
+    }
+
     const rules = {
-      content: [{ message: '名称必须', required: true, trigger: 'blur' }],
-      cover: [{ message: '封面必须', required: true, trigger: 'change' }],
+      content: [{ message: '内容必须', required: true, trigger: 'blur' }],
+      version: [{ trigger: 'blur', required: true, validator: checkVersion }],
     }
 
     watch(() => props.visible, (val: boolean) => {
       drawState.value = val
       ruleForm.value = {
         content: '',
-        type: '',
+        version: '',
       }
     })
 
