@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import RoleApi from '@/api/role'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import state from '@/store/state'
 
 const props = defineProps({
   visible: {
@@ -33,10 +35,17 @@ const rules = {
   name: [{ message: '名称必须', required: true, trigger: 'blur' }],
   cover: [{ message: '封面必须', required: true, trigger: 'change' }],
 }
-
+const store = useStore()
+const user = computed(() => store.state.user)
 const router = useRouter()
+const routes = [ ...router.options.routes ]
 
-treeData.value = router.options.routes
+treeData.value = routes.map((e: any) => {
+  return {
+    disableCheckbox: e.meta.noMenu || e.name === 'Home',
+    ...e,
+  }
+})
 
 watch(() => props.visible, (val: boolean) => {
   drawState.value = val
@@ -61,7 +70,16 @@ const getInfo = async (id: any) => {
     
     // 如果是超级管理员，默认全选
     if (data.type === 'super') {
-      const allRoutes = treeData.value.map((e: any) => e.children || e).flat().map((e: any) => e.name)
+      const allRoutes: Array<string> = []
+      treeData.value.forEach((e: any) => {
+        allRoutes.push(e.name)
+        if (e.children) {
+         e.children.forEach((i: any) => {
+           allRoutes.push(i.name)
+         }) 
+        }
+      })
+      console.log(allRoutes)
       ruleForm.value.permissions = allRoutes
     }
   } catch (e) {
@@ -77,6 +95,11 @@ const onSubmit = () => {
     try {
       if (props.id) {
         await RoleApi.update(props.id as any, ruleForm.value)
+        // 如果是当前登录用户，需要更新用户权限信息
+        if (user.value.id === props.id) {
+          const permissions = ruleForm.value.permissions
+          store.commit('updateUser', { ...state.user, role: { ...state.user.role, permissions } })
+        }
       }
       closeDraw()
       emit('finish', true)
