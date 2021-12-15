@@ -4,6 +4,8 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    403: typeof import('./src/components/common/403.vue')['default']
+    404: typeof import('./src/components/common/404.vue')['default']
     AAvatar: typeof import('ant-design-vue/es')['Avatar']
     ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
     ABreadcrumbItem: typeof import('ant-design-vue/es')['BreadcrumbItem']
@@ -28,6 +30,7 @@ declare module 'vue' {
     APagination: typeof import('ant-design-vue/es')['Pagination']
     ARadio: typeof import('ant-design-vue/es')['Radio']
     ARadioGroup: typeof import('ant-design-vue/es')['RadioGroup']
+    AResult: typeof import('ant-design-vue/es')['Result']
     ArticleForm: typeof import('./src/components/features/Article/ArticleForm.vue')['default']
     ArticleSearch: typeof import('./src/components/features/Article/ArticleSearch.vue')['default']
     ArticleTable: typeof import('./src/components/features/Article/ArticleTable.vue')['default']

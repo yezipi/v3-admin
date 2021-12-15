@@ -68,19 +68,21 @@ const getInfo = async (id: any) => {
     const { data } = await RoleApi.getDetail(id)
     ruleForm.value = data
     
-    // 如果是超级管理员，默认全选
+    // 如果是超级管理员，默认全选, 否则默认选择其他几个
     if (data.type === 'super') {
-      const allRoutes: Array<string> = []
-      treeData.value.forEach((e: any) => {
-        allRoutes.push(e.name)
+      const allRoutesName: Array<string> = []
+      routes.forEach((e: any) => {
+        allRoutesName.push(e.name)
         if (e.children) {
          e.children.forEach((i: any) => {
-           allRoutes.push(i.name)
+           allRoutesName.push(i.name)
          }) 
         }
       })
-      console.log(allRoutes)
-      ruleForm.value.permissions = allRoutes
+      console.log(allRoutesName)
+      ruleForm.value.permissions = allRoutesName
+    } else {
+      ruleForm.value.permissions = routes.filter((e: any) => e.meta.noAuth || e.name === 'Home').map((e: any) => e.name)
     }
   } catch (e) {
     console.log(e)

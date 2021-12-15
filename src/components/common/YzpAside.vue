@@ -13,14 +13,14 @@
       @openChange="onOpenChange"
     >
       <template v-for="(item) in menus">
-        <a-menu-item v-if="!item.children" :key="item.name" @click="onMenuClick(item)">
+        <a-menu-item v-if="!item.children && permissions.includes(item.name)" :key="item.name" @click="onMenuClick(item)">
           <template #icon>
             <component :is="item.meta.icon"></component>
           </template>
           {{ item.meta.title }}
         </a-menu-item>
         <template v-else>
-          <a-sub-menu :key="item.name">
+          <a-sub-menu v-if="permissions.includes(item.name)" :key="item.name">
             <template #icon>
               <component :is="item.meta.icon"></component>
             </template>
@@ -38,8 +38,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRaw, toRefs, watch } from 'vue'
+import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useRouter  } from 'vue-router'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   props: {
@@ -58,6 +59,11 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter()
+    const store = useStore()
+
+    const permissions = computed(() => store.getters.permissions)
+
+    console.log(permissions.value.includes('Home'))
 
     const state = reactive({
       collapsed: false,
@@ -105,6 +111,7 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      permissions,
       toggleCollapsed,
       onMenuClick,
       onOpenChange,

@@ -11,6 +11,7 @@ const app = createApp(App)
 Router.beforeEach((to: any, from: any, next: any) => {
   const { meta, matched, name } = to
   document.title = meta.title || '未命名'
+
   if (!Store.state.token && name !== 'Login') {
     Router.replace({
       name: 'Login',
@@ -20,10 +21,17 @@ Router.beforeEach((to: any, from: any, next: any) => {
     })
     return
   }
+
   if (!name || (meta.noLink && matched.length === 1)) {
-    next('/404')
+    next('/result?status=404')
     return
   }
+
+  if (!Store.getters.permissions.includes(to.name) && !meta.noAuth) {
+    next('/result?status=403')
+    return
+  }
+
   next()
 
 });

@@ -64,8 +64,8 @@ export default defineComponent({
     const user = computed(() => Store.state.user)
 
     const logout = () => {
-      Store.dispatch('clearUser')
       Router.replace('/login')
+      Store.dispatch('clearUser')
     }
 
     return {

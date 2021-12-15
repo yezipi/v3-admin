@@ -2,17 +2,15 @@ export default {
   set: (key: string, value: any) => {
     let val = value
     if (typeof val === 'object') {
-      val = JSON.stringify(val)
+      val = JSON.stringify({ type: 'object', data: val })
     }
-    return localStorage.setItem(key, val)
+    localStorage.setItem(key, val)
   },
 
   get: (key: string) => {
-    let val: any = localStorage.getItem(key)
-    try {
-      val = JSON.parse(val)
-    } catch (e) {
-      console.log(e)
+    const val: any = localStorage.getItem(key)
+    if (val.indexOf('"type":"object"') > -1) {
+      return JSON.parse(val).data
     }
     return val
   },

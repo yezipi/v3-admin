@@ -20,16 +20,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/Home.vue'),
   },
   {
-    path: '/404',
-    name: '404',
-    component: () => import( '@/views/404.vue'),
-    meta: { title: '404', noAuth: true, noMenu: true },
-  },
-  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/Login.vue'),
     meta: { noAuth: true, title: '登录', noMenu: true },
+  },
+  {
+    path: '/result',
+    name: 'Result',
+    component: () => import( '@/views/Result.vue'),
+    meta: { title: '结果页', noAuth: true, noMenu: true },
   },
   {
     path: '/content-publish',
