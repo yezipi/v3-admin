@@ -9,9 +9,18 @@ import '@/assets/css/reset.less'
 const app = createApp(App)
 
 Router.beforeEach((to: any, from: any, next: any) => {
-  console.log(to.fullPath)
-  document.title = to.meta.title || '未命名'
-  if (!to.name || (to.meta.noLink && to.matched.length === 1)) {
+  const { meta, matched, name } = to
+  document.title = meta.title || '未命名'
+  if (!Store.state.token && name !== 'Login') {
+    Router.replace({
+      name: 'Login',
+      query: {
+        referrer: name
+      }
+    })
+    return
+  }
+  if (!name || (meta.noLink && matched.length === 1)) {
     next('/404')
     return
   }

@@ -1,7 +1,7 @@
-import { db } from '../utils/index'
+import db from '@/utils/db'
 import { MutationTree } from 'vuex'
 import { State } from './state'
-import Loading from '../plugins/loading'
+import Loading from '@/plugins/loading'
 
 const mutations: MutationTree<State> = {
   updateToken(state: any, token: any) {

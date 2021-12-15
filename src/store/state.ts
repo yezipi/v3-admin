@@ -1,4 +1,4 @@
-import { db } from '../utils/index'
+import db from '@/utils/db'
 
 // 手动声明 state 类型
 export interface State {

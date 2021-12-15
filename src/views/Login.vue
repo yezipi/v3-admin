@@ -2,28 +2,23 @@
   <div class="login-page">
     <div class="lp-main">
       <h2>管理员登录</h2>
-        <a-form
-          ref="formRef"
-          :model="formVal"
-          :rules="rules"
-          class="lp-form"
-        >
+      <a-form ref="formRef" :model="formVal" :rules="rules" class="lp-form">
         <a-form-item class="lp-input" name="name">
           <a-input placeholder="请输入账号" v-model:value="formVal.name">
             <template #prefix>
-              <UserOutlined :style="{color: '#999999'}" />
+              <UserOutlined :style="{ color: '#999999' }" />
             </template>
           </a-input>
         </a-form-item>
         <a-form-item class="lp-input" name="password">
           <a-input placeholder="请输入密码" type="password" v-model:value="formVal.password">
             <template #prefix>
-              <LockOutlined :style="{color: '#999999'}" />
+              <LockOutlined :style="{ color: '#999999' }" />
             </template>
           </a-input>
         </a-form-item>
         <a-form-item class="lp-submit">
-          <a-button size="large" block type="primary" :loading="loading"  @click="onSubmit">登录</a-button>
+          <a-button size="large" block type="primary" :loading="loading" @click="onSubmit">登录</a-button>
         </a-form-item>
       </a-form>
       <span class="lp-copyright">椰子皮博客2016 - {{ new Date().getFullYear() }} © 版权所有</span>
@@ -31,65 +26,55 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, reactive } from 'vue'
+<script lang="ts" setup>
+import { ref, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import UserApi from '@/api/user'
 
-export default defineComponent({
-  components: { UserOutlined, LockOutlined },
-  setup() {
-    const formRef = ref();
+const formRef = ref();
 
-    const formVal = reactive({
-      name: '',
-      password: '',
-    });
+const formVal = reactive({
+  name: '',
+  password: '',
+});
 
-    const loading = ref(false)
+const loading = ref(false)
 
-    const { commit } = useStore()
-    const router = useRouter()
+const { commit } = useStore()
+const router = useRouter()
+const route = useRoute()
+const referrer: any = route.query.referrer
 
-    const rules = {
-      name: {
-        required: true,
-        message: '请输入正确的账号',
-      },
-      password: {
-        required: true,
-        message: '请输入正确的密码',
-      },
-    };
+const rules = {
+  name: {
+    required: true,
+    message: '请输入正确的账号',
+  },
+  password: {
+    required: true,
+    message: '请输入正确的密码',
+  },
+};
 
-    const onSubmit = () => {
-      formRef.value.validate().then(async () => {
-        try {
-          loading.value = true
-          const { data: { token, user } } = await UserApi.login(formVal)
-          commit('updateToken', token)
-          commit('updateUser', user)
-          router.replace('/')
-        } catch (e) {
-          console.log(e)
-        }  finally {
-          loading.value = false
-        }
+const onSubmit = () => {
+  formRef.value.validate().then(async () => {
+    try {
+      loading.value = true
+      const { data: { token, user } } = await UserApi.login(formVal)
+      commit('updateToken', token)
+      commit('updateUser', user)
+      router.replace({
+        name: referrer && referrer !== '/login' ? decodeURIComponent(referrer) : 'Home'
       })
-    };
-
-    return {
-      formRef,
-      formVal,
-      rules,
-      loading,
-      onSubmit
+    } catch (e) {
+      console.log(e)
+    } finally {
+      loading.value = false
     }
-  }
-
-})
+  })
+};
 </script>
 
 <style scoped lang="less">
