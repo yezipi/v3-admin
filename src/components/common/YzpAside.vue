@@ -13,21 +13,21 @@
       @openChange="onOpenChange"
     >
       <template v-for="(item) in menus">
-        <a-menu-item v-if="!item.children && permissions.includes(item.name)" :key="item.name" @click="onMenuClick(item)">
+        <a-menu-item v-if="!item.children && showMenu(item.name)" :key="item.name" @click="onMenuClick(item)">
           <template #icon>
             <component :is="item.meta.icon"></component>
           </template>
           {{ item.meta.title }}
         </a-menu-item>
         <template v-else>
-          <a-sub-menu v-if="permissions.includes(item.name)" :key="item.name">
+          <a-sub-menu v-if=" showMenu(item.name)" :key="item.name">
             <template #icon>
               <component :is="item.meta.icon"></component>
             </template>
             <template #title>{{ item.meta.title }}</template>
             <template v-if="item.children.length">
               <template v-for="(sub) in item.children">
-                <a-menu-item v-if="!sub.meta.noMenu" :key="sub.name" @click="onMenuClick(sub)">{{ sub.meta.title }}</a-menu-item>
+                <a-menu-item v-if="!sub.meta.noMenu &&  showMenu(sub.name)" :key="sub.name" @click="onMenuClick(sub)">{{ sub.meta.title }}</a-menu-item>
               </template>
             </template>
           </a-sub-menu>
@@ -61,7 +61,7 @@ export default defineComponent({
     const router = useRouter()
     const store = useStore()
 
-    const permissions = computed(() => store.getters.permissions)
+    const permissions = computed(() => store.getters.permissions as Array<any>)
 
     console.log(permissions.value.includes('Home'))
 
@@ -109,12 +109,17 @@ export default defineComponent({
       }
     }
 
+    const showMenu = (name: string) => {
+      return permissions.value.includes(name)
+    }
+
     return {
       ...toRefs(state),
       permissions,
       toggleCollapsed,
       onMenuClick,
       onOpenChange,
+      showMenu,
     };
   }
 })

@@ -49,10 +49,12 @@ treeData.value = routes.map((e: any) => {
 
 watch(() => props.visible, (val: boolean) => {
   drawState.value = val
-  ruleForm.value = {
-    name: '',
-    type: undefined,
-    permissions: []
+  if (!props.id) {
+    ruleForm.value = {
+      name: '',
+      type: undefined,
+      permissions: []
+    }
   }
 })
 
