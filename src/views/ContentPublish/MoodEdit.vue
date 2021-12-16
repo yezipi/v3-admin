@@ -7,8 +7,16 @@
       :label-col="labelCol"
     >
       
-      <a-form-item label="内容" name="content" class="maxwidth-100">
-        <yzp-editor ref="editor" v-model="formState.content"></yzp-editor>
+      <a-form-item label="内容" name="content">
+        <a-textarea ref="textareaRef" v-model:value="formState.content" :rows="5" placeholder="说点什么吧"></a-textarea>
+        <div style="position: relative">
+          <img class="face-btn" src="/src/assets/img/icon-face.png" @click.stop="faceVisible = true" />
+          <yzp-face v-if="faceVisible" v-model:value="faceVisible" @change="onFaceChange" />
+        </div>
+      </a-form-item>
+
+      <a-form-item label="图片">
+        <yzp-upload v-model:value="formState.images" />
       </a-form-item>
 
       <a-form-item label="来源">
@@ -42,10 +50,12 @@ import MoodApi from '@/api/mood'
 export default defineComponent({
 
   setup(props) {
-    const formRef = ref();
+    const formRef = ref()
+    const textareaRef = ref()
 
     let formState= ref({
       content: '',
+      images: undefined,
       author_name: '',
       view: 0,
       status: true,
@@ -64,6 +74,7 @@ export default defineComponent({
     const route = useRoute()
     const id = route.query.id
     const user: any = computed(() => store.state.user)
+    const faceVisible = ref(false)
 
     // 获取详情
     const getDetail = async () => {
@@ -94,19 +105,35 @@ export default defineComponent({
       formRef.value.resetFields();
     }
 
+    const onFaceChange = (res: any) => {
+      textareaRef.value.focus()
+      formState.value.content += res.alias
+    }
+
     onMounted(() => {
       getDetail()
     })
 
     return {
       formRef,
+      textareaRef,
       labelCol: { style: { width: '100px' } },
       formState,
       rules,
       id,
+      faceVisible,
+      onFaceChange,
       onSubmit,
       resetForm,
     }
   },
 })
 </script>
+
+<style lang="less" scoped>
+.face-btn {
+  width: 30px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+</style>

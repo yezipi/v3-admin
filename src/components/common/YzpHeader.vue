@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, onMounted } from 'vue'
 import { MenuFoldOutlined, MenuUnfoldOutlined, ReloadOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -62,9 +62,15 @@ export default defineComponent({
     const Store = useStore()
     const Router = useRouter()
     const user = computed(() => Store.state.user)
+    const contentWidth = ref(200)
 
     const logout = () => {
-      Router.replace('/login')
+      Router.replace({
+        name: 'Login',
+        query: {
+          referrer: Router.currentRoute.value.name as any
+        }
+      })
       Store.dispatch('clearUser')
     }
 
@@ -73,6 +79,7 @@ export default defineComponent({
       user,
       toggleMenu,
       logout,
+      contentWidth,
     }
 
   }
@@ -82,7 +89,7 @@ export default defineComponent({
 
 <style lang="less">
 .yzp-head {
-  position: fixed;
+  position: sticky;
   z-index: 9;
   backdrop-filter: saturate(150%) blur(10px);
   background: rgba(255,255,255,0.5);
@@ -92,11 +99,8 @@ export default defineComponent({
   justify-content: space-between;
   top: 0;
   right: 0;
-  left: 200px;
+  left: 0;
   transition: all 0.3s;
-  &.collapsed {
-    left: 80px;
-  }
   .head-left {
     display: flex;
     align-items: center;

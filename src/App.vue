@@ -145,7 +145,6 @@ body {
 }
 .yzp-main {
   flex: 1;
-  margin-top: 60px;
   overflow-y: auto;
   &.no-margin {
     margin-top: 0;

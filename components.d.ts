@@ -5,7 +5,7 @@
 declare module 'vue' {
   export interface GlobalComponents {
     403: typeof import('./src/components/common/403.vue')['default']
-    404: typeof import('./src/components/common/404.vue')['default']
+    404: typeof import('./src/components/features/404.vue')['default']
     AAvatar: typeof import('ant-design-vue/es')['Avatar']
     ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
     ABreadcrumbItem: typeof import('ant-design-vue/es')['BreadcrumbItem']
@@ -56,6 +56,7 @@ declare module 'vue' {
     YzpAside: typeof import('./src/components/common/YzpAside.vue')['default']
     YzpDraw: typeof import('./src/components/common/YzpDraw.vue')['default']
     YzpEditor: typeof import('./src/components/common/YzpEditor.vue')['default']
+    YzpFace: typeof import('./src/components/common/YzpFace.vue')['default']
     YzpHeader: typeof import('./src/components/common/YzpHeader.vue')['default']
     YzpPagintion: typeof import('./src/components/common/YzpPagintion.vue')['default']
     YzpTable: typeof import('./src/components/common/YzpTable.vue')['default']

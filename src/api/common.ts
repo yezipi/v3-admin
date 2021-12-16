@@ -14,6 +14,16 @@ export default new class Common extends Request {
     return this.post(url, formData, headers)
   }
 
+  /**
+   * 获取表情
+   * @version 2021-12-16 zzc
+   * @param { String } dir 目录
+   */
+   public getFace(dir?: string) {
+    const url = 'v1/common/getFace'
+    return this.get(url, { dir })
+  }
+
   public ossUpload(url: any, formData: any) {
     return this.post(url, formData)
   }
