@@ -137,7 +137,6 @@ export default defineComponent({
       }
       const { data } = await ArticleApi.getDetail(id)
       data.subcolumn_id = String(data.subcolumn_id)
-      data.tags = data.tags ? data.tags.split(',') : []
       formState.value = data
     }
 
@@ -156,12 +155,11 @@ export default defineComponent({
       formRef.value
         .validate()
         .then(async () => {
-          const { cover_thumb, tags } = formState.value
+          const { cover_thumb } = formState.value
           formState.value.cover_origin = cover_thumb.replace('thumb_', 'origin_')
           console.log(toRaw(formState))
           const data = {
             ...toRaw(formState.value),
-            tags: tags.length ? tags.join() : '',
             user_id: user.id
           }
           if (!id) {

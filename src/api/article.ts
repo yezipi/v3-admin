@@ -17,7 +17,7 @@ type ArticleFields =  {
   recommend?: boolean
   download_link?: string
   comment_open?: boolean
-  tags?: string,
+  tags?: Array<any>,
   sort?: number,
 }
 
