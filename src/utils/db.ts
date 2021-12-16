@@ -9,7 +9,7 @@ export default {
 
   get: (key: string) => {
     const val: any = localStorage.getItem(key)
-    if (val.indexOf('"type":"object"') > -1) {
+    if (val && val.indexOf('"type":"object"') > -1) {
       return JSON.parse(val).data
     }
     return val

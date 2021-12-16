@@ -129,7 +129,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/blogroll',
-    name: 'BlogrollIndex',
+    name: 'Blogroll',
     meta: { title: '友链管理', noLink: true, role: [1, 2], icon: LinkOutlined },
     component: () => import('@/views/Blogroll/Index.vue'),
     children: [
@@ -143,7 +143,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/albums',
-    name: 'AlbumIndex',
+    name: 'Albums',
     meta: { title: '相册管理', noLink: true, role: [1, 2], icon: PictureOutlined },
     component: () => import('@/views/Album/Index.vue'),
     children: [
@@ -163,7 +163,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/columns',
-    name: 'ColumnIndex',
+    name: 'Columns',
     meta: { title: '栏目管理', noLink: true, role: [1, 2], icon: AppstoreOutlined },
     component: () => import('@/views/Column/Index.vue'),
     children: [
@@ -201,7 +201,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/users',
-    name: 'UserIndex',
+    name: 'Users',
     meta: { title: '用户管理', noLink: true, role: [1, 2], icon: UserOutlined },
     component: () => import('@/views/User/Index.vue'),
     children: [
@@ -215,7 +215,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/settings',
-    name: 'SettingsIndex',
+    name: 'Settings',
     meta: { title: '系统设置', noLink: true, role: [1, 2], icon: SettingOutlined },
     component: () => import('@/views/Settings/Index.vue'),
     children: [
