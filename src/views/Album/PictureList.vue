@@ -139,7 +139,7 @@ onMounted(() => {
 
     <yzp-pagintion v-if="loadEnd && total" :total="total" :size="condition.size" @change="onPageChange"></yzp-pagintion>
 
-    <a-modal
+    <!-- <a-modal
       v-model:visible="modalVisible"
       title="查看图片"
       width="100%"
@@ -148,7 +148,11 @@ onMounted(() => {
       <div class="picture-view">
         <img :src="viewPath" style="max-width: 50%;" />
       </div>
-    </a-modal>
+    </a-modal> -->
+
+    <div v-if="modalVisible" class="picture-view" @click="modalVisible = false">
+      <img :src="viewPath" />
+    </div>
 
   </div>
 </template>
@@ -164,11 +168,21 @@ onMounted(() => {
   align-items: center;
 }
 .picture-view {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+  img {
+    max-height: 100%;
+  }
 }
 .album-list {
   margin-top: 15px;

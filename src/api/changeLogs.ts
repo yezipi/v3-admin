@@ -13,10 +13,10 @@ export default new class ChangeLogs extends Request {
    * 创建标签
    * @param { Object } params 参数
    * @param { String } params.content 内容
-   * @param { String } params.type 类型，fix, update, add, remove
+   * @param { String } params.version 版本号
    * @version 2021-11-05 zzc
    */
-   public create(data: { content: string, type: string }) {
+   public create(data: { content: string, version: string }) {
     const url = 'v1/changeLogs'
     return this.post(url, { ...data, showMsg: true })
   }
@@ -38,7 +38,7 @@ export default new class ChangeLogs extends Request {
    * @param { Obejct } data 同创建的参数
    * @version 2021-11-05 zzc
    */
-   public update(id: string, data: { content?: string, type?: string }) {
+   public update(id: string, data: { content?: string, version?: string }) {
     const url = `v1/changeLogs/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }

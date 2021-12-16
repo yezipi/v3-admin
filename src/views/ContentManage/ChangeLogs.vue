@@ -5,7 +5,7 @@
 
       <template #filter>
         <div></div>
-        <a-button type="primary" @click="toCreate">+ 添加更新日志</a-button>
+        <a-button type="primary" @click="toCreate">+ 添加版本</a-button>
       </template>
 
       <template #bodyCell="{ scope: { record, column } }">
@@ -17,14 +17,14 @@
       </template>
     </yzp-table>
 
-    <tags-edit v-model:visible="drawVisible" :id="currId" @finish="initList"></tags-edit>
+    <change-logs-edit v-model:visible="drawVisible" :id="currId" @finish="initList"></change-logs-edit>
 
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-import ChangeLogs from '@/api/tags'
+import ChangeLogs from '@/api/changeLogs'
 import confirm from '@/utils/confirm'
 
 export default defineComponent({
@@ -36,12 +36,12 @@ export default defineComponent({
       },
       {
         title: '类型',
-        dataIndex: 'type',
+        dataIndex: 'version',
       },
       {
         title: '时间',
-        dataIndex: 'created_at',
-        format: 'YYYY-MM-DD'
+        dataIndex: 'createdAt',
+        format: 'YYYY-MM-DD hh:mm'
       },
       {
         title: '操作',

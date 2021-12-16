@@ -1,8 +1,9 @@
 import { ActionTree } from 'vuex'
-import { State } from './state'
 
-const actions: ActionTree<State, any> = {
-  clearUser({ commit }: any) {
+import { StateConfig } from './state'
+
+const actions: ActionTree<StateConfig, any> = {
+  clearUser({ commit }) {
     commit('updateToken', '')
     commit('updateUser', {})
   }

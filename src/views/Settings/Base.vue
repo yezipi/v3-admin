@@ -42,7 +42,7 @@
       </a-form-item>
 
       <a-form-item label="个性签名" :wrapperCol="wrapperCol">
-        <a-input v-model:value="formState.web_sign" placeholder="请输入个性签名" />
+        <a-input v-model:value="formState.web_slogan" placeholder="请输入个性签名" />
       </a-form-item>
 
       <a-form-item label="网址" :wrapperCol="wrapperCol">
@@ -74,7 +74,7 @@
       </a-form-item>
 
       <a-form-item label="网站公告" :wrapperCol="wrapperCol">
-        <a-textarea v-model:value="formState.web_slogan" rows="3" placeholder="请输入网站公告，英文逗号隔开" />
+        <a-textarea v-model:value="formState.web_notice" rows="3" placeholder="请输入网站公告，英文逗号隔开" />
       </a-form-item>
 
       <a-form-item label="统计代码" :wrapperCol="wrapperCol">
@@ -114,8 +114,8 @@ export default defineComponent({
 
     let formState = ref<BaseSettingsConfig> ({
       web_name: '',
-      web_sign: '',
       web_slogan: '',
+      web_notice: '',
       web_title: '',
       web_url: '',
       web_beian: '',
@@ -138,6 +138,7 @@ export default defineComponent({
     const getDetail = async () => {
       const { data } = await SettingsApi.getBaseSettings()
       if (data) {
+        data.web_notice = data.web_notice.join()
         formState.value = data
       }
     }
@@ -147,7 +148,9 @@ export default defineComponent({
         .validate()
         .then(async () => {
           const rawValue = toRaw(formState.value)
-          await SettingsApi.saveBaseSettings(rawValue)
+          const data = { ...rawValue, web_notice: rawValue.web_notice.split(',') }
+          console.log(data)
+          await SettingsApi.saveBaseSettings(data)
           message.success('保存成功')
         })
         .catch((error: ValidateErrorEntity<BaseSettingsConfig>) => {

@@ -20,21 +20,21 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/Home.vue'),
   },
   {
-    path: '/404',
-    name: '404',
-    component: () => import( '@/views/404.vue'),
-    meta: { title: '404', noMenu: true },
-  },
-  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/Login.vue'),
     meta: { noAuth: true, title: '登录', noMenu: true },
   },
   {
+    path: '/result',
+    name: 'Result',
+    component: () => import( '@/views/Result.vue'),
+    meta: { title: '结果页', noAuth: true, noMenu: true },
+  },
+  {
     path: '/content-publish',
     name: 'ContentPublish',
-    meta: { title: '内容发布', noLink: true, role: [1, 2], icon: EditOutlined },
+    meta: { title: '内容发布', noLink: true, icon: EditOutlined },
     component: () => import('@/views/ContentPublish/Index.vue'),
     children: [
       {
@@ -88,10 +88,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/ContentManage/MoodList.vue'),
       },
       {
-        path: '/log/list',
-        name: 'LogList',
-        meta: { title: '日志管理', icon: '' },
-        component: () => import('@/views/ContentManage/LogList.vue'),
+        path: '/log/change-logs',
+        name: 'ChangeLogs',
+        meta: { title: '版本管理', icon: '' },
+        component: () => import('@/views/ContentManage/ChangeLogs.vue'),
       },
       {
         path: '/banner/list',
@@ -242,6 +242,12 @@ const routes: Array<RouteRecordRaw> = [
         name: 'SecuritySettings',
         meta: { title: '安全设置', icon: '' },
         component: () => import('@/views/Settings/Security.vue'),
+      },
+      {
+        path: '/settings/permission',
+        name: 'PermissionSettings',
+        meta: { title: '权限设置', icon: '' },
+        component: () => import('@/views/Settings/Permission.vue'),
       },
       {
         path: '/settings/custom',

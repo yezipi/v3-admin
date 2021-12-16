@@ -3,24 +3,26 @@
     <div v-if="slots.filter" id="list-filter">
       <slot name="filter"></slot>
     </div>
-    <a-table
-      v-if="loadEnd"
-      :dataSource="dataSource"
-      :columns="columns"
-      :pagination="false"
-      :scroll="{ x: tableWidth, y: tableHeight }"
-      :rowKey="rowKey"
-      :childrenColumnName="childrenColumnName"
-      :row-class-name="(_record, index) => (index % 2 === 1 ? 'table-striped' : null)"
-      :bordered="bordered"
-      class="ant-table-striped"
-      size="small"
-    >
-      <template v-for="item in slotsKeys" v-slot:[item]="scope">
-        <slot :name="item" :scope="scope"></slot>
-      </template>
-    </a-table>
-    <yzp-pagintion v-if="total" :total="total" :size="size" @change="onPageChange"></yzp-pagintion>
+    <template v-if="loadEnd && total">
+      <a-table
+        :dataSource="dataSource"
+        :columns="newColumns"
+        :pagination="false"
+        :scroll="{ x: tableWidth, y: tableHeight }"
+        :rowKey="rowKey"
+        :childrenColumnName="childrenColumnName"
+        :row-class-name="setRowClassName"
+        :bordered="bordered"
+        class="ant-table-striped"
+        size="small"
+      >
+        <template v-for="item in slotsKeys" v-slot:[item]="scope">
+          <slot :name="item" :scope="scope"></slot>
+        </template>
+      </a-table>
+      <yzp-pagintion :total="total" :size="size" @change="onPageChange"></yzp-pagintion>
+    </template>
+    <a-empty v-else style="margin-top: 30vh" />
   </div>
 </template>
 
@@ -75,7 +77,7 @@ export default defineComponent({
   },
   setup(props, { emit, slots }) {
 
-    const { url, scrollWidth, columns, size, childrenColumnName, center } = props
+    const { url, scrollWidth, columns, size, childrenColumnName } = props
 
     const tableConfig = reactive({
       dataSource: [] as any,
@@ -98,7 +100,7 @@ export default defineComponent({
     }
 
     const mapColumns = (e: any) => {
-      columns.forEach((i: any) => {
+      newColumns.value.forEach((i: any) => {
         const key = i.dataIndex
         const item = e[key]
 
@@ -193,6 +195,8 @@ export default defineComponent({
       init(res)
     }
 
+    const setRowClassName = (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : '')
+
     onMounted(() => {
       init()
     })
@@ -200,12 +204,13 @@ export default defineComponent({
     return {
       ...toRefs(tableConfig),
       newColumns,
-      init,
       tableHeight,
       tableWidth,
       loadEnd,
       slotsKeys,
       slots,
+      init,
+      setRowClassName,
       onPageChange,
     }
   }

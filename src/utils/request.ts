@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 import store from '../store'
 import config from '../config'
+import router from '../router'
 import { message } from 'ant-design-vue';
 
 // interface resConfig extends AxiosResponse<any> {
@@ -31,6 +32,9 @@ axios.interceptors.request.use((config: AxiosRequestConfig) => {
 
 // 添加响应拦截器
 axios.interceptors.response.use((response: AxiosResponse) => {
+  if (!response.data) {
+    return response
+  }
   const res = response.data
   const { params, data, method } = response.config
   const { code, msg } = res
@@ -45,7 +49,12 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   if (code === 401) {
     message.error('请重新登录')
     store.dispatch('clearUser')
-    location.replace('/login')
+    router.replace({
+      name: 'Login',
+      query: {
+        referrer: router.currentRoute.value.name as any
+      }
+    })
     return Promise.reject(res)
   }
 

@@ -3,7 +3,7 @@ import Request from '../utils/request'
 
 export interface BaseSettingsConfig {
   web_name: string,
-  web_sign: string,
+  web_notice: any,
   web_slogan: string,
   web_title: string,
   web_url: string,
@@ -103,8 +103,8 @@ export default new class Settings extends Request {
    * 保存基本设置
    * @param { Object } data 基本设置参数
    * @param { String } data.web_name 网站名称
-   * @param { String } data.web_sign 网站签名
-   * @param { String } data.web_slogan 网站标语
+   * @param { String } data.web_slogan 网站签名
+   * @param { String } data.web_notice 网站标语
    * @param { String } data.web_title 网站标题
    * @param { String } data.web_url 网站地址
    * @param { String } data.web_beian 网站备案
