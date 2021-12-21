@@ -2,7 +2,7 @@
   "name": "v3-admin",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite --port 8000",
+    "dev": "vite",
     "build-test": "vue-tsc --noEmit && vite build --mode test",
     "build-production": "vue-tsc --noEmit && vite build --mode production",
     "serve": "vite preview"

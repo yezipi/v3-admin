@@ -16,7 +16,7 @@
       </a-form-item>
 
       <a-form-item label="图片">
-        <yzp-upload v-model:value="formState.images" />
+        <yzp-upload v-model:value="formState.images" dir="mood" thumb compress multiple watermark :count="9" />
       </a-form-item>
 
       <a-form-item label="来源">

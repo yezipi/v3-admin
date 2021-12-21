@@ -6,12 +6,13 @@
       :list-type="isButton ? undefined : 'picture-card'"
       :accept="fileAccept"
       :class="{ withParentWith }"
-      :show-upload-list="false"
+      :show-upload-list="!!multiple"
       :before-upload="beforeUpload"
       :customRequest="startUpload"
+      :multiple="multiple"
     >
       <template v-if="!isButton">
-        <img v-if="imageUrl" class="img-privew" :src="imageUrl" />
+        <img v-if="imageUrl && !multiple" class="img-privew" :src="imageUrl" />
         <div v-else class="upload-tips">
           <loading-outlined v-if="loading"></loading-outlined>
           <plus-outlined v-else></plus-outlined>
@@ -78,60 +79,103 @@ export default defineComponent({
   },
   props: {
     value: {
-      type: String,
+      type: [String, Array],
       default: ''
     },
-    // 按钮类型：button, picture
+    /**
+     * 按钮类型：button, picture
+     */
     type: {
       type: String,
       default: 'picture'
     },
-    // 文件接受类型
+    /**
+     * 文件接受类型
+     */
     accept: {
       type: String,
       default: 'image/gif,image/jpeg,image/png'
     },
+    /**
+     * 存放的目录
+     */
     dir: {
       type: String,
       default: ''
     },
+    /**
+     * 是否生成缩略图
+     */
     thumb: {
       type: Boolean,
       default: false,
     },
+    /**
+     * 水印
+     */
     watermark: {
       type: Boolean,
       default: false,
     },
+    /**
+     * 文件名
+     */
     filename: {
       type: String,
       default: '',
     },
-    // 预览的时候自动到父级的宽度
+    /**
+     * 预览的时候自动到父级的宽度
+     */
     withParentWith: {
       type: Boolean,
       default: false,
     },
-    // 是否需要裁剪
+    /**
+     * 是否需要裁剪
+     */
     clip: {
       type: Boolean,
       default: false
     },
+    /**
+     * 图片高
+     */
     width:  {
       type: [Number, String],
       default: ''
     },
+    /**
+     * 图片宽
+     */
     height: {
       type: [Number, String],
       default: ''
     },
+    /**
+     * 是否压缩
+     */
     compress: {
       type: Boolean,
       default: false
-    }
+    },
+    /**
+     * 是否批量上传
+     */
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * 最大传多少张
+     */
+    count: {
+      type: Number,
+      default: 1
+    },
   },
   setup(props, { emit }) {
-    const fileList = ref([])
+    const fileList = ref<any>([])
     const loading = ref<boolean>(false)
     const imageUrl = ref<any>(props.value)
     const cropperRef = ref()
@@ -213,16 +257,29 @@ export default defineComponent({
       formData.append('filename', `${props.filename || new Date().getTime()}.jpg`)
       formData.append('files', file)
       formData.append('thumb', props.thumb ? '1' : '0')
-      formData.append('maxWidth', String(props.width))
       formData.append('watermark', props.watermark ? '1' : '0')
       formData.append('compress', props.compress ? '1' : '0')
+      if (props.width) {
+        formData.append('maxWidth', String(props.width))
+      }
 
       try {
         const { data } = await CommonApi.uploadImg(formData, config)
         const path = data.path || data.thumbPath
-        emit('update:value', path)
-        emit('input', path)
-        imageUrl.value = path
+        if (props.multiple) {
+          fileList.value = fileList.value.map((e: any) => {
+            e.status = 'done'
+            e.url = path
+            return e
+          })
+          const imgs = fileList.value.map((e: any) => e.url)
+          emit('update:value', imgs)
+          emit('input', imgs)
+        } else {
+          emit('update:value', path)
+          emit('input', path)
+          imageUrl.value = path
+        }
         message.success('上传成功！')
         if (props.clip) {
           cropperState.visible = false
@@ -245,7 +302,7 @@ export default defineComponent({
       beforeUpload,
       startUpload,
       confirmClip,
-      onCropperImgLoad
+      onCropperImgLoad,
     };
   },
 });
