@@ -187,15 +187,21 @@ export default defineComponent({
     const fileAccept = ref(props.accept)
     const isButton = computed(() => props.type === 'button')
 
+    const vals = ref<any>([]) // 批量上传用来保存的
+
     watch(() => props.accept, (val: string) => {
       fileAccept.value = val
     })
 
-    watch(() => props.value, (val: string) => {
+    watch(() => props.value, (val: string | Array<any>) => {
       imageUrl.value = val
     })
 
     const beforeUpload = (file: FileItem) => {
+      if (props.count > 9) {
+        message.error(`不能超过${props.count}张`)
+        return false
+      }
       const isInType = fileAccept.value.indexOf(file.type as any) > -1
       if (!isInType) {
         message.error('不符合上传的文件类型')
@@ -241,6 +247,10 @@ export default defineComponent({
 
     // 开始执行上传
     const doUpload = async (file: File | Blob) => {
+      if (vals.value.length > props.count) {
+        const msg = `不能超过${props.count}张`
+        throw { msg }
+      }
       console.log(file)
       loading.value = true
       const formData = new FormData()
@@ -272,9 +282,9 @@ export default defineComponent({
             e.url = path
             return e
           })
-          const imgs = fileList.value.map((e: any) => e.url)
-          emit('update:value', imgs)
-          emit('input', imgs)
+          vals.value.push(path);
+          emit('update:value', vals.value)
+          emit('input', vals.value)
         } else {
           emit('update:value', path)
           emit('input', path)

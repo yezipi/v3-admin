@@ -10,10 +10,10 @@
 
       <template #bodyCell="{ scope: { record, column: { dataIndex } } }">
         <template v-if="dataIndex === 'content'">
-          <span v-if="record.content.indexOf('<img') > -1" style="color: red">【图】</span>
-          <a>
-            {{ record.content.replace(/(<([^>]+)>)/ig, '').substring(0, 30) + '...' }}
-          </a>
+          <div>{{ record.content }}</div>
+          <div v-if="record.images.length" class="content-imgs">
+            <img v-for="(item, index) in record.images" :key="index" :src="item"/>
+          </div>
         </template>
 
         <template v-if="dataIndex === 'action'">
@@ -108,3 +108,16 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="less" scoped>
+.content-imgs img, .video{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin: 5px;
+  cursor: pointer;
+}
+.content-imgs img:hover, .video:hover {
+  opacity: 0.5;
+}
+</style>

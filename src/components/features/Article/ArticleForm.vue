@@ -81,7 +81,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, toRaw, onMounted, computed } from 'vue'
-import { message } from 'ant-design-vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import ArticleApi from '@/api/article'
