@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page" style="margin: 1000px 0">123</div>
+  <div class="home-page" style="margin: 100px 0">123</div>
 </template>
 
 <script lang="ts">

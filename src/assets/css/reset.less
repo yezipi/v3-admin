@@ -1,3 +1,5 @@
+@import './theme.less';
+
 .halfWhite {
   background: rgba(255,255,255,0.5)!important;
 }
@@ -171,3 +173,36 @@
   border-radius: 4px!important;
 }
 /*========================================= editor样式结束 ==============================================*/
+
+
+/*主题样式覆盖*/
+
+.ant-radio-checked .ant-radio-inner,
+.ant-checkbox-checked::after,
+.ant-checkbox-checked .ant-checkbox-inner,
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-radio-wrapper:hover .ant-radio-inner,
+.ant-pagination-item-active
+{
+  border-color: @primary-color!important;
+}
+.ant-radio-inner:after,
+.ant-checkbox-checked .ant-checkbox-inner,
+.ant-switch-checked
+{
+  background-color: @primary-color!important;
+}
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  box-shadow: @box-shadow-base!important;
+}
+.ant-input:focus {
+  border-color: @primary-color!important;
+  box-shadow: @box-shadow-base!important;
+}
+.ant-input:hover, .ant-select-selector:hover {
+  border-color: @primary-color!important;
+}
+.ant-pagination-item-active a {
+  color: @primary-color!important;
+}
+/*end*/
