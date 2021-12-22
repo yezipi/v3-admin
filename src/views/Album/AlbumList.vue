@@ -1,10 +1,13 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 import { formatDate } from '@/utils/index'
-import AlbumApi from '@/api/album'
+import { message } from 'ant-design-vue'
 import confirm from '@/utils/confirm'
+import AlbumApi from '@/api/album'
+import PictureApi from '@/api/picture'
 
 const drawVisible = ref(false)
 const currId = ref()
@@ -13,7 +16,14 @@ const defaultPic = '/src/assets/img/nopic.jpg'
 const loadEnd = ref(false)
 const total = ref(0)
 
+const modalVisible = ref(false)
+const currAlbumId = ref<any>(undefined) // 要上传的相册
+const pictures = ref<any>([]) // 批量上传后的图片数组
+const finshCount = ref(0)
+
 const Router = useRouter()
+const Store = useStore()
+const user: any = computed(() => Store.state.user)
 
 const toCreate = () => {
   currId.value = undefined
@@ -43,13 +53,58 @@ const getList = async () => {
   try {
     const { data } = await AlbumApi.getList()
     const { rows, count } = data
-    list.value = rows
+    list.value = rows.map((e: any) => {
+      return {
+        ...e,
+        value: String(e.id),
+        label: e.title + `(${e.picture_count})张`,
+      }
+    })
     total.value = count
+    currAlbumId.value = count ? String(rows[0].id) : undefined
+    console.log(currAlbumId)
   } catch(e) {
     console.log(e)
   } finally {
     loadEnd.value = true
   }
+}
+
+// 保存图片请求
+const createPicture = async () => {
+  console.log(pictures.value, finshCount.value)
+  const url = pictures.value[finshCount.value]
+  await PictureApi.create({
+    thumb_path: url,
+    origin_path: url.replace('thumb_', 'origin_'),
+    title: String(new Date().getTime()),
+    user_id: user.id,
+    album_id: currAlbumId.value,
+    showMsg: false,
+  })
+  if (finshCount.value >= pictures.value.length - 1) {
+    Store.commit('hideLoading')
+    message.success('上传成功！')
+    getList()
+    modalVisible.value = false
+    return
+  }
+  finshCount.value += 1
+  createPicture()
+}
+
+// 确定批量上传
+const confirmBatchUpload = async () => {
+  if (!currAlbumId.value) {
+    message.error('请选择相册分类')
+    return
+  }
+  if (!pictures.value.length) {
+    message.error('请上传图片')
+    return
+  }
+  Store.commit('showLoading', '正在上传中...')
+  await createPicture()
 }
 
 onMounted(() => {
@@ -64,7 +119,10 @@ onMounted(() => {
       <div class="am-filter">
         共 {{ total }} 条
       </div>
-      <a-button type="primary" @click="toCreate">新建相册</a-button>
+      <div>
+        <a-button type="default" @click="modalVisible = true" class="batch-upload">批量上传</a-button>
+        <a-button type="primary" @click="toCreate">新建相册</a-button>
+      </div>
     </div>
 
     <div v-if="list.length" class="album-list">
@@ -99,10 +157,45 @@ onMounted(() => {
     <a-empty v-if="loadEnd && !list.length" style="margin-top: 20%" />
 
     <album-edit v-model:visible="drawVisible" :id="currId" @finish="getList"></album-edit>
+
+    <!--批量上传弹窗-->
+    <a-modal
+      v-model:visible="modalVisible"
+      title="批量上传图片"
+      width="100%"
+      wrap-class-name="full-modal"
+      @ok="confirmBatchUpload"
+    >
+      <div class="batch-wrap">
+        <div class="bw-select" style="margin-bottom: 10px">
+          <span>上传到：</span>
+          <a-select v-model:value="currAlbumId" :options="list" style="width: 200px" placholder="请选择"></a-select>
+        </div>
+        <div :class="{ noPic: !pictures.length }" class="bw-upload">
+          <yzp-upload v-model:value="pictures" :width="1366" dir="picture" thumb compress multiple watermark :count="9" />
+        </div>
+      </div>
+    </a-modal>
+
   </div>
 </template>
 
 <style scoped lang="less">
+.batch-upload {
+  margin-right: 10px;background: olivedrab;color: #ffffff;
+}
+.batch-wrap {
+  .bw-upload {
+    &.noPic {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 15%;
+    }
+  }
+}
+
 .album-list {
   margin-top: 15px;
   overflow: hidden;

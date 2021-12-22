@@ -198,7 +198,7 @@ export default defineComponent({
     })
 
     const beforeUpload = (file: FileItem) => {
-      if (props.count > 9) {
+      if (props.count >= fileList.value.length) {
         message.error(`不能超过${props.count}张`)
         return false
       }
@@ -247,7 +247,7 @@ export default defineComponent({
 
     // 开始执行上传
     const doUpload = async (file: File | Blob) => {
-      if (vals.value.length > props.count) {
+      if (vals.value.length + 1 >= props.count) {
         const msg = `不能超过${props.count}张`
         throw { msg }
       }

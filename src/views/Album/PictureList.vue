@@ -45,7 +45,7 @@ const getAlbums = async () => {
   const { data } = await AlbumApi.getList({ page: 1, size: 100, loading: false })
   albums.value = data.rows.map((e: any) => {
     return {
-      label: e.title,
+      label: `${e.title}(${e.picture_count})张`,
       value: String(e.id),
     }
   })
@@ -119,10 +119,6 @@ onMounted(() => {
           <div class="al-info">
             <div class="al-text">
               <span class="al-title">{{ item.title }}</span>
-              <div class="al-count">
-                <span style="color: red">{{ item.picture_count }}</span>
-                <span>张</span>
-              </div>
             </div>
             <div class="al-text" style="font-size: 12px;margin-top: 5px;">
               <span>浏览：{{ item.view }}</span>
@@ -286,25 +282,6 @@ onMounted(() => {
 @media screen and (max-width: 1440px) {
   .album-list ul li .al-cover {
     height: 100px;
-  }
-}
-</style>
-
-<style lang="less">
-.full-modal {
-  .ant-modal {
-    max-width: 100%;
-    top: 0;
-    padding-bottom: 0;
-    margin: 0;
-  }
-  .ant-modal-content {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh);
-  }
-  .ant-modal-body {
-    flex: 1;
   }
 }
 </style>

@@ -125,7 +125,7 @@ const closeDraw = () => {
         </a-form-item>
 
         <a-form-item label="分类" name="album_id">
-          <a-select v-model:value="ruleForm.album_id" :options="albums" placeholder="请选择分类"></a-select>
+          <a-select v-model:value="ruleForm.album_id" :options="albums as any" placeholder="请选择分类"></a-select>
         </a-form-item>
 
         <a-form-item label="标题" name="title">

@@ -15,7 +15,9 @@ export interface PictureSaveConfig {
   description?: string,
   recommend?: boolean,
   status?: boolean,
-  album_id: any
+  album_id: any,
+  user_id?: any,
+  showMsg?: boolean,
 }
 
 export default new class Picture extends Request {
@@ -30,7 +32,7 @@ export default new class Picture extends Request {
    */
    public create(data: PictureSaveConfig) {
     const url = 'v1/picture'
-    return this.post(url, { ...data, showMsg: true })
+    return this.post(url, { showMsg: true, ...data })
   }
 
   /**
