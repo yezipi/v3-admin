@@ -23,6 +23,11 @@ const mutations: MutationTree<StateConfig> = {
       state.isLoading = false
     }
   },
+  // 切换布局
+  changeStyle(state, data) {
+    state.style = data
+    db.set('style', data)
+  }
 }
 
 export default mutations

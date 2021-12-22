@@ -2,10 +2,11 @@ import db from '@/utils/db'
 
 // 手动声明 state 类型
 export interface StateConfig {
-  token: string;
-  user: { nickname: string, id: number, role: any };
-  isLoading: boolean;
-  loading: any;
+  token: string
+  user: { nickname: string, id: number, role: any }
+  isLoading: boolean
+  loading: any
+  style: any
 }
 
 const state: StateConfig = {
@@ -13,6 +14,7 @@ const state: StateConfig = {
   user: db.get('user') || '',
   isLoading: false,
   loading: null,
+  style: db.get('style') || 1, // 1 菜单在左边，2 菜单在顶部
 }
 
 export default state

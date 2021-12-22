@@ -1,6 +1,6 @@
 <template>
-  <div :class="{ collapsed }" class="yzp-head">
-    <div class="head-left">
+  <div :class="{ collapsed, hasMenu: $slots.menu }" class="yzp-head">
+    <div v-if="!$slots.menu" class="head-left">
       <div class="left-btn" @click="toggleMenu">
         <MenuFoldOutlined v-if="collapsed" />
         <MenuUnfoldOutlined v-else />
@@ -12,6 +12,14 @@
         <a-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index">{{ item }}</a-breadcrumb-item>
       </a-breadcrumb>
     </div>
+    <div v-if="$slots.menu" class="head-left">
+      <div class="yzp-logo">
+        <img src="@/assets/logo.png" />
+      </div>
+      <div class="head-menu">
+        <slot name="menu"></slot>
+      </div>
+    </div>
     <div class="head-right">
       <a-dropdown>
         <div class="right-avatar">
@@ -22,6 +30,9 @@
         </div>
         <template #overlay>
           <a-menu>
+            <a-menu-item @click="changeStyle">
+              <a href="javascript:;">切换布局</a>
+            </a-menu-item>
             <a-menu-item>
               <a @click="logout">退出</a>
             </a-menu-item>
@@ -33,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import { MenuFoldOutlined, MenuUnfoldOutlined, ReloadOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -62,7 +73,6 @@ export default defineComponent({
     const Store = useStore()
     const Router = useRouter()
     const user = computed(() => Store.state.user)
-    const contentWidth = ref(200)
 
     const logout = () => {
       Router.replace({
@@ -74,12 +84,16 @@ export default defineComponent({
       Store.dispatch('clearUser')
     }
 
+    const changeStyle = () => {
+      Store.commit('changeStyle', Store.state.style === 1 ? 2 : 1)
+    }
+
     return {
       collapsed,
       user,
       toggleMenu,
       logout,
-      contentWidth,
+      changeStyle,
     }
 
   }
@@ -101,9 +115,14 @@ export default defineComponent({
   right: 0;
   left: 0;
   transition: all 0.3s;
+  &.hasMenu {
+    left: 0;
+  }
   .head-left {
     display: flex;
     align-items: center;
+    flex: 1;
+    position: relative;
     .left-btn {
       width: 60px;
       height: 60px;
@@ -114,8 +133,11 @@ export default defineComponent({
       color: #666666;
       &:hover {
         cursor: pointer;
-        background: rgba(255,255,255,0.5);
+        background: #eeeeee;
       }
+    }
+    .head-menu {
+      width: calc(100vw - 250px)
     }
   }
   .head-right {
@@ -123,6 +145,16 @@ export default defineComponent({
     span {
       display: inline-block;
       margin-left: 10px;
+    }
+  }
+  .yzp-logo {
+    width: 40px;
+    height: 40px;
+    margin: 20px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 }

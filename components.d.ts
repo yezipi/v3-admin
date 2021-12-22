@@ -58,6 +58,7 @@ declare module 'vue' {
     YzpEditor: typeof import('./src/components/common/YzpEditor.vue')['default']
     YzpFace: typeof import('./src/components/common/YzpFace.vue')['default']
     YzpHeader: typeof import('./src/components/common/YzpHeader.vue')['default']
+    YzpMenu: typeof import('./src/components/common/YzpMenu.vue')['default']
     YzpPagintion: typeof import('./src/components/common/YzpPagintion.vue')['default']
     YzpTable: typeof import('./src/components/common/YzpTable.vue')['default']
     YzpUpload: typeof import('./src/components/common/YzpUpload.vue')['default']

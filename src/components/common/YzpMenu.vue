@@ -1,12 +1,12 @@
 <template>
-  <div :class="{ collapsed }" class="yzp-aside">
-    <div class="yzp-logo">
-      <img src="../../assets/logo.png" />
+  <div :class="{ collapsed, horizontal: mode === 'horizontal' }" class="yzp-aside">
+    <div v-if="mode !== 'horizontal'" class="yzp-logo">
+      <img src="@/assets/logo.png" />
     </div>
     <a-menu
       class="yzp-menu"
-      mode="inline"
-      theme="dark"
+      :theme="theme"
+      :mode="mode"
       :inline-collapsed="collapsed"
       v-model:openKeys="openKeys"
       v-model:selectedKeys="selectedKeys"
@@ -41,6 +41,7 @@
 import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useRouter  } from 'vue-router'
 import { useStore } from 'vuex'
+import { MenuMode, MenuTheme } from 'ant-design-vue/es/menu/src/interface'
 
 export default defineComponent({
   props: {
@@ -55,6 +56,12 @@ export default defineComponent({
     menus: {
       type: Array as any,
       default: () => []
+    },
+    mode: {
+      default: 'inline' as MenuMode
+    },
+    theme: {
+      default: 'dark' as MenuTheme
     }
   },
   setup(props) {
@@ -68,7 +75,7 @@ export default defineComponent({
     const state = reactive({
       collapsed: false,
       selectedKeys: props.selectName,
-      openKeys: props.openName,
+      openKeys: props.mode !== 'horizontal' ? props.openName : [] as any,
       preOpenKeys: [] as any,
       rootSubmenuKeys: router.options.routes.map((e: any) => e.name)
     })
@@ -142,6 +149,17 @@ export default defineComponent({
       height: 40px;
     }
   }
+  &.horizontal {
+    width: initial;
+    height: initial;
+    overflow: initial;
+    background: none!important;
+    backdrop-filter: none!important;
+    :deep(.ant-menu-horizontal) {
+      background: none!important;
+      border-bottom: 0;
+    }
+  }
   .yzp-logo {
     width: 80px;
     height: 80px;
@@ -153,7 +171,10 @@ export default defineComponent({
       object-fit: cover;
     }
   }
-  .yzp-menu.ant-menu-dark, .yzp-menu-dark .yzp-menu-sub, .yzp-menu.ant-menu-dark .ant-menu-sub {
+  .yzp-menu.ant-menu-dark,
+  .yzp-menu-dark .yzp-menu-sub, 
+  .yzp-menu.ant-menu-dark .ant-menu-sub
+  {
     background: none
   }
 }

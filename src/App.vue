@@ -1,18 +1,29 @@
 <template>
   <div class="yzp-app">
     <a-config-provider :locale="locale">
-      <yzp-aside
-        v-if="isFullPage"
+      <yzp-menu
+        v-if="isFullPage && style === 1"
         :menus="menus"
         :openName="openName"
         :selectName="selectName"
-        ref="aside"
+        ref="menuRef"
       >
-      </yzp-aside>
+      </yzp-menu>
 
       <div v-if="isFullPage" class="yzp-main">
-        <yzp-header :breadcrumbs="breadcrumbs" @collapseMenu="collapseMenu" ></yzp-header>
-
+        <yzp-header :breadcrumbs="breadcrumbs" @collapseMenu="collapseMenu">
+          <template v-if="style === 2" #menu>
+            <yzp-menu
+              :menus="menus"
+              :openName="openName"
+              :selectName="selectName"
+              theme="light"
+              mode="horizontal"
+              ref="menuRef"
+            >
+            </yzp-menu>
+          </template>
+        </yzp-header>
         <section class="yzp-section">
           <div class="yzp-content">
             <router-view />
@@ -29,13 +40,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, toRefs, reactive } from 'vue'
+import { defineComponent, ref, watch, toRefs, reactive, computed } from 'vue'
 import { useRouter, useRoute  } from 'vue-router'
+import { useStore } from 'vuex'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 
 export default defineComponent({
   setup() {
-    const aside = ref()
+    const menuRef = ref()
     const isFullPage = ref(false)
     const menuState = reactive({
       openName: [] as any,
@@ -46,8 +58,10 @@ export default defineComponent({
 
     const route = useRoute()
     const router = useRouter()
+    const store = useStore()
     const routes = router.options.routes
     const menus = reactive(routes.filter((e: any) => !e.meta.noMenu))
+    const style = computed(() => Number(store.state.style))
 
     const setFullPageState = () => {
       isFullPage.value = route.name !== 'Login'
@@ -76,17 +90,18 @@ export default defineComponent({
     })
 
     const collapseMenu = () => {
-      aside.value.toggleCollapsed()
+      menuRef.value.toggleCollapsed()
     }
 
     return {
       ...toRefs(menuState),
       breadcrumbs,
-      aside,
+      menuRef,
       menus,
       isFullPage,
       collapseMenu,
-      locale: zhCN
+      locale: zhCN,
+      style
     }
   }
 })
