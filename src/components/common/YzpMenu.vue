@@ -89,7 +89,7 @@ export default defineComponent({
       ) => {
         state.preOpenKeys = oldPre;
         state.selectedKeys = newSelect,
-        state.openKeys = newOpen
+        state.openKeys = props.mode !== 'horizontal' ? newOpen : []
       },
     )
 
