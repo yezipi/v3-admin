@@ -27,10 +27,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs, ref, nextTick } from 'vue'
+import { defineComponent, onMounted, reactive, toRefs, ref, nextTick, computed, watch } from 'vue'
 import { message } from 'ant-design-vue'
 import { formatDate } from '@/utils/index'
 import api, { ApiConfig } from '@/api/index'
+import { useStore } from 'vuex'
 
 interface AnyKey {
   [key: string]: any 
@@ -88,15 +89,30 @@ export default defineComponent({
 
     const tableHeight = ref<any>(undefined)
     const tableWidth = ref<any>(undefined)
+    const bakcupHeight = ref<any>(undefined)
     const loadEnd = ref(false)
     const page = ref(1)
     const newColumns = ref<Array<any>>(columns)
+    const Store = useStore()
+    const style = computed(() => Number(Store.state.style))
 
     if (props.center) {
       newColumns.value = columns.map((e: any) => {
         e.align = 'center'
         return e
       })
+    }
+
+    watch(() => style.value, () => {
+      seHeight()
+    })
+
+    const seHeight = () => {
+      if (style.value === 2) {
+        tableHeight.value = bakcupHeight.value - 35
+      } else {
+        tableHeight.value = bakcupHeight.value
+      }
     }
 
     const mapColumns = (e: any) => {
@@ -168,22 +184,19 @@ export default defineComponent({
           throw { errMsg }
         }
       } finally {
-        loadEnd.value = true
+        const tableBody: any = document.querySelector('.ant-table-body')
+        if (tableBody) {
+          tableBody.scrollTo(0, 0)
+        }
         nextTick(() => {
-          if (loadEnd.value) {
+          if (!loadEnd.value) {
             const filterEle: any = document.querySelector('#list-filter') // 列表的筛选统一加这个id
-            const sectionEle: any = document.querySelector('.yzp-section')
-            const otherHeight = 230
-            const filterHeight = filterEle ? (filterEle.offsetHeight) : 0
-            const sectionHeight = sectionEle.offsetHeight - 180
-            const maxHeight = innerHeight - otherHeight - filterHeight
-            const isOuter = sectionHeight > maxHeight
-            tableHeight.value = isOuter ? maxHeight : undefined
-            if (tableConfig.total < size && !isOuter) {
-              tableHeight.value = undefined
-            }
-            console.log(sectionHeight, maxHeight)
+            const filterHeight = filterEle ? (filterEle.offsetHeight + 10) : 0
+            tableHeight.value = screen.height - 330 - filterHeight
+            bakcupHeight.value = tableHeight.value
             tableWidth.value = scrollWidth
+            seHeight()
+            loadEnd.value = true
           }
         })
       }

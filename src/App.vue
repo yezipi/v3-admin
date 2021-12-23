@@ -24,7 +24,10 @@
             </yzp-menu>
           </template>
         </yzp-header>
-        <section class="yzp-section">
+        <a-breadcrumb class="yzp-breadcrumb" v-if="style === 2">
+          <a-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index">{{ item }}</a-breadcrumb-item>
+        </a-breadcrumb>
+        <section :class="{ hasBreadcrumb: style === 2 }"  class="yzp-section">
           <div class="yzp-content">
             <router-view />
           </div>
@@ -180,11 +183,17 @@ body {
   backdrop-filter: saturate(150%) blur(10px);
   border-radius: 5px;
   min-height: calc(100vh - 90px);
+  &.hasBreadcrumb {
+    min-height: calc(100vh - 160px);
+  }
 }
 .yzp-content {
   padding: 15px;
 }
-
+.yzp-breadcrumb {
+  margin-left: 15px!important;
+  margin-top: 15px!important;
+}
 .full-modal {
   .ant-modal {
     max-width: 100%;
