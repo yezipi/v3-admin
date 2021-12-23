@@ -185,6 +185,23 @@ body {
   padding: 15px;
 }
 
+.full-modal {
+  .ant-modal {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh);
+  }
+  .ant-modal-body {
+    flex: 1;
+  }
+}
+
 @media screen and (max-width: 1024px) and (min-width: 320px) {
   .ant-col {
     max-width: 100%!important;
