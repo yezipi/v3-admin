@@ -66,7 +66,7 @@ const onSubmit = () => {
       commit('updateToken', token)
       commit('updateUser', user)
       router.replace({
-        name: referrer && referrer !== '/login' ? decodeURIComponent(referrer) : 'Home'
+        name: referrer && referrer !== 'Login' && referrer !== 'Result' ? decodeURIComponent(referrer) : 'Home'
       })
     } catch (e) {
       console.log(e)

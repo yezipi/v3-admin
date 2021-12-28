@@ -184,7 +184,7 @@ body {
   border-radius: 5px;
   min-height: calc(100vh - 90px);
   &.hasBreadcrumb {
-    min-height: calc(100vh - 160px);
+    min-height: calc(100vh - 130px);
   }
 }
 .yzp-content {
@@ -209,6 +209,17 @@ body {
   .ant-modal-body {
     flex: 1;
   }
+}
+
+.draw-content .ant-spin-spinning {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 80px;
+  height: 50px;
 }
 
 @media screen and (max-width: 1024px) and (min-width: 320px) {

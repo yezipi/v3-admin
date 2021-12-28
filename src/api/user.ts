@@ -6,7 +6,7 @@ export interface UserBaseConfig {
   nickname: string,
   password?: string,
   status: boolean,
-  role: string,
+  role_id: any,
   avatar?: string
 }
 

@@ -42,7 +42,7 @@ const routes = [ ...router.options.routes ]
 
 treeData.value = routes.map((e: any) => {
   return {
-    disableCheckbox: e.meta.noMenu || e.name === 'Home',
+    disableCheckbox: state.user.role.type === 'super' || e.meta.noMenu || e.name === 'Home',
     ...e,
   }
 })

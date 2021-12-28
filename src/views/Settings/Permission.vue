@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import RoleApi from '@/api/role'
-import confirm from '@/utils/confirm'
 
 const columns = reactive([
   {
