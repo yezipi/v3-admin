@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch, computed, onMounted } from 'vue'
+import { ref, watch, computed } from 'vue'
 import RoleApi from '@/api/role'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -40,12 +40,12 @@ const user = computed(() => store.state.user)
 const router = useRouter()
 const routes = [ ...router.options.routes ]
 
-treeData.value = routes.map((e: any) => {
-  return {
-    disableCheckbox: state.user.role.type === 'super' || e.meta.noMenu || e.name === 'Home',
-    ...e,
-  }
-})
+// treeData.value = routes.map((e: any) => {
+//   return {
+//     disableCheckbox: e.meta.noMenu || e.name === 'Home',
+//     ...e,
+//   }
+// })
 
 watch(() => props.visible, (val: boolean) => {
   drawState.value = val
@@ -68,6 +68,7 @@ const getInfo = async (id: any) => {
   try {
     wrapLoading.value = true
     const { data } = await RoleApi.getDetail(id)
+    const isSuper = state.user.role.type === 'super' && data.type === 'super'
     ruleForm.value = data
     
     // 如果是超级管理员，默认全选, 否则默认选择其他几个
@@ -86,6 +87,25 @@ const getInfo = async (id: any) => {
     } else {
       ruleForm.value.permissions = routes.filter((e: any) => e.meta.noAuth || e.name === 'Home').map((e: any) => e.name)
     }
+    console.log(isSuper)
+    treeData.value = routes.map((e: any) => {
+      const item = {
+        disableCheckbox: e.meta.noMenu || e.name === 'Home',
+        ...e
+      }
+      if (isSuper) {
+        item.disableCheckbox = true
+        if (item.children) {
+          item.children = item.children.map((i: any) => {
+            return {
+              disableCheckbox: true,
+              ...i
+            }
+          })
+        }
+      }
+      return item
+    })
   } catch (e) {
     console.log(e)
   } finally {

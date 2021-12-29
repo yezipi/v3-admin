@@ -158,7 +158,7 @@ onMounted(() => {
           ></a-input>
         </a-form-item>
 
-        <a-form-item label="角色">
+        <a-form-item v-if="!isSuper" label="角色">
           <a-radio-group v-model:value="ruleForm.role_id">
             <template v-for="(item, index) in roles">
               <a-radio
