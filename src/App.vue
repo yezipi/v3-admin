@@ -2,7 +2,7 @@
   <div class="yzp-app">
     <a-config-provider :locale="locale">
       <yzp-menu
-        v-if="isFullPage && style === 1"
+        v-if="isFullPage && menuStyle === 1"
         :menus="menus"
         :openName="openName"
         :selectName="selectName"
@@ -12,7 +12,7 @@
 
       <div v-if="isFullPage" class="yzp-main">
         <yzp-header :breadcrumbs="breadcrumbs" @collapseMenu="collapseMenu">
-          <template v-if="style === 2" #menu>
+          <template v-if="menuStyle === 2" #menu>
             <yzp-menu
               :menus="menus"
               :openName="openName"
@@ -24,10 +24,10 @@
             </yzp-menu>
           </template>
         </yzp-header>
-        <a-breadcrumb class="yzp-breadcrumb" v-if="style === 2">
+        <a-breadcrumb class="yzp-breadcrumb" v-if="menuStyle === 2">
           <a-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index">{{ item }}</a-breadcrumb-item>
         </a-breadcrumb>
-        <section :class="{ hasBreadcrumb: style === 2 }"  class="yzp-section">
+        <section :class="{ hasBreadcrumb: menuStyle === 2 }"  class="yzp-section">
           <div class="yzp-content">
             <router-view />
           </div>
@@ -64,7 +64,7 @@ export default defineComponent({
     const store = useStore()
     const routes = router.options.routes
     const menus = reactive(routes.filter((e: any) => !e.meta.noMenu))
-    const style = computed(() => Number(store.state.style))
+    const menuStyle = computed(() => Number(store.state.style))
 
     const setFullPageState = () => {
       isFullPage.value = route.name !== 'Login'
@@ -104,7 +104,7 @@ export default defineComponent({
       isFullPage,
       collapseMenu,
       locale: zhCN,
-      style
+      menuStyle
     }
   }
 })

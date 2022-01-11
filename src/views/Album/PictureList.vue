@@ -35,7 +35,7 @@ const toEdit = (id: string) => {
 }
 const toDelete = (item: any) => {
   confirm(`确定删除【${item.title}】吗？`, async () => {
-    await AlbumApi.destory(item.id)
+    await PictureApi.destory(item.id)
     getList()
   })
 }
