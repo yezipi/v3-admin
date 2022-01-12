@@ -10,7 +10,7 @@
       <a-form-item label="内容" name="content">
         <a-textarea ref="textareaRef" v-model:value="formState.content" :rows="5" placeholder="说点什么吧"></a-textarea>
         <div style="position: relative">
-          <img class="face-btn" src="/src/assets/img/icon-face.png" @click.stop="faceVisible = true" />
+          <img class="face-btn" src="/src/assets/img/icon_face.png" @click.stop="faceVisible = true" />
           <yzp-face v-if="faceVisible" v-model:value="faceVisible" @change="onFaceChange" />
         </div>
       </a-form-item>

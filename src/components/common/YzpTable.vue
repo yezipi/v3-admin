@@ -192,7 +192,7 @@ export default defineComponent({
           if (!loadEnd.value) {
             const filterEle: any = document.querySelector('#list-filter') // 列表的筛选统一加这个id
             const filterHeight = filterEle ? (filterEle.offsetHeight + 10) : 0
-            tableHeight.value = screen.height - 330 - filterHeight
+            tableHeight.value = screen.height - 350 - filterHeight
             bakcupHeight.value = tableHeight.value
             tableWidth.value = scrollWidth
             seHeight()

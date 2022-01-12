@@ -180,7 +180,6 @@ body {
 .yzp-section {
   .halfWhite;
   margin: 15px;
-  backdrop-filter: saturate(150%) blur(10px);
   border-radius: 5px;
   min-height: calc(100vh - 90px);
   &.hasBreadcrumb {
