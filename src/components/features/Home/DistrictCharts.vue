@@ -86,11 +86,11 @@ const getBaiduDistrictReport = async () => {
       bottom: '3%',
       containLabel: true
     },
-    xAxis: {
+    yAxis: {
       type: 'value',
       boundaryGap: [0, 0.01]
     },
-    yAxis: {
+    xAxis: {
       type: 'category',
       data: yData
     },
@@ -108,6 +108,9 @@ const getBaiduDistrictReport = async () => {
     ]
   }
   option && myChart.setOption(option)
+  window.addEventListener('resize', () => {
+    myChart.resize()
+  })
 }
 
 onMounted(() => getBaiduDistrictReport())

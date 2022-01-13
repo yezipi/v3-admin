@@ -171,6 +171,9 @@ const getBaiduDayReport = async () => {
     ]
   }
   option && myChart.setOption(option)
+  window.addEventListener('resize', () => {
+    myChart.resize()
+  })
 }
 
 onMounted(() => getBaiduDayReport())
