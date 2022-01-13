@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import TagsApi from '@/api/tags'
-import confirm from '@/utils/confirm'
+// import TagsApi from '@/api/tags'
+// import confirm from '@/utils/confirm'
 
 const columns = reactive([
   {
@@ -39,10 +39,10 @@ const tableRef = ref()
 
 // 删除
 const confirmDelete = (item: any) => {
-  confirm(`确定删除【${item.name}】吗？`, async () => {
-    await TagsApi.destory(item.id)
-    initList()
-  })
+  // confirm(`确定删除【${item.name}】吗？`, async () => {
+  //   await TagsApi.destory(item.id)
+  //   initList()
+  // })
 }
 
 const initList = () => {

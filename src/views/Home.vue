@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import ReportApi from '@/api/report'
 
-const totalCount: any = {}
+dayjs.extend(utc)
+
 const totalEles = ref<any>([
   { name: '文章数量', icon: 'icon_article.png', key: 'article', count: 0 },
   { name: '微语数量', icon: 'icon_mood.png', key: 'mood', count: 0 },
@@ -12,6 +15,10 @@ const totalEles = ref<any>([
   { name: '友链数量', icon: 'icon_link.png', key: 'blogroll', count: 0 },
 ])
 
+const startDate = ref(dayjs().startOf('week').add(1, 'day').format('YYYYMMDD'))
+const endDate = ref(dayjs().endOf('week').add(1, 'day').format('YYYYMMDD'))
+
+// 获取内容统计
 const getTotalCount = async () => {
   const { data } = await ReportApi.getTotalCount()
   totalEles.value = totalEles.value.map((e: any) => {
@@ -26,6 +33,7 @@ getTotalCount()
 
 <template>
   <div class="home-page">
+
     <div class="count-wrap">
       <div v-for="(item, index) in totalEles" :key="index" class="count-item">
         <div class="count-main">
@@ -37,6 +45,12 @@ getTotalCount()
         </div>
       </div>
     </div>
+
+    <div class="charts-part">
+      <day-charts class="charts-item" :start-date="startDate" :end-date="endDate"></day-charts>
+      <district-charts class="charts-item" :start-date="startDate" :end-date="endDate"></district-charts>
+    </div>
+
   </div>
 </template>
 
@@ -48,13 +62,14 @@ getTotalCount()
     width: 15%;
     border-radius: 6px;
     background: rgba(255,255,255,0.5);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
     .count-main {
-      padding: 15px;
+      padding: 10px;
     }
     .count-icon {
       flex-shrink: 0;
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -63,7 +78,6 @@ getTotalCount()
       background-size: 70%!important;
     }
     .count-text {
-      margin-top: 5px;
       display: flex;
       align-items: center;
     }
@@ -72,13 +86,20 @@ getTotalCount()
       color: #999999;
     }
     .count-number {
-      font-size: 30px;
+      font-size: 24px;
       font-weight: bold;
       color: #333333;
     }
     .count-name {
       color: #999999;
     }
+  }
+}
+.charts-part {
+  display: flex;
+  margin-top: 15px;
+  .charts-item {
+    flex: 1;
   }
 }
 </style>

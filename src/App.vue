@@ -114,7 +114,7 @@ export default defineComponent({
 <style lang="less">
 
 .halfWhite {
-  background: rgba(255,255,255,0.5)!important;
+  background: rgba(255,255,255,0.8)!important;
 }
 * {
   padding: 0;
@@ -145,7 +145,7 @@ body {
     position: fixed;
     left: 0;
     top: 0;
-    background: #f5f5f5 url('./assets/img/1bg.jpg') center no-repeat;
+    background: #cccccc url('./assets/img/overlay.png') center no-repeat;
     background-size: cover;
     background-attachment: fixed;
     filter: blur(10px);

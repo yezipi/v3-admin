@@ -12,6 +12,8 @@
     "@tinymce/tinymce-vue": "^4.0.4",
     "ant-design-vue": "^3.0.0-alpha.14",
     "axios": "^0.24.0",
+    "dayjs": "^1.10.7",
+    "echarts": "^5.2.2",
     "tinymce": "^5.10.0",
     "vue": "^3.2.22",
     "vue-cropper": "^1.0.2",
