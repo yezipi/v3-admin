@@ -27,7 +27,7 @@ Router.beforeEach((to: any, from: any, next: any) => {
     return
   }
 
-  if (!Store.getters.permissions.includes(to.name) && !meta.noAuth) {
+  if (!Store.getters.permissions.includes(to.name) && !meta.noAuth && Store.state.token) {
     next('/result?status=403')
     return
   }

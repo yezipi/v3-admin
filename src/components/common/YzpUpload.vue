@@ -198,7 +198,7 @@ export default defineComponent({
     })
 
     const beforeUpload = (file: FileItem) => {
-      if (props.count >= fileList.value.length && props.multiple) {
+      if (fileList.value.length >= props.count && props.multiple) {
         message.error(`不能超过${props.count}张`)
         return false
       }

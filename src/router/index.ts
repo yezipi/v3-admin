@@ -105,6 +105,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: '标签管理', icon: '' },
         component: () => import('@/views/ContentManage/TagList.vue'),
       },
+      {
+        path: '/operation/list',
+        name: 'OperationList',
+        meta: { title: '操作日志', icon: '' },
+        component: () => import('@/views/ContentManage/OperationList.vue'),
+      },
     ],
   },
   {

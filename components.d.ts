@@ -4,7 +4,6 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
-    403: typeof import('./src/components/common/403.vue')['default']
     404: typeof import('./src/components/features/404.vue')['default']
     AAvatar: typeof import('ant-design-vue/es')['Avatar']
     ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
@@ -12,7 +11,6 @@ declare module 'vue' {
     AButton: typeof import('ant-design-vue/es')['Button']
     ACheckbox: typeof import('ant-design-vue/es')['Checkbox']
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
-    ADatePicker: typeof import('ant-design-vue/es')['DatePicker']
     ADivider: typeof import('ant-design-vue/es')['Divider']
     ADrawer: typeof import('ant-design-vue/es')['Drawer']
     ADropdown: typeof import('ant-design-vue/es')['Dropdown']
@@ -26,7 +24,6 @@ declare module 'vue' {
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     AModal: typeof import('ant-design-vue/es')['Modal']
-    APageHeader: typeof import('ant-design-vue/es')['PageHeader']
     APagination: typeof import('ant-design-vue/es')['Pagination']
     ARadio: typeof import('ant-design-vue/es')['Radio']
     ARadioGroup: typeof import('ant-design-vue/es')['RadioGroup']
@@ -53,7 +50,6 @@ declare module 'vue' {
     RoleEdit: typeof import('./src/components/features/Role/RoleEdit.vue')['default']
     TagsEdit: typeof import('./src/components/features/Tags/TagsEdit.vue')['default']
     UserEdit: typeof import('./src/components/features/User/UserEdit.vue')['default']
-    YzpAside: typeof import('./src/components/common/YzpAside.vue')['default']
     YzpDraw: typeof import('./src/components/common/YzpDraw.vue')['default']
     YzpEditor: typeof import('./src/components/common/YzpEditor.vue')['default']
     YzpFace: typeof import('./src/components/common/YzpFace.vue')['default']

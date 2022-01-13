@@ -5,12 +5,24 @@ import confirm from '@/utils/confirm'
 
 const columns = reactive([
   {
-    title: '名称',
-    dataIndex: 'name',
+    title: '行为',
+    dataIndex: 'description',
   },
   {
-    title: '排序',
-    dataIndex: 'sort',
+    title: '用户',
+    dataIndex: 'user_name',
+  },
+  {
+    title: '地点',
+    dataIndex: 'address',
+  },
+  {
+    title: 'ip',
+    dataIndex: 'ip',
+  },
+  {
+    title: '设备',
+    dataIndex: 'ua',
   },
   {
     title: '时间',
@@ -24,18 +36,6 @@ const columns = reactive([
 ])
 
 const tableRef = ref()
-const currId = ref()
-const drawVisible = ref(false)
-
-const toEdit = (id: string) => {
-  currId.value = id
-  drawVisible.value = true
-}
-
-const toCreate = () => {
-  currId.value = ''
-  drawVisible.value = true
-}
 
 // 删除
 const confirmDelete = (item: any) => {
@@ -53,22 +53,16 @@ const initList = () => {
 
 <template>
   <div class="page-list">
-    <yzp-table :columns="columns" ref="tableRef" url="Tags.getList">
-      <template #filter>
-        <div></div>
-        <a-button type="primary" @click="toCreate">+ 创建标签</a-button>
-      </template>
-
+    <yzp-table :columns="columns" ref="tableRef" url="Report.getOperationLogs">
       <template #bodyCell="{ scope: { record, column } }">
+        <span v-if="column.dataIndex === 'address'">
+          {{ record.province + record.city }}
+        </span>
         <span v-if="column.dataIndex === 'action'">
-          <a @click="toEdit(record.id)">编辑</a>
-          <a-divider type="vertical" />
           <a @click="confirmDelete(record)">删除</a>
         </span>
       </template>
     </yzp-table>
-
-    <tags-edit v-model:visible="drawVisible" :id="currId" @finish="initList"></tags-edit>
   </div>
 </template>
 
