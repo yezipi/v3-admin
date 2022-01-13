@@ -10,6 +10,16 @@ export interface ListConfig {
 export default new class Tags extends Request {
 
   /**
+   * 获取百度accen_token
+   * @param { Boolean } refresh 是否重新获取token
+   * @version 2022-01-13 zzc
+   */
+  public getBaiduToken(refresh: boolean) {
+    const url = 'v1/report/getBaiduToken'
+    return this.post(url, { refresh, loading: true })
+  }
+
+  /**
    * 获取百度省份统计
    * @param { String } startDate 开始时间
    * @param { String } endDate 结束时间

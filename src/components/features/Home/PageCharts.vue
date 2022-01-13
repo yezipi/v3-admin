@@ -27,7 +27,7 @@ const columns = ref([
 
 const dataSource = ref<any>([])
 
-const getBaiduPageReport = async () => {
+const init = async () => {
   try {
     const { data } = await ReportApi.getBaiduPageReport(props.startDate, props.endDate)
     const items = data.items as Array<any>[]
@@ -45,7 +45,7 @@ const getBaiduPageReport = async () => {
   }
 }
 
-getBaiduPageReport()
+init()
 
 </script>
 

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
+import { ReloadOutlined } from '@ant-design/icons-vue'
 import ReportApi from '@/api/report'
+import { message } from 'ant-design-vue'
 
-dayjs.extend(utc)
 
 const totalEles = ref<any>([
   { name: '文章数量', icon: 'icon_article.png', key: 'article', count: 0 },
@@ -17,6 +17,10 @@ const totalEles = ref<any>([
 
 const startDate = ref(dayjs().startOf('week').add(1, 'day').format('YYYYMMDD'))
 const endDate = ref(dayjs().endOf('week').add(1, 'day').format('YYYYMMDD'))
+const dayRef = ref()
+const districtRef = ref()
+const keywordsRef = ref()
+const pageRef = ref()
 
 // 获取内容统计
 const getTotalCount = async () => {
@@ -25,6 +29,16 @@ const getTotalCount = async () => {
     e.count = data[e.key]
     return e
   })
+}
+
+// 刷新token，刷新数据
+const refreshData = async () => {
+  await ReportApi.getBaiduToken(true)
+  dayRef.value.init()
+  districtRef.value.init()
+  keywordsRef.value.init()
+  pageRef.value.init()
+  message.success('刷新成功')
 }
 
 getTotalCount()
@@ -46,14 +60,19 @@ getTotalCount()
       </div>
     </div>
 
+    <a-button size="small" type="link" @click="refreshData">
+      <template #icon><reload-outlined /></template>
+      刷新数据
+    </a-button>
+
     <div class="charts-part">
-      <day-charts class="charts-item" :start-date="startDate" :end-date="endDate"></day-charts>
-      <district-charts class="charts-item" :start-date="startDate" :end-date="endDate"></district-charts>
+      <day-charts class="charts-item" ref="dayRef" :start-date="startDate" :end-date="endDate"></day-charts>
+      <district-charts class="charts-item" ref="districtRef" :start-date="startDate" :end-date="endDate"></district-charts>
     </div>
 
     <div class="charts-part">
-      <keywords-charts class="charts-item" :start-date="startDate" :end-date="endDate"></keywords-charts>
-      <page-charts class="charts-item" :start-date="startDate" :end-date="endDate"></page-charts>
+      <keywords-charts class="charts-item" ref="keywordsRef" :start-date="startDate" :end-date="endDate"></keywords-charts>
+      <page-charts class="charts-item" ref="pageRef" :start-date="startDate" :end-date="endDate"></page-charts>
     </div>
 
   </div>
@@ -63,6 +82,7 @@ getTotalCount()
 .count-wrap {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 15px;
   .count-item {
     width: 15%;
     border-radius: 6px;

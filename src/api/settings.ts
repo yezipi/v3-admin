@@ -52,13 +52,20 @@ export interface SecuritySettingsConfig {
   black_ip: string,
 }
 
+export interface BaiduConfig {
+  appid: string,
+  secret: string,
+  code: string,
+  site_id: string,
+}
+
 export default new class Settings extends Request {
 
   /**
    * 获取基本设置
    * @version 2021-10-21 zzc
    */
-   public getBaseSettings() {
+  public getBaseSettings() {
     const url = 'v1/settings/getBaseSettings'
     return this.get(url, { loading: true })
   }
@@ -67,7 +74,7 @@ export default new class Settings extends Request {
    * 获取邮件设置
    * @version 2021-10-21 zzc
    */
-   public getMailSettings() {
+  public getMailSettings() {
     const url = 'v1/settings/getMailSettings'
     return this.get(url, { loading: true })
   }
@@ -76,7 +83,7 @@ export default new class Settings extends Request {
    * 获取广告设置
    * @version 2021-10-30 zzc
    */
-   public getAdSettings() {
+  public getAdSettings() {
     const url = 'v1/settings/getAdSettings'
     return this.get(url, { loading: true })
   }
@@ -85,7 +92,7 @@ export default new class Settings extends Request {
    * 获取个性化设置
    * @version 2021-10-30 zzc
    */
-   public getPersonalizeSettings() {
+  public getPersonalizeSettings() {
     const url = 'v1/settings/getPersonalizeSettings'
     return this.get(url, { loading: true })
   }
@@ -94,7 +101,7 @@ export default new class Settings extends Request {
    * 获取安全设置
    * @version 2021-10-30 zzc
    */
-   public getSecuritySettings() {
+  public getSecuritySettings() {
     const url = 'v1/settings/getSecuritySettings'
     return this.get(url, { loading: true })
   }
@@ -121,7 +128,7 @@ export default new class Settings extends Request {
    * @param { String } data.web_like 网站点赞
    * @version 2021-10-29 zzc
    */
-   public saveBaseSettings(data: BaseSettingsConfig) {
+  public saveBaseSettings(data: BaseSettingsConfig) {
     const url = 'v1/settings/saveBaseSettings'
     return this.put(url, { loading: true, ...data })
   }
@@ -140,7 +147,7 @@ export default new class Settings extends Request {
    * @param { String } data.receive_notice 是否发送
    * @version 2021-10-29 zzc
    */
-   public saveMailSettings(data: MailSettingsConfig) {
+  public saveMailSettings(data: MailSettingsConfig) {
     const url = 'v1/settings/saveMailSettings'
     return this.put(url, { loading: true, ...data })
   }
@@ -154,7 +161,7 @@ export default new class Settings extends Request {
    * @param { Boolean } data.status 状态显示
    * @version 2021-10-30 zzc
    */
-   public saveAdSettings(data: AdSettingsConfig) {
+  public saveAdSettings(data: AdSettingsConfig) {
     const url = 'v1/settings/saveAdSettings'
     return this.put(url, { loading: true, ...data })
   }
@@ -169,7 +176,7 @@ export default new class Settings extends Request {
    * @param { Boolean } data.auto 自动切换
    * @version 2021-10-30 zzc
    */
-   public savePersonalizeSettings(data: PersonalizeSettingsConfig) {
+  public savePersonalizeSettings(data: PersonalizeSettingsConfig) {
     const url = 'v1/settings/savePersonalizeSettings'
     return this.put(url, { loading: true, ...data })
   }
@@ -180,8 +187,31 @@ export default new class Settings extends Request {
    * @param { String } data.black_ip 黑名单ip,逗号分隔
    * @version 2021-10-30 zzc
    */
-   public saveSecuritySettings(data: SecuritySettingsConfig) {
+  public saveSecuritySettings(data: SecuritySettingsConfig) {
     const url = 'v1/settings/saveSecuritySettings'
     return this.put(url, { loading: true, ...data })
+  }
+
+  /**
+   * 保存百度统计配置
+   * @param { Object } body 参数
+   * @param { String } body.appid appid
+   * @param { String } body.secret secret
+   * @param { String } body.code code
+   * @param { String } body.site_id site_id
+   * @version 2022-01-13 zzc
+   */
+  public saveBaiduConfig(body: BaiduConfig) {
+    const url = 'v1/settings/saveBaiduConfig'
+    return this.put(url, { loading: true, ...body })
+  }
+
+  /**
+   * 保存安全设置
+   * @version 2022-01-13 zzc
+   */
+  public getBaiduConfig() {
+    const url = 'v1/settings/getBaiduConfig'
+    return this.get(url, { loading: true })
   }
 }

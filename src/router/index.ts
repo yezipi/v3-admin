@@ -256,6 +256,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Settings/Permission.vue'),
       },
       {
+        path: '/settings/baidu',
+        name: 'BaiduSettings',
+        meta: { title: '百度统计', icon: '' },
+        component: () => import('@/views/Settings/Baidu.vue'),
+      },
+      {
         path: '/settings/custom',
         name: 'CustomSettings',
         meta: { title: '个性化设置', icon: '' },

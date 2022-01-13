@@ -26,7 +26,6 @@ export default defineConfig({
         modifyVars: {
           'primary-color': '#ff6666',
           'link-color': '#ff6666',
-          'border-color-base': '#ff6666',
           'border-radius-base': '4px',
         },
         javascriptEnabled: true

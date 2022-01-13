@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
+import { Empty } from 'ant-design-vue';
 import ReportApi from '@/api/report'
 
 import * as echarts from 'echarts/core'
@@ -51,9 +52,10 @@ const props = defineProps({
 })
 
 const loading = ref(true)
+const isErr = ref(false)
 
 // 获取百度每日浏览统计
-const getBaiduDayReport = async () => {
+const init = async () => {
   try {
     const { data } = await ReportApi.getBaiduDayReport(props.startDate, props.endDate)
     // 组合成适用于图表的数据
@@ -176,12 +178,13 @@ const getBaiduDayReport = async () => {
     })
   } catch (e) {
     console.log(e)
+    isErr.value = true
   } finally {
     loading.value = false
   }
 }
 
-onMounted(() => getBaiduDayReport())
+onMounted(() => init())
 
 </script>
 
@@ -190,7 +193,9 @@ onMounted(() => getBaiduDayReport())
     <div v-if="loading" class="charts-loading">
       <a-spin></a-spin>
     </div>
-    <div class="charts-main" id="day-charts"></div>
+    <div class="charts-main" id="day-charts">
+      <a-empty v-if="isErr" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
+    </div>
   </div>
 </template>
 
