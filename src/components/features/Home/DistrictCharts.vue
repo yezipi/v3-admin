@@ -48,69 +48,74 @@ const loading = ref(true)
 
 // 获取百度每日浏览统计
 const getBaiduDistrictReport = async () => {
-  const { data } = await ReportApi.getBaiduDistrictReport(props.startDate, props.endDate)
-  loading.value = false
-  // 组合成适用于图表的数据
-  const yData = data.items[0].map((e: any) => e[0].name)
-  const val = data.items[1]
-  const val1: any = []
-  const val2: any = []
-  val.forEach((e: any) => {
-    if (e[0] !== '--' ) {
-      val1.push(e[0])
-    } else {
-      val1.push(0)
-    }
-    if (e[1] !== '--' ) {
-      val2.push(e[1])
-    } else {
-      val2.push(0)
-    }
-  })
-  const chartDom = document.getElementById('district-charts')!
-  const myChart = echarts.init(chartDom)
-  const option: EChartsOption = {
-    title: {
-      text: '7天省份统计'
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
+  try {
+    const { data } = await ReportApi.getBaiduDistrictReport(props.startDate, props.endDate)
+    // 组合成适用于图表的数据
+    const yData = data.items[0].map((e: any) => e[0].name)
+    const val = data.items[1]
+    const val1: any = []
+    const val2: any = []
+    val.forEach((e: any) => {
+      if (e[0] !== '--' ) {
+        val1.push(e[0])
+      } else {
+        val1.push(0)
       }
-    },
-    legend: {},
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      containLabel: true
-    },
-    yAxis: {
-      type: 'value',
-      boundaryGap: [0, 0.01]
-    },
-    xAxis: {
-      type: 'category',
-      data: yData
-    },
-    series: [
-      {
-        name: '访问数',
-        type: 'bar',
-        data: val1
+      if (e[1] !== '--' ) {
+        val2.push(e[1])
+      } else {
+        val2.push(0)
+      }
+    })
+    const chartDom = document.getElementById('district-charts')!
+    const myChart = echarts.init(chartDom)
+    const option: EChartsOption = {
+      title: {
+        text: '7天省份统计'
       },
-      {
-        name: '用户数',
-        type: 'bar',
-        data: val2
-      }
-    ]
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      legend: {},
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      yAxis: {
+        type: 'value',
+        boundaryGap: [0, 0.01]
+      },
+      xAxis: {
+        type: 'category',
+        data: yData
+      },
+      series: [
+        {
+          name: '访问数',
+          type: 'bar',
+          data: val1
+        },
+        {
+          name: '用户数',
+          type: 'bar',
+          data: val2
+        }
+      ]
+    }
+    option && myChart.setOption(option)
+    window.addEventListener('resize', () => {
+      myChart.resize()
+    })
+  } catch (e) {
+    console.log(e)
+  } finally {
+    loading.value = false
   }
-  option && myChart.setOption(option)
-  window.addEventListener('resize', () => {
-    myChart.resize()
-  })
 }
 
 onMounted(() => getBaiduDistrictReport())

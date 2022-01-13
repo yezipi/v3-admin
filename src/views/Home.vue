@@ -51,6 +51,11 @@ getTotalCount()
       <district-charts class="charts-item" :start-date="startDate" :end-date="endDate"></district-charts>
     </div>
 
+    <div class="charts-part">
+      <keywords-charts class="charts-item" :start-date="startDate" :end-date="endDate"></keywords-charts>
+      <page-charts class="charts-item" :start-date="startDate" :end-date="endDate"></page-charts>
+    </div>
+
   </div>
 </template>
 

@@ -49,6 +49,8 @@ declare module 'vue' {
     CommentsList: typeof import('./src/components/features/Comments/CommentsList.vue')['default']
     DayCharts: typeof import('./src/components/features/Home/DayCharts.vue')['default']
     DistrictCharts: typeof import('./src/components/features/Home/DistrictCharts.vue')['default']
+    KeywordsCharts: typeof import('./src/components/features/Home/KeywordsCharts.vue')['default']
+    PageCharts: typeof import('./src/components/features/Home/PageCharts.vue')['default']
     PictureEdit: typeof import('./src/components/features/Album/PictureEdit.vue')['default']
     RoleEdit: typeof import('./src/components/features/Role/RoleEdit.vue')['default']
     TagsEdit: typeof import('./src/components/features/Tags/TagsEdit.vue')['default']
