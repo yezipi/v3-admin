@@ -146,9 +146,9 @@ const timeAgao = (time: any) => {
   } else if (dayC >= 1) {
     result = `${parseInt(String(dayC))}天前`
   } else if (hourC >= 1) {
-    result = `${parseInt(String(dayC))}小时前`
+    result = `${parseInt(String(hourC))}小时前`
   } else if (minC >= 1) {
-    result = `${parseInt(String(dayC))}分钟前`
+    result = `${parseInt(String(minC))}分钟前`
   } else result = '刚刚'
   return result
 }

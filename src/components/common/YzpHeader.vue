@@ -9,11 +9,10 @@ import {
   RobotOutlined,
   BellOutlined
 } from '@ant-design/icons-vue'
-import { useStore } from 'vuex'
 import Store from '@/store/index'
 import { useRouter } from 'vue-router'
 import ReportApi from '@/api/report'
-import { formatDate, timeAgao } from '@/utils/index'
+import { timeAgao } from '@/utils/index'
 
 const props = defineProps({
   breadcrumbs: {
