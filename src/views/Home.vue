@@ -33,16 +33,6 @@ const getTotalCount = async () => {
   })
 }
 
-// 刷新token，刷新数据
-const refreshData = async () => {
-  await ReportApi.getBaiduToken(true)
-  dayRef.value.init()
-  districtRef.value.init()
-  keywordsRef.value.init()
-  pageRef.value.init()
-  message.success('刷新成功')
-}
-
 getTotalCount()
 
 </script>
@@ -62,18 +52,13 @@ getTotalCount()
       </div>
     </div>
 
-    <a-button size="small" type="link" @click="refreshData">
-      <template #icon><reload-outlined /></template>
-      刷新数据
-    </a-button>
-
     <div class="charts-part">
       <day-charts class="charts-item" ref="dayRef" :start-date="startDate" :end-date="endDate"></day-charts>
       <district-charts class="charts-item" ref="districtRef" :start-date="startDate" :end-date="endDate"></district-charts>
     </div>
 
     <div class="charts-part">
-      <keywords-charts class="charts-item" ref="keywordsRef" :start-date="day1" :end-date="day2"></keywords-charts>
+      <keywords-charts class="charts-item" ref="keywordsRef" :start-date="day1" :end-date="day2" style="margin-right: 10px;"></keywords-charts>
       <page-charts class="charts-item" ref="pageRef" :start-date="day1" :end-date="day2"></page-charts>
     </div>
 
@@ -131,5 +116,8 @@ getTotalCount()
   .charts-item {
     flex: 1;
   }
+}
+:deep(.ant-table.ant-table-small) {
+  font-size: 12px;
 }
 </style>

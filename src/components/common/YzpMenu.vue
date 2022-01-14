@@ -109,6 +109,9 @@ export default defineComponent({
     }
 
     const onOpenChange = (openKeys: string[]) => {
+      if (props.mode === 'horizontal') {
+        return
+      }
       if (openKeys.length) {
         state.openKeys = [openKeys[openKeys.length - 1]]
       } else {
@@ -150,8 +153,8 @@ export default defineComponent({
     }
   }
   &.horizontal {
-    width: initial;
-    height: initial;
+    width: auto;
+    height: auto;
     overflow: initial;
     background: none!important;
     backdrop-filter: none!important;

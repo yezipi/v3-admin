@@ -225,6 +225,10 @@ onMounted(() => init())
   }
   .charts-main {
     height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>

@@ -93,7 +93,7 @@ onMounted(() => {
             :class="{ active: formState.current === item }"
             @click="chooseImg(item)"
           >
-            <img :src="CONFIG.REQ_URL + item" alt />
+            <img :src="CONFIG.REQ_URL + item" />
             <CloseCircleOutlined
               v-if="formState.current !== item"
               class="icon"

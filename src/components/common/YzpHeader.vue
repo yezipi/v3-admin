@@ -1,3 +1,50 @@
+<script lang="ts" setup>
+import { ref, computed } from 'vue'
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined, 
+  ReloadOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  RobotOutlined,
+  BellOutlined
+} from '@ant-design/icons-vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+
+const props = defineProps({
+  breadcrumbs: {
+    type: Array,
+    default: () => []
+  }
+})
+const emit = defineEmits(['collapseMenu'])
+const collapsed = ref(false)
+const toggleMenu = () => {
+  collapsed.value = !collapsed.value
+  emit('collapseMenu', collapsed.value)
+}
+
+const Store = useStore()
+const Router = useRouter()
+const user = computed(() => Store.state.user)
+
+const logout = () => {
+  Router.replace({
+    name: 'Login',
+    query: {
+      referrer: Router.currentRoute.value.name as any
+    }
+  })
+  Store.dispatch('clearUser')
+}
+
+const changeStyle = () => {
+  Store.commit('changeStyle', Store.state.style === 1 ? 2 : 1)
+}
+
+</script>
+
 <template>
   <div :class="{ collapsed, hasMenu: $slots.menu }" class="yzp-head">
     <div v-if="!$slots.menu" class="head-left">
@@ -21,92 +68,61 @@
       </div>
     </div>
     <div class="head-right">
-      <a-dropdown>
+      <!--消息菜单-->
+      <a-dropdown placement="bottomRight">
+        <div class="user-message">
+        <a-badge count="5">
+          <bell-outlined style="font-size: 20px;" />
+        </a-badge>
+      </div>
+        <template #overlay>
+          <a-menu>
+            <div class="message-wrap">
+              <a-tabs class="message-tab" centered>
+                <a-tab-pane key="1" tab="评论">Content of Tab Pane 1</a-tab-pane>
+                <a-tab-pane key="2" tab="留言">Content of Tab Pane 2</a-tab-pane>
+                <a-tab-pane key="3" tab="友链">Content of Tab Pane 3</a-tab-pane>
+              </a-tabs>
+            </div>
+          </a-menu>
+        </template>
+      </a-dropdown>
+      <!--end 消息菜单-->
+
+      <!--用户菜单-->
+      <a-dropdown placement="bottomRight">
         <div class="right-avatar">
           <a-avatar :size="40" :src="user.avatar">
-            <template #icon><UserOutlined /></template>
+            <template #icon>
+              <UserOutlined />
+            </template>
           </a-avatar>
-          <span>{{ user.nickname }}</span>
+          <span class="user-name">{{ user.nickname }}</span>
         </div>
         <template #overlay>
           <a-menu>
             <a-menu-item @click="changeStyle">
-              <a href="javascript:;">切换布局</a>
+              <robot-outlined />
+              <a style="margin-left: 10px;">切换布局</a>
             </a-menu-item>
-            <a-menu-item>
-              <a @click="logout">退出</a>
+            <a-menu-item @click="logout">
+              <logout-outlined />
+              <a style="margin-left: 10px;">退出</a>
             </a-menu-item>
           </a-menu>
         </template>
       </a-dropdown>
+      <!--end 用户菜单-->
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
-import { MenuFoldOutlined, MenuUnfoldOutlined, ReloadOutlined, UserOutlined } from '@ant-design/icons-vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-
-export default defineComponent({
-  components: {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    ReloadOutlined,
-    UserOutlined
-  },
-  props: {
-    breadcrumbs: {
-      type: Array,
-      default: () => []
-    }
-  },
-  setup(props, { emit }) {
-
-    const collapsed = ref(false)
-    const toggleMenu = () => {
-      collapsed.value = !collapsed.value
-      emit('collapseMenu', collapsed.value)
-    }
-
-    const Store = useStore()
-    const Router = useRouter()
-    const user = computed(() => Store.state.user)
-
-    const logout = () => {
-      Router.replace({
-        name: 'Login',
-        query: {
-          referrer: Router.currentRoute.value.name as any
-        }
-      })
-      Store.dispatch('clearUser')
-    }
-
-    const changeStyle = () => {
-      Store.commit('changeStyle', Store.state.style === 1 ? 2 : 1)
-    }
-
-    return {
-      collapsed,
-      user,
-      toggleMenu,
-      logout,
-      changeStyle,
-    }
-
-  }
-})
-
-</script>
 
 <style lang="less">
 .yzp-head {
   position: sticky;
   z-index: 9;
   backdrop-filter: saturate(150%) blur(10px);
-  background: rgba(255,255,255,0.5);
+  background: rgba(255, 255, 255, 0.5);
   height: 60px;
   display: flex;
   align-items: center;
@@ -137,14 +153,36 @@ export default defineComponent({
       }
     }
     .head-menu {
-      width: calc(100vw - 250px)
+      width: calc(100vw - 280px);
     }
   }
   .head-right {
-    margin-right: 40px;
-    span {
-      display: inline-block;
-      margin-left: 10px;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    .user-message {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      width: 60px;
+      height: 100%;
+      cursor: pointer;
+      &:hover {
+        background: #eeeeee;
+      }
+    }
+    .right-avatar {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      .user-name {
+        display: inline-block;
+        margin-left: 10px;
+        flex-shrink: 0;
+      }
     }
   }
   .yzp-logo {
@@ -156,6 +194,25 @@ export default defineComponent({
       height: 100%;
       object-fit: cover;
     }
+  }
+}
+.message-wrap {
+  background: #ffffff;
+  padding: 10px;
+  padding-top: 0;
+  width: 300px;
+  .message-item {
+    padding: 10px;
+  }
+}
+</style>
+<style lang="less">
+.message-tab .ant-tabs-nav-wrap {
+  display: block!important;
+  .ant-tabs-tab {
+    flex: 1;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

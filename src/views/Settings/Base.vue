@@ -66,7 +66,7 @@ onMounted(() => {
 
 <template>
   <div class="base-settings">
-    <a-form ref="formRef" :model="formState" :rules="rules" :label-col="labelCol">
+    <a-form ref="formRef" layout="vertical" :model="formState" :rules="rules" :label-col="labelCol">
       
       <div class="formitem-wrap">
         <a-form-item label="logo">
@@ -162,7 +162,7 @@ onMounted(() => {
         </a-form-item>
       </div>
 
-      <a-form-item style="margin-left: 100px;">
+      <a-form-item style="margin-left: 1.5%;">
         <a-button type="primary" @click="onSubmit">立即保存</a-button>
         <a-button style="margin-left: 10px" @click="resetForm">重置</a-button>
       </a-form-item>
@@ -175,7 +175,11 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   :deep(.ant-form-item) {
-    width: 33.33%;
+    width: 30.33%;
+    margin-left: 3%;
+    &:nth-child(3n - 2) {
+      margin-left: 1.5%;
+    }
   }
 }
 </style>

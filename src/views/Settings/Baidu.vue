@@ -3,6 +3,7 @@ import { ref, toRaw, onMounted } from 'vue'
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { message } from 'ant-design-vue'
 import SettingsApi, { BaiduConfig } from '@/api/settings'
+import ReportApi from '@/api/report'
 
 const formRef = ref();
 
@@ -45,7 +46,9 @@ const onSubmit = () => {
   formRef.value.validate().then(async () => {
     const rawValue = toRaw(ruleForm.value)
     await SettingsApi.saveBaiduConfig(rawValue)
-    message.success('保存成功')
+    const { data } = await ReportApi.getBaiduToken(true)
+    const msg = data.isRefresh ? '保存成功, 并刷新了百度access_token' : '保存成功'
+    message.success(msg)
   })
   .catch((error: ValidateErrorEntity<BaiduConfig>) => {
     console.log('error', error);
