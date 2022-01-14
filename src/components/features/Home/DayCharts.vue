@@ -122,18 +122,24 @@ const init = async () => {
           name: '日用户数',
           type: 'line',
           stack: 'Total',
+          itemStyle: {
+            color: '#fbd363f2'
+          },
           areaStyle: {
-            opacity: 0.5,
+            opacity: 0.8,
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: 'rgb(255, 191, 0)'
+                color: '#e97f26f2'
               },
               {
                 offset: 1,
-                color: 'rgb(224, 62, 76)'
+                color: '#fbd363f2'
               }
             ])
+          },
+          lineStyle: {
+            color: '#d35318'
           },
           label: {
             show: true,
@@ -148,18 +154,24 @@ const init = async () => {
           name: '日访问数',
           type: 'line',
           stack: 'Total',
+          itemStyle: {
+            color: '#8bd5ec'
+          },
           areaStyle: {
-            opacity: 0.5,
+            opacity: 0.8,
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: 'rgb(128, 255, 165)'
+                color: '#8ba3ec'
               },
               {
                 offset: 1,
-                color: 'rgb(1, 191, 236)'
+                color: '#8bd5ec'
               }
             ])
+          },
+          lineStyle: {
+            color: '#4b69c7'
           },
           label: {
             show: true,
@@ -173,9 +185,9 @@ const init = async () => {
       ]
     }
     option && myChart.setOption(option)
-    window.addEventListener('resize', () => {
-      myChart.resize()
-    })
+    // window.addEventListener('resize', () => {
+    //   myChart.resize()
+    // })
   } catch (e) {
     console.log(e)
     isErr.value = true

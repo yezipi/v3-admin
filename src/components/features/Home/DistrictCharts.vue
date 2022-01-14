@@ -90,7 +90,7 @@ const init = async () => {
       },
       yAxis: {
         type: 'value',
-        boundaryGap: [0, 0.01]
+        boundaryGap: [0, 0.01],
       },
       xAxis: {
         type: 'category',
@@ -100,19 +100,39 @@ const init = async () => {
         {
           name: '访问数',
           type: 'bar',
-          data: val1
+          data: val1,
+          label: {
+            show: true,
+            position: 'top'
+          },
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 1, color: '#01b2ff' },
+              { offset: 0, color: '#acecff' }
+            ])
+          },
         },
         {
           name: '用户数',
           type: 'bar',
-          data: val2
+          data: val2,
+          label: {
+            show: true,
+            position: 'top'
+          },
+          itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 1, color: '#ff6666' },
+              { offset: 0, color: '#ffacac' }
+            ])
+          },
         }
       ]
     }
     option && myChart.setOption(option)
-    window.addEventListener('resize', () => {
-      myChart.resize()
-    })
+    // window.addEventListener('resize', () => {
+    //   myChart.resize()
+    // })
   } catch (e) {
     console.log(e)
     isErr.value = true

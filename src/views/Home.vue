@@ -17,6 +17,8 @@ const totalEles = ref<any>([
 
 const startDate = ref(dayjs().startOf('week').add(1, 'day').format('YYYYMMDD'))
 const endDate = ref(dayjs().endOf('week').add(1, 'day').format('YYYYMMDD'))
+const day1 = ref(dayjs().format('YYYYMMDD'))
+const day2 = ref(dayjs().add(1, 'day').format('YYYYMMDD'))
 const dayRef = ref()
 const districtRef = ref()
 const keywordsRef = ref()
@@ -71,8 +73,8 @@ getTotalCount()
     </div>
 
     <div class="charts-part">
-      <keywords-charts class="charts-item" ref="keywordsRef" :start-date="startDate" :end-date="endDate"></keywords-charts>
-      <page-charts class="charts-item" ref="pageRef" :start-date="startDate" :end-date="endDate"></page-charts>
+      <keywords-charts class="charts-item" ref="keywordsRef" :start-date="day1" :end-date="day2"></keywords-charts>
+      <page-charts class="charts-item" ref="pageRef" :start-date="day1" :end-date="day2"></page-charts>
     </div>
 
   </div>
@@ -87,7 +89,10 @@ getTotalCount()
     width: 15%;
     border-radius: 6px;
     background: rgba(255,255,255,0.5);
-    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+    border-right: 1px solid #eeeeee;
+    &:last-child {
+      border: 0;
+    }
     .count-main {
       padding: 10px;
     }
