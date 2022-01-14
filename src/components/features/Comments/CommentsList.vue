@@ -2,6 +2,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import confirm from '@/utils/confirm'
+import ReportApi from '@/api/report'
 
 const columns = reactive([
   {
@@ -98,6 +99,7 @@ const toCreate = () => {
 const toDelete = (item: any) => {
   confirm(`确定删除【${item.nickname}】的${title.value}吗？`, async () => {
     await api.destory(item.id)
+    ReportApi.getUnAudit()
     initList()
   })
 }
@@ -109,6 +111,7 @@ const toUpdate =async (item: any, checked: boolean, key: any) => {
   obj[key] = checked
   try {
     await api.update(id, obj)
+    ReportApi.getUnAudit()
     item[key] = checked
   } catch (e) {
     item[key] = !item[key]

@@ -1,5 +1,6 @@
 // 数据统计接口
 import Request from '@/utils/request'
+import Store from '@/store/index'
 
 export interface ListConfig {
   page?: number,
@@ -70,6 +71,20 @@ export default new class Tags extends Request {
   public getTotalCount() {
     const url = 'v1/report/totalCount'
     return this.get(url)
+  }
+
+  /**
+   * 未审核内容
+   * @version 2022-01-14 zzc
+   */
+  public async getUnAudit() {
+    const url = 'v1/report/unAudit'
+    const { data } = await this.get(url)
+    Store.commit('updateMsgData', data)
+    return {
+      count: data.count,
+      data: data.data
+    }
   }
 
   /**

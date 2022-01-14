@@ -24,9 +24,13 @@ const mutations: MutationTree<StateConfig> = {
     }
   },
   // 切换布局
-  changeStyle(state, data) {
+  updateStyle(state, data) {
     state.style = data
     db.set('style', data)
+  },
+  updateMsgData(state, data) {
+    state.msgData = data
+    db.set('msgData', data)
   }
 }
 

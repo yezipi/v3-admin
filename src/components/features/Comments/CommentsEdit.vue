@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
+import ReportApi from '@/api/report'
 
 const props = defineProps({
   visible: {
@@ -107,6 +108,7 @@ const onSubmit = () => {
       } else {
         await api.update(props.id as any, ruleForm.value)
       }
+      ReportApi.getUnAudit()
       closeDraw()
       emit('finish', true)
     } catch (e) {

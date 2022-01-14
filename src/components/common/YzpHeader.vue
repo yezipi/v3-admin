@@ -10,7 +10,10 @@ import {
   BellOutlined
 } from '@ant-design/icons-vue'
 import { useStore } from 'vuex'
+import Store from '@/store/index'
 import { useRouter } from 'vue-router'
+import ReportApi from '@/api/report'
+import { formatDate, timeAgao } from '@/utils/index'
 
 const props = defineProps({
   breadcrumbs: {
@@ -19,15 +22,21 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['collapseMenu'])
+
 const collapsed = ref(false)
+// const Store = useStore(globalStoreKey)
+const Router = useRouter()
+const user = computed(() => Store.state.user)
+const msgCount = computed(() => Store.state.msgData.count)
+const unAuditComments = computed(() => Store.state.msgData.data.comments)
+const unAuditFeedbacks = computed(() => Store.state.msgData.data.feedbacks)
+const unAuditBlogrolls = computed(() => Store.state.msgData.data.blogrolls)
+const activeMsgType = ref('comments')
+
 const toggleMenu = () => {
   collapsed.value = !collapsed.value
   emit('collapseMenu', collapsed.value)
 }
-
-const Store = useStore()
-const Router = useRouter()
-const user = computed(() => Store.state.user)
 
 const logout = () => {
   Router.replace({
@@ -40,8 +49,11 @@ const logout = () => {
 }
 
 const changeStyle = () => {
-  Store.commit('changeStyle', Store.state.style === 1 ? 2 : 1)
+  Store.commit('updateStyle', Store.state.style === 1 ? 2 : 1)
 }
+
+// 获取未审核内容
+ReportApi.getUnAudit()
 
 </script>
 
@@ -71,17 +83,44 @@ const changeStyle = () => {
       <!--消息菜单-->
       <a-dropdown placement="bottomRight">
         <div class="user-message">
-        <a-badge count="5">
+        <a-badge :count="msgCount">
           <bell-outlined style="font-size: 20px;" />
         </a-badge>
       </div>
         <template #overlay>
           <a-menu>
-            <div class="message-wrap">
-              <a-tabs class="message-tab" centered>
-                <a-tab-pane key="1" tab="评论">Content of Tab Pane 1</a-tab-pane>
-                <a-tab-pane key="2" tab="留言">Content of Tab Pane 2</a-tab-pane>
-                <a-tab-pane key="3" tab="友链">Content of Tab Pane 3</a-tab-pane>
+            <div class="msg-wrap">
+              <a-tabs v-model:value="activeMsgType" class="msg-tab" centered>
+                <a-tab-pane key="comments" :tab="`评论(${unAuditComments.count})`">
+                  <div v-for="(item, index) in unAuditComments.rows" :key="index" class="msg-item">
+                    <div class="msg-user">
+                      <span>{{ item.nickname }}</span>
+                      <span>{{ timeAgao(item.createdAt) }}</span>
+                    </div>
+                    <span class="msg-content">{{ item.content }}</span>
+                  </div>
+                  <a-empty v-if="!unAuditComments.rows.length" />
+                </a-tab-pane>
+                <a-tab-pane key="feedbacks" :tab="`留言(${unAuditFeedbacks.count})`">
+                  <div v-for="(item, index) in unAuditFeedbacks.rows" :key="index" class="msg-item">
+                    <div class="msg-user">
+                      <span>{{ item.nickname }}</span>
+                      <span>{{ timeAgao(item.createdAt) }}</span>
+                    </div>
+                    <span class="msg-content">{{ item.content }}</span>
+                  </div>
+                  <a-empty v-if="!unAuditFeedbacks.rows.length" />
+                </a-tab-pane>
+                <a-tab-pane key="blogrolls" :tab="`友链(${unAuditBlogrolls.count})`">
+                  <div v-for="(item, index) in unAuditBlogrolls.rows" :key="index" class="msg-item">
+                    <div class="msg-user">
+                      <span>{{ item.nickname }}</span>
+                      <span>{{ timeAgao(item.createdAt) }}</span>
+                    </div>
+                    <span class="msg-content">{{ item.content }}</span>
+                  </div>
+                  <a-empty v-if="!unAuditBlogrolls.rows.length" />
+                </a-tab-pane>
               </a-tabs>
             </div>
           </a-menu>
@@ -196,18 +235,46 @@ const changeStyle = () => {
     }
   }
 }
-.message-wrap {
+.msg-wrap {
   background: #ffffff;
-  padding: 10px;
-  padding-top: 0;
   width: 300px;
-  .message-item {
-    padding: 10px;
+  max-height: 500px;
+  overflow-y: auto;
+  .msg-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eeeeee;
+    &:first-child {
+      margin-top: -16px;
+    }
+    &:last-child {
+      border: 0;
+    }
+    &:hover {
+      background: #f5f5f5;
+    }
+    .msg-user {
+      display: flex;
+      align-items: center;
+      span:first-child {
+        display: inline-block;
+        color: #ff6666;
+        margin-right: 10px;
+        font-size: 12px;
+      }
+      span:nth-child(2) {
+        color: #999999;
+        font-size: 12px;
+      }
+    }
+    .msg-content {
+      color: #666666;
+      font-size: 12px;
+    }
   }
 }
 </style>
 <style lang="less">
-.message-tab .ant-tabs-nav-wrap {
+.msg-tab .ant-tabs-nav-wrap {
   display: block!important;
   .ant-tabs-tab {
     flex: 1;

@@ -117,10 +117,47 @@ const dataURItoBlob = (file: File) => {
   }
 }
 
+/**
+ * 时间格式化，多少秒，多少分钟前
+ * @param { Date } time 日期对象及格式
+ * @version 2021-01-14 zzc
+ */
+const timeAgao = (time: any) => {
+  const minute = 1000 * 60
+  const hour = minute * 60
+  const day = hour * 24
+  // const halfamonth = day * 15
+  const month = day * 30
+  const dateTimeStamp = Date.parse(time)
+  const now = new Date().getTime()
+  const diffValue = now - dateTimeStamp
+  let result = ''
+  if (diffValue < 0) {
+    return
+  }
+  const monthC = diffValue / month
+  // console.log(monthC)
+  // var weekC = diffValue / (7 * day)
+  const dayC = diffValue / day
+  const hourC = diffValue / hour
+  const minC = diffValue / minute
+  if (monthC >1) {
+    result = time.substring(0, 10)
+  } else if (dayC >= 1) {
+    result = `${parseInt(String(dayC))}天前`
+  } else if (hourC >= 1) {
+    result = `${parseInt(String(dayC))}小时前`
+  } else if (minC >= 1) {
+    result = `${parseInt(String(dayC))}分钟前`
+  } else result = '刚刚'
+  return result
+}
+
 export {
   db,
   dataURItoBlob,
   formatDate,
+  timeAgao,
   copyText,
   debounce
 }
