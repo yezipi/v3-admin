@@ -15,8 +15,8 @@ const totalEles = ref<any>([
   { name: '友链数量', icon: 'icon_link.png', key: 'blogroll', count: 0 },
 ])
 
-const startDate = ref(dayjs().startOf('week').add(1, 'day').format('YYYYMMDD'))
-const endDate = ref(dayjs().endOf('week').add(1, 'day').format('YYYYMMDD'))
+const startDate = ref(dayjs().subtract(7, 'day').format('YYYYMMDD'))
+const endDate = ref(dayjs().endOf('day').format('YYYYMMDD'))
 const day1 = ref(dayjs().format('YYYYMMDD'))
 const day2 = ref(dayjs().add(1, 'day').format('YYYYMMDD'))
 const dayRef = ref()
