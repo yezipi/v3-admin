@@ -43,7 +43,7 @@
         </template>
 
         <template v-if="dataIndex === 'subcolumn'">
-          <span v-if="record.subcolumn">{{ record.subname }}</span>
+          <span v-if="record.subcolumn">{{ record.subcolumn.name }}</span>
           <span v-else style="color: red">分类已删除</span>
         </template>
 
