@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { Empty } from 'ant-design-vue';
+import { Empty } from 'ant-design-vue'
 import ReportApi from '@/api/report'
 
 import * as echarts from 'echarts/core'
@@ -90,7 +90,6 @@ const init = async () => {
       },
       yAxis: {
         type: 'value',
-        boundaryGap: [0, 0.01],
       },
       xAxis: {
         type: 'category',

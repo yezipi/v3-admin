@@ -160,11 +160,13 @@ export default defineComponent({
     }
 
     const confirmSortChange = async (e: any) => {
-      if (typeof e.sort !== 'number') {
+      console.log(e)
+      const { sort, id } = e
+      if (typeof Number(sort) !== 'number') {
         message.error('请输入数字')
         return
       }
-      await ColumnApi.updateColumn(e.id, { sort: e.sort })
+      await ColumnApi.updateColumn(id, { sort })
       e.showSortInput = false
       tableRef.value.init()
     }

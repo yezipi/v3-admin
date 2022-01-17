@@ -49,7 +49,7 @@ const props = defineProps({
     type: String,
     default: ''
   },
-})
+});
 
 const loading = ref(true)
 const isErr = ref(false)
@@ -63,7 +63,7 @@ const init = async () => {
     const val = data.items[1]
     const val1: any = []
     const val2: any = []
-    console.log(date)
+
     val.forEach((e: any) => {
       if (e[0] !== '--' ) {
         val1.push(e[0])
@@ -109,12 +109,12 @@ const init = async () => {
         {
           type: 'category',
           boundaryGap: false,
-          data: date
+          data: date,
         }
       ],
       yAxis: [
         {
-          type: 'value'
+          type: 'value',
         }
       ],
       series: [
@@ -192,11 +192,12 @@ const init = async () => {
     console.log(e)
     isErr.value = true
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
-onMounted(() => init())
+onMounted(() => init());
+
 
 </script>
 
