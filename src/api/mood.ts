@@ -9,7 +9,7 @@ export interface MoodListConfig {
 export interface MoodSaveConfig {
   content?: string,
   view?: number,
-  author_name?: string,
+  from?: string,
   open_comment?: boolean,
   status?: boolean
   user_id?: any
@@ -21,7 +21,7 @@ export default new class Mood extends Request {
    * 创建微语
    * @param { Object } params 参数
    * @param { String } params.content 内容
-   * @param { String } params.author_name 来源
+   * @param { String } params.from 来源
    * @param { String } params.open_comment 内容
    * @param { Boolean } params.status 显示隐藏
    * @param { Number } params.view 浏览数

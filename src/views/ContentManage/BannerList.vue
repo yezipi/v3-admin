@@ -48,10 +48,8 @@
         <template v-if="dataIndex === 'action'">
           <span>
             <a @click="toEdit(record.id)">编辑</a>
-            <template v-if="record.role === 'admin'">
-              <a-divider type="vertical" />
-              <a @click="confirmDelete(record)">删除</a>
-            </template>
+            <a-divider type="vertical" />
+            <a @click="confirmDelete(record)">删除</a>
           </span>
         </template>
 

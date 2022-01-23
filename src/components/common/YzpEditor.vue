@@ -60,11 +60,11 @@ export default defineComponent({
       fontsize_formats: '11px 12px 14px 16px 18px 24px 36px 48px 64px 72px', // 文字大小
       paste_data_images: true,
       codesample_languages: [
-        { text: 'HTML/XML', value: 'markup' },
         { text: 'JavaScript', value: 'javascript' },
         { text: 'CSS', value: 'css' },
         { text: 'Java', value: 'java' },
         { text: 'C++', value: 'cpp' },
+        { text: 'HTML/XML', value: 'markup' },
       ],
       // 图片上传回调
       images_upload_handler: (blobInfo: any, success: any) => {

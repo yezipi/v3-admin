@@ -9,10 +9,11 @@
       <a-form-item label="封面" style="margin-bottom: 12px;">
         <div style="width:150px;height:71px">
           <yzp-upload
-            v-model:value="formState.cover_thumb"
+            v-model:value="formState.cover"
             :clip="true"
-            :width="525"
-            :height="250"
+            :thumb="false"
+            :width="300"
+            :height="170"
             :withParentWith="true"
             dir="cover"
           >
@@ -52,7 +53,7 @@
       </a-form-item>
 
       <a-form-item label="来源">
-        <a-input v-model:value="formState.author_name" placeholder="请输入文章来源" />
+        <a-input v-model:value="formState.from" placeholder="请输入文章来源" />
       </a-form-item>
       
       <a-form-item label="点赞">
@@ -94,12 +95,12 @@ export default defineComponent({
     let formState= ref({
       title: '',
       subcolumn_id: undefined,
-      cover_thumb: '',
+      cover: '',
       cover_origin: '',
       keywords: '',
       description: '',
       content: '',
-      author_name: '',
+      from: '',
       like: 0,
       view: 0,
       status: true,
@@ -154,12 +155,12 @@ export default defineComponent({
       formRef.value
         .validate()
         .then(async () => {
-          const { cover_thumb } = formState.value
-          formState.value.cover_origin = cover_thumb.replace('thumb_', 'origin_')
-          console.log(toRaw(formState))
+          if (!formState.value.cover) {
+            formState.value.cover = `/public/randomImg/${parseInt(String(Math.random() * 50))}.jpg`
+          }
           const data = {
             ...toRaw(formState.value),
-            user_id: user.id
+            user_id: user.value.id
           }
           if (!id) {
             await ArticleApi.create(data)

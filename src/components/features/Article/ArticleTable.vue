@@ -27,9 +27,9 @@
 
       <template v-slot:bodyCell="{ scope: { record, column: { dataIndex } } }">
         
-        <template v-if="dataIndex === 'cover_thumb'">
+        <template v-if="dataIndex === 'cover'">
           <div class="article-cover">
-            <div class="cover-bg" :style="{ background: `url(${record.cover_thumb || defaultPic}) center` }"></div>
+            <div class="cover-bg" :style="{ background: `url(${record.cover || defaultPic}) center` }"></div>
             <img class="cover-default" :src="defaultPic" />
           </div>
         </template>
@@ -99,7 +99,7 @@ export default defineComponent({
     const columns = reactive([
       {
         title: '封面',
-        dataIndex: 'cover_thumb',
+        dataIndex: 'cover',
         width: 100,
       },
       {

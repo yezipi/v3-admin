@@ -5,10 +5,10 @@ type ArticleFields =  {
   type?: string,
   sub_column_id?: number | string,
   column_id?: number,
-  cover_thumb?: string,
+  cover?: string,
   keywords?: string,
   description?: string,
-  author_name?: string,
+  from?: string,
   user_id?: number,
   view?: number,
   like?: number,
@@ -49,12 +49,11 @@ export default new class Article extends Request {
    * @param { String } data.type 类型
    * @param { Number } data.column_id 一级栏目id，没有二级的情况下传
    * @param { Number } data.subcolumn_id 二级栏目id
-   * @param { String } data.cover_origin 原图
-   * @param { String } data.cover_thumb 缩略图
+   * @param { String } data.cover 缩略图
    * @param { String } data.keywords 关键字
    * @param { String } data.description 描述
    * @param { Number } data.user_id 发表的用户id
-   * @param { String } data.author_name 作者姓名
+   * @param { String } data.from 作者姓名
    * @param { Number } data.view 浏览次数
    * @param { Number } data.like 点赞数
    * @param { Boolean } data.status 状态
