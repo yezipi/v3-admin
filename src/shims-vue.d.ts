@@ -7,3 +7,4 @@ declare module '*.vue' {
 
 declare module '@ant-design/icons-vue'
 declare module 'vue-img-cutter'
+declare module 'vue3-easy-swiper'

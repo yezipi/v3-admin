@@ -20,7 +20,7 @@
       </a-form-item>
 
       <a-form-item label="来源">
-        <a-input v-model:value="formState.author_name" placeholder="请输入来源" />
+        <a-input v-model:value="formState.from" placeholder="请输入来源" />
       </a-form-item>
       
       <a-form-item label="浏览">
@@ -56,7 +56,7 @@ export default defineComponent({
     let formState= ref({
       content: '',
       images: undefined,
-      author_name: '',
+      from: '',
       view: 0,
       status: true,
       open_comment: true,

@@ -3,8 +3,6 @@ import { ref } from 'vue'
 import dayjs from 'dayjs'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import ReportApi from '@/api/report'
-import { message } from 'ant-design-vue'
-
 
 const totalEles = ref<any>([
   { name: '文章数量', icon: 'icon_article.png', key: 'article', count: 0 },
@@ -39,7 +37,6 @@ getTotalCount()
 
 <template>
   <div class="home-page">
-
     <div class="count-wrap">
       <div v-for="(item, index) in totalEles" :key="index" class="count-item">
         <div class="count-main">

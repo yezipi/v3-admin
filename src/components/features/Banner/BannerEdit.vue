@@ -18,7 +18,7 @@
         </a-form-item>
 
         <a-form-item label="名称" name="name">
-          <a-input v-model:value="ruleForm.name" autocomplete="off" :maxlength="20" placeholder="请填写名称"></a-input>
+          <a-input v-model:value="ruleForm.name" autocomplete="off" placeholder="请填写名称"></a-input>
         </a-form-item>
 
         <a-form-item label="排序" name="sort">
