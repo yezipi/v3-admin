@@ -38,7 +38,7 @@
       </a-form-item>
 
       <a-form-item label="栏目内容" name="content" class="maxwidth-100">
-        <yzp-editor ref="editor" v-model="ruleForm.content"></yzp-editor>
+        <yzp-editor v-model:value="ruleForm.content"></yzp-editor>
       </a-form-item>
 
       <a-form-item class="btn-label">

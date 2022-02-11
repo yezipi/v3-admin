@@ -45,7 +45,7 @@
       </a-form-item>
 
       <a-form-item label="正文" name="content" class="maxwidth-100">
-        <yzp-editor ref="editor" v-model="formState.content"></yzp-editor>
+        <yzp-editor v-model:value="formState.content"></yzp-editor>
       </a-form-item>
 
       <a-form-item label="标签">
