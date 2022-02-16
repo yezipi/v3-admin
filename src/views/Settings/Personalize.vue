@@ -7,7 +7,6 @@ import SettingsApi, { PersonalizeSettingsConfig } from '@/api/settings'
 import CONFIG from '@/config';
 
 const formRef = ref()
-const labelCol = { style: { width: '100px' } }
 const styleOptions = ref([
   { label: '简约', value: 'simple' },
   { label: '小清新', value: 'fresh' },
@@ -80,12 +79,12 @@ onMounted(() => {
 
 <template>
   <div class="mail-settings">
-    <a-form ref="formRef" :model="formState" :rules="rules" :label-col="labelCol">
+    <a-form ref="formRef" size="large" auto-label-width :model="formState" :rules="rules">
       <a-form-item label="风格选择">
-        <a-select v-model:value="formState.style" :options="styleOptions"></a-select>
+        <a-select v-model="formState.style" :options="styleOptions"></a-select>
       </a-form-item>
 
-      <a-form-item v-if="formState.style === 'fresh'" label="背景选择">
+      <a-form-item v-if="formState.style === 'fresh'" label="背景选择" >
         <ul class="bglist">
           <li
             v-for="(item, index) in imgs"
@@ -116,10 +115,10 @@ onMounted(() => {
       </a-form-item>
 
       <a-form-item label="字体选择">
-        <a-select v-model:value="formState.font" :options="fontOptions"></a-select>
+        <a-select v-model="formState.font" :options="fontOptions"></a-select>
       </a-form-item>
 
-      <a-form-item style="margin-left: 100px;">
+      <a-form-item>
         <a-button type="primary" @click="onSubmit">立即保存</a-button>
       </a-form-item>
     </a-form>

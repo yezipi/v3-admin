@@ -7,7 +7,8 @@
       class="yzp-menu"
       :theme="theme"
       :mode="mode"
-      :inline-collapsed="collapsed"
+      :accordion="true"
+      :collapsed="collapsed"
       v-model:openKeys="openKeys"
       v-model:selectedKeys="selectedKeys"
       @openChange="onOpenChange"
@@ -41,7 +42,7 @@
 import { computed, defineComponent, reactive, toRefs, watch } from 'vue'
 import { useRouter  } from 'vue-router'
 import { useStore } from 'vuex'
-import { MenuMode, MenuTheme } from 'ant-design-vue/es/menu/src/interface'
+import { MenuMode, MenuTheme } from '@arco-design/web-vue/es/menu/interface'
 
 export default defineComponent({
   props: {
@@ -58,7 +59,7 @@ export default defineComponent({
       default: () => []
     },
     mode: {
-      default: 'inline' as MenuMode
+      default: 'vertical' as MenuMode
     },
     theme: {
       default: 'dark' as MenuTheme
@@ -139,18 +140,54 @@ export default defineComponent({
 <style scoped lang="less">
 .yzp-aside {
   backdrop-filter: saturate(150%) blur(10px);
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.7);
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   width: 200px;
   transition: all 0.3s;
   &.collapsed {
-    width: 80px;
+    width: 50px;
     .yzp-logo {
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
     }
+  }
+  :deep(.arco-menu-light) {
+    background: none;
+  }
+  :deep(.arco-menu-light .arco-menu-pop-header) {
+    background: none;
+    &:hover {
+      background-color: var(--color-neutral-3);
+    }
+  }
+  :deep(.arco-menu-dark .arco-menu-pop-header) {
+    background: none;
+    &:hover {
+      background-color: var(--color-neutral-3);
+    }
+  }
+  :deep(.arco-menu-dark .arco-menu-item) {
+    background: none;
+    &:hover {
+      background-color: var(--color-menu-dark-bg);
+    }
+  }
+  :deep(.arco-menu-dark .arco-menu-item.arco-menu-selected) {
+    background-color: var(--color-menu-dark-bg);
+  }
+  :deep(.arco-menu-inline-content) {
+    background: rgba(0,0,0,0.2);
+  }
+  :deep(.arco-menu-dark .arco-menu-inline-header) {
+    background: none;
+    &:hover {
+      background-color: var(--color-menu-dark-bg);
+    }
+  }
+  :deep(.arco-menu-dark) {
+    background: none;
   }
   &.horizontal {
     width: auto;

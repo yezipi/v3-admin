@@ -139,11 +139,11 @@ ReportApi.getUnAudit()
         <template #content>
           <a-doption @click="changeStyle">
             <robot-outlined />
-            <a-button type="text" style="margin-left: 10px;">切换布局</a-button>
+            <span style="margin-left: 10px">切换布局</span>
           </a-doption>
           <a-doption @click="logout">
             <logout-outlined />
-            <a-button type="text" style="margin-left: 10px;">退出</a-button>
+            <span style="margin-left: 10px">退出</span>
           </a-doption>
         </template>
       </a-dropdown>
@@ -152,7 +152,7 @@ ReportApi.getUnAudit()
   </div>
 </template>
 
-<style lang="less">
+<style scoped lang="less">
 .yzp-head {
   position: sticky;
   z-index: 9;
@@ -174,6 +174,7 @@ ReportApi.getUnAudit()
     align-items: center;
     flex: 1;
     position: relative;
+    height: 100%;
     .left-btn {
       width: 60px;
       height: 60px;

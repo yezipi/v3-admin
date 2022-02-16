@@ -14,7 +14,6 @@ const formState = ref<AdSettingsConfig>({
 });
 
 const rules = {}
-const labelCol = { style: { width: '100px' } }
 
 // 获取详情
 const getDetail = async () => {
@@ -46,24 +45,24 @@ onMounted(() => {
 
 <template>
   <div class="mail-settings">
-    <a-form ref="formRef" :model="formState" :rules="rules" :label-col="labelCol">
+    <a-form ref="formRef" size="large" :model="formState" :rules="rules" :auto-label-width="true">
       <a-form-item label="首页">
-        <a-textarea v-model:value="formState.banner" placeholder="首页广告"></a-textarea>
+        <a-textarea v-model="formState.banner" placeholder="首页广告"></a-textarea>
       </a-form-item>
 
       <a-form-item label="侧边栏">
-        <a-textarea v-model:value="formState.aside" placeholder="侧边栏广告"></a-textarea>
+        <a-textarea v-model="formState.aside" placeholder="侧边栏广告"></a-textarea>
       </a-form-item>
 
       <a-form-item label="悬浮">
-        <a-textarea v-model:value="formState.float" placeholder="悬浮广告"></a-textarea>
+        <a-textarea v-model="formState.float" placeholder="悬浮广告"></a-textarea>
       </a-form-item>
 
       <a-form-item label="显示">
         <a-switch v-model:checked="formState.status"></a-switch>
       </a-form-item>
 
-      <a-form-item style="margin-left: 100px;">
+      <a-form-item>
         <a-button type="primary" @click="onSubmit">立即保存</a-button>
         <a-button style="margin-left: 10px" @click="resetForm">重置</a-button>
       </a-form-item>

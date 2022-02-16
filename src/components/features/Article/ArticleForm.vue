@@ -45,7 +45,7 @@
         <a-textarea v-model="formState.description" autoSize :rows="3" placeholder="请输入描述" />
       </a-form-item>
 
-      <a-form-item label="正文" name="content">
+      <a-form-item label="正文" name="content" row-class="yzp-form-content">
         <yzp-editor v-model:value="formState.content" style="width: 100%;"></yzp-editor>
       </a-form-item>
 
@@ -196,3 +196,10 @@ export default defineComponent({
   },
 })
 </script>
+
+
+<style scoped lang="less">
+:deep(.yzp-form-content .arco-form-item-content-wrapper) {
+  max-width: none;
+}
+</style>

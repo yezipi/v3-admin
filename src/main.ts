@@ -4,9 +4,9 @@ import Router from './router'
 import Store from './store'
 // import AntVue from 'ant-design-vue'
 // import 'ant-design-vue/dist/antd.less'
-// import '@/assets/css/reset.less'
 import ArcoVue from '@arco-design/web-vue'
 import '@arco-design/web-vue/dist/arco.less'
+import '@/assets/css/reset.less'
 
 const app = createApp(App)
 

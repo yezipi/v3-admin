@@ -5,6 +5,7 @@
 declare module 'vue' {
   export interface GlobalComponents {
     404: typeof import('./src/components/features/404.vue')['default']
+    AAlert: typeof import('@arco-design/web-vue')['Alert']
     AAvatar: typeof import('@arco-design/web-vue')['Avatar']
     ABadge: typeof import('@arco-design/web-vue')['Badge']
     ABreadcrumb: typeof import('@arco-design/web-vue')['Breadcrumb']
@@ -12,8 +13,9 @@ declare module 'vue' {
     AButton: typeof import('@arco-design/web-vue')['Button']
     ACheckbox: typeof import('@arco-design/web-vue')['Checkbox']
     AConfigProvider: typeof import('@arco-design/web-vue')['ConfigProvider']
-    ADivider: typeof import('@arco-design/web-vue')['Divider']
+    ADatePicker: typeof import('@arco-design/web-vue')['DatePicker']
     ADoption: typeof import('@arco-design/web-vue')['Doption']
+    ADrawer: typeof import('@arco-design/web-vue')['Drawer']
     ADropdown: typeof import('@arco-design/web-vue')['Dropdown']
     AEmpty: typeof import('@arco-design/web-vue')['Empty']
     AForm: typeof import('@arco-design/web-vue')['Form']
@@ -44,6 +46,7 @@ declare module 'vue' {
     ATabs: typeof import('@arco-design/web-vue')['Tabs']
     ATag: typeof import('@arco-design/web-vue')['Tag']
     ATextarea: typeof import('@arco-design/web-vue')['Textarea']
+    ATree: typeof import('@arco-design/web-vue')['Tree']
     AUpload: typeof import('@arco-design/web-vue')['Upload']
     BannerEdit: typeof import('./src/components/features/Banner/BannerEdit.vue')['default']
     ChangeLogsEdit: typeof import('./src/components/features/Logs/ChangeLogsEdit.vue')['default']

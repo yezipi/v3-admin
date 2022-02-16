@@ -4,7 +4,6 @@ import { message } from 'ant-design-vue'
 import SettingsApi, { SecuritySettingsConfig } from '@/api/settings'
 
 const formRef = ref();
-const labelCol = { style: { width: '100px' } }
 const formState = ref<SecuritySettingsConfig>({
   black_ip: '',
 })
@@ -35,12 +34,12 @@ onMounted(() => {
 
 <template>
   <div class="mail-settings">
-    <a-form ref="formRef" :model="formState" :rules="rules" :label-col="labelCol">
-      <a-form-item label="黑名单ip">
+    <a-form ref="formRef" size="large" :model="formState" :rules="rules">
+      <a-form-item label="黑名单ip" label-col-flex="100px">
         <a-textarea v-model:value="formState.black_ip" rows="3" placeholder="请输入要拦截的ip，英文逗号隔开"></a-textarea>
       </a-form-item>
 
-      <a-form-item style="margin-left: 100px;">
+      <a-form-item>
         <a-button type="primary" @click="onSubmit">立即保存</a-button>
       </a-form-item>
     </a-form>

@@ -46,7 +46,7 @@
 import { defineComponent, ref, watch, toRefs, reactive, computed } from 'vue'
 import { useRouter, useRoute  } from 'vue-router'
 import { useStore } from 'vuex'
-import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import zhCN from '@arco-design/web-vue/es/locale/lang/zh-cn'
 
 export default defineComponent({
   setup() {
