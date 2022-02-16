@@ -11,9 +11,8 @@
         :scroll="{ x: tableWidth, y: tableHeight }"
         :rowKey="rowKey"
         :childrenColumnName="childrenColumnName"
-        :row-class-name="setRowClassName"
-        :bordered="bordered"
-        class="ant-table-striped"
+        :stripe="true"
+        :bordered="{ wrapper: true, cell: true} "
         size="small"
       >
         <template v-for="item in slotsKeys" v-slot:[item]="scope">
@@ -39,10 +38,6 @@ interface AnyKey {
 
 export default defineComponent({
   props: {
-    bordered: {
-      type: Boolean,
-      default: true,
-    },
     center: {
       type: Boolean,
       default: true,
@@ -184,10 +179,6 @@ export default defineComponent({
           throw { errMsg }
         }
       } finally {
-        const tableBody: any = document.querySelector('.ant-table-body')
-        if (tableBody) {
-          tableBody.scrollTo(0, 0)
-        }
         nextTick(() => {
           if (!loadEnd.value) {
             const filterEle: any = document.querySelector('#list-filter') // 列表的筛选统一加这个id
@@ -208,8 +199,6 @@ export default defineComponent({
       init(res)
     }
 
-    const setRowClassName = (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : '')
-
     onMounted(() => {
       init()
     })
@@ -223,7 +212,6 @@ export default defineComponent({
       slotsKeys,
       slots,
       init,
-      setRowClassName,
       onPageChange,
     }
   }

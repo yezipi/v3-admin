@@ -1,21 +1,85 @@
+<script lang="ts" setup>
+import { reactive, ref, toRaw } from 'vue'
+import { useRouter } from 'vue-router'
+import { EditOutlined } from '@ant-design/icons-vue'
+import { formatDate } from '@/utils/index'
+import ArticleApi from '@/api/article'
+import confirm from '@/utils/confirm'
+
+const props = defineProps({
+  type: {
+    type: String,
+    default: ''
+  },
+})
+
+const tableRef = ref()
+const router = useRouter()
+const condition = reactive({
+  subcolumn_id: undefined,
+  title: undefined as any,
+  type: props.type
+})
+const defaultPic = '/src/assets/img/nopic.jpg'
+const tagsColors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
+
+// 隐藏显示
+const updateArticle = async (item: any, checked: boolean, key: any) => {
+  const { id } = item
+  const obj: any = {}
+  obj[key] = checked
+  try {
+    await ArticleApi.update(id, obj)
+    item[key] = checked
+  } catch (e) {
+    item[key] = !item[key]
+  }
+}
+
+const toCreate = () => {
+  router.push({ name: 'ArticleAdd' })
+}
+
+const toEdit = (id: string) => {
+  router.push({
+    name: 'ArticleEdit',
+    query: { id }
+  })
+}
+
+const onSearch = (res?: string) => {
+  condition.title = res as string
+  tableRef.value.init(toRaw(condition))
+}
+
+// 删除
+const confirmDelete = (item: any) => {
+  confirm(`确定删除【${item.title}】吗？`, async () => {
+    await ArticleApi.destory(item.id)
+    onSearch()
+  })
+}
+</script>
+
 <template>
   <div class="page-list">
-    <yzp-table :columns="columns" :condition="condition" :scroll-width="true" ref="tableRef" url="Article.getList">
+    <yzp-table :condition="condition" :scroll-width="true" ref="tableRef" url="Article.getList">
       <template #filter>
-        <a-form :model="condition" class="filter-left">
+        <a-form :model="condition" layout="inline">
           <div class="column-select" style="margin-right: 10px">
             <column-select
               v-model:value="condition.subcolumn_id"
-              style="width: 200px;"
               :type="type"
             ></column-select>
           </div>
-          <a-input-search
-            v-model:value="condition.title"
-            placeholder="请输入关键字"
-            enter-button
-            @search="onSearch"
-          />
+          <div>
+            <a-input-search
+              v-model:value="condition.title"
+              placeholder="请输入关键字"
+              enter-button
+              @search="onSearch"
+            />
+          </div>
         </a-form>
         <a-button type="primary" @click="toCreate">
           <template #icon>
@@ -25,228 +89,86 @@
         </a-button>
       </template>
 
-      <template v-slot:cell="{ scope: { record, column: { dataIndex } } }">
-        
-        <template v-if="dataIndex === 'cover'">
-          <div class="article-cover">
-            <div class="cover-bg" :style="{ background: `url(${record.cover || defaultPic}) center` }"></div>
-            <img class="cover-default" :src="defaultPic" />
-          </div>
-        </template>
-
-        <template v-if="dataIndex === 'title'">
-          <a class="article-title">
-            <span v-if="record.recommend" class="at-recommend">【推荐】</span>
-            <span v-if="record.top" class="at-top">【置顶】</span>
-            <span class="at-text">{{ record.title }}</span>
-          </a>
-        </template>
-
-        <template v-if="dataIndex === 'subcolumn'">
-          <span v-if="record.subcolumn">{{ record.subcolumn.name }}</span>
-          <span v-else style="color: red">分类已删除</span>
-        </template>
-
-        <template v-if="dataIndex === 'tags'">
-          <div v-if="record.tags && record.tags.length">
-            <a-tag
-              v-for="(sub, idx) in record.tags"
-              :key="idx"
-              :color="tagsColors[parseInt(String(Math.random() * 7))]"
-            >
-              {{ sub }}
-            </a-tag>
-          </div>
-          <span v-else>-</span>
-        </template>
-
-        <template v-if="dataIndex === 'recommend'">
-          <a-switch :checked="record.recommend" @change="updateArticle(record, $event, 'recommend')" />
-        </template>
-
-        <template v-if="dataIndex === 'status'">
-          <a-switch :checked="record.status" @change="updateArticle(record, $event, 'status')" />
-        </template>
-
-        <template v-if="dataIndex === 'action'">
-          <a @click="toEdit(record.id)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="confirmDelete(record)">删除</a>
-        </template>
-
+      <template #columns>
+        <a-table-column title="封面" data-index="cover" align="center" :width="150">
+          <template #cell="{ record }">
+            <a-image :width="100" :src="record.cover || defaultPic" />
+          </template>
+        </a-table-column>
+        <a-table-column title="标题" data-index="title" align="center">
+          <template #cell="{ record }">
+            <div class="yzp-article-title">
+              <a-tag v-if="record.recommend" color="#00b42a" style="margin-right: 10px;">推荐</a-tag>
+              <a-tag v-if="record.top" color="#f53f3f" style="margin-right: 10px;">置顶</a-tag>
+              <a-link>{{ record.title }}</a-link>
+            </div>
+          </template>
+        </a-table-column>
+        <a-table-column title="评论" data-index="comments_count" align="center" :width="100"></a-table-column>
+        <a-table-column title="浏览" data-index="view" align="center" :width="100"></a-table-column>
+        <a-table-column title="点赞" data-index="like" align="center" :width="100"></a-table-column>
+        <a-table-column title="分类" data-index="subcolumn" align="center" :width="100">
+          <template #cell="{ record }">
+            <span v-if="record.subcolumn">{{ record.subcolumn.name }}</span>
+            <span v-else style="color: red">分类已删除</span>
+          </template>
+        </a-table-column>
+        <a-table-column title="标签" data-index="tags" align="center">
+          <template #cell="{ record }">
+            <div v-if="record.tags && record.tags.length">
+              <a-tag
+                v-for="(sub, idx) in record.tags"
+                :key="idx"
+                :color="tagsColors[parseInt(String(Math.random() * 7))]"
+                class="yzp-article-tags"
+              >
+                {{ sub }}
+              </a-tag>
+            </div>
+            <span v-else>-</span>
+          </template>
+        </a-table-column>
+        <a-table-column title="推荐" data-index="recommend" align="center" :width="100">
+          <template #cell="{ record }">
+            <a-switch
+              :default-checked="record.recommend"
+              @change="updateArticle(record, $event, 'recommend')"
+            />
+          </template>
+        </a-table-column>
+        <a-table-column title="状态" data-index="status" align="center" :width="100">
+          <template #cell="{ record }">
+            <a-switch
+              :default-checked="record.status"
+              @change="updateArticle(record, $event, 'status')"
+            />
+          </template>
+        </a-table-column>
+        <a-table-column title="时间" data-index="created_at" align="center" :width="150">
+          <template #cell="{ record }">
+            {{ formatDate(record.created_at, 'YYYY-MM-DD hh:mm') }}
+          </template>
+        </a-table-column>
+        <a-table-column title="操作" data-index="action" align="center" :width="150">
+          <template #cell="{ record }">
+            <a-button @click="toEdit(record.id)" size="mini">编辑</a-button>
+            <a-button @click="confirmDelete(record)" size="mini" status="danger" style="margin-left: 10px;">删除</a-button>
+          </template>
+        </a-table-column>
       </template>
-      
     </yzp-table>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, ref, toRaw } from 'vue'
-import { useRouter } from 'vue-router'
-import { EditOutlined } from '@ant-design/icons-vue'
-import ArticleApi from '@/api/article'
-import confirm from '@/utils/confirm'
-
-export default defineComponent({
-  components: { EditOutlined },
-  props: {
-    type: {
-      type: String,
-      default: ''
-    },
-  },
-  setup(props) {
-    const columns = reactive([
-      {
-        title: '封面',
-        dataIndex: 'cover',
-        width: 100,
-      },
-      {
-        title: '标题',
-        dataIndex: 'title',
-        width: 300,
-      },
-      {
-        title: '评论',
-        dataIndex: 'comments_count',
-        width: 100,
-      },
-      {
-        title: '浏览',
-        dataIndex: 'view',
-        width: 100,
-      },
-      {
-        title: '点赞',
-        dataIndex: 'like',
-        width: 100,
-      },
-      {
-        title: '分类',
-        dataIndex: 'subcolumn',
-        width: 100,
-      },
-      {
-        title: '标签',
-        dataIndex: 'tags',
-        width: 200,
-      },
-      {
-        title: '推荐',
-        dataIndex: 'recommend',
-        width: 100,
-      },
-      {
-        title: '状态',
-        dataIndex: 'status',
-        width: 100,
-      },
-      {
-        title: '时间',
-        dataIndex: 'created_at',
-        format: 'YYYY-MM-DD hh:mm',
-        width: 150,
-      },
-      {
-        title: '操作',
-        dataIndex: 'action',
-        width: 100,
-      },
-    ])
-    
-    const tableRef = ref() 
-    const router = useRouter()
-    const condition = reactive({
-      subcolumn_id: undefined,
-      title: undefined as any,
-      type: props.type
-    })
-    const defaultPic = '/src/assets/img/nopic.jpg'
-    const tagsColors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
-
-    // 隐藏显示
-    const updateArticle = async (item: any, checked: boolean, key: any) => {
-      const { id } = item
-      const obj: any = {}
-      obj[key] = checked
-      try {
-        await ArticleApi.update(id, obj)
-        item[key] = checked
-      } catch (e) {
-        item[key] = !item[key]
-      }
-    }
-
-    const toCreate = () => {
-      router.push({ name: 'ArticleAdd' })
-    }
-
-    const toEdit = (id: string) => {
-      router.push({
-        name: 'ArticleEdit',
-        query: { id }
-      })
-    }
-
-    const onSearch = (res?: string) => {
-      condition.title = res as string
-      tableRef.value.init(toRaw(condition))
-    }
-
-    // 删除
-    const confirmDelete = (item: any) => {
-      confirm(`确定删除【${item.title}】吗？`, async () => {
-        await ArticleApi.destory(item.id)
-        onSearch()
-      })
-    }
-
-    return {
-      columns,
-      condition,
-      tableRef,
-      defaultPic,
-      tagsColors,
-      updateArticle,
-      confirmDelete,
-      onSearch,
-      toCreate,
-      toEdit,
-    }
-  }
-})
-</script>
-
 <style lang="less" scoped>
-.filter-left {
+.yzp-article-tags {
+  margin-bottom: 10px;
+}
+.yzp-article-title {
   display: flex;
+  align-items: center;
 }
-.article-cover {
-  object-fit: cover;
-  height: 38px;
-  width: 80px;
-  position: relative;
-  .cover-bg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover!important;
-    z-index: 1;
-  }
-  .cover-default {
-    width: 100%;
-    height: 100%;
-  }
-}
-.article-title {
-  .at-recommend {
-    color: red;
-  }
-  .at-top {
-    color: rgb(69, 184, 3);
-  }
+.filter-left {
+  max-width: 500px;
 }
 </style>

@@ -59,10 +59,10 @@ const initList = () => {
         <a-button type="primary" @click="toCreate">+ 创建标签</a-button>
       </template>
 
-      <template #cell="{ scope: { record, column } }">
+      <template #columns="{ scope: { record, column } }">
         <span v-if="column.dataIndex === 'action'">
           <a @click="toEdit(record.id)">编辑</a>
-          <a-divider type="vertical" />
+          <a-divider direction ="vertical" />
           <a @click="confirmDelete(record)">删除</a>
         </span>
       </template>

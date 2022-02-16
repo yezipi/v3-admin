@@ -8,7 +8,7 @@
         <a-button type="primary" @click="toCreate">+ 发布微语</a-button>
       </template>
 
-      <template #cell="{ scope: { record, column: { dataIndex } } }">
+      <template #columns="{ scope: { record, column: { dataIndex } } }">
         <template v-if="dataIndex === 'content'">
           <div>{{ record.content }}</div>
           <div v-if="record.images.length" class="content-imgs">
@@ -19,7 +19,7 @@
         <template v-if="dataIndex === 'action'">
           <span>
             <a @click="toEdit(record.id)">编辑</a>
-            <a-divider type="vertical" />
+            <a-divider direction ="vertical" />
             <a @click="confirmDelete(record)">删除</a>
           </span>
         </template>

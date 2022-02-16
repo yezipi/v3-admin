@@ -43,7 +43,7 @@ const initList = () => {
 <template>
   <div class="page-list">
     <yzp-table :columns="columns" ref="tableRef" url="Role.getList">
-      <template #cell="{ scope: { record, column } }">
+      <template #columns="{ scope: { record, column } }">
         <span v-if="column.dataIndex === 'action'">
           <a @click="toEdit(record.id)">编辑</a>
         </span>

@@ -8,7 +8,7 @@
         <a-button type="primary" @click="toCreate">+ 创建轮播图</a-button>
       </template>
 
-      <template #cell="{ scope: { column: { dataIndex }, record } }">
+      <template #columns="{ scope: { column: { dataIndex }, record } }">
 
         <template v-if="dataIndex === 'cover'">
           <div class="article-cover">
@@ -48,7 +48,7 @@
         <template v-if="dataIndex === 'action'">
           <span>
             <a @click="toEdit(record.id)">编辑</a>
-            <a-divider type="vertical" />
+            <a-divider direction ="vertical" />
             <a @click="confirmDelete(record)">删除</a>
           </span>
         </template>

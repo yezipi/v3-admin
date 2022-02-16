@@ -80,17 +80,17 @@ ReportApi.getUnAudit()
     </div>
     <div class="head-right">
       <!--消息菜单-->
-      <a-dropdown placement="bottomRight">
+      <a-dropdown position="br" trigger="hover">
         <div class="user-message">
-        <a-badge :count="msgCount">
-          <bell-outlined style="font-size: 20px;" />
-        </a-badge>
-      </div>
-        <template #overlay>
-          <a-menu>
+          <a-badge :count="msgCount">
+            <bell-outlined style="font-size: 20px;" />
+          </a-badge>
+        </div>
+        <template #content>
+          <div>
             <div class="msg-wrap">
-              <a-tabs v-model:value="activeMsgType" class="msg-tab" centered>
-                <a-tab-pane key="comments" :tab="`评论(${unAuditComments.count})`">
+              <a-tabs v-model:value="activeMsgType" class="msg-tab">
+                <a-tab-pane key="comments" :title="`评论(${unAuditComments.count})`">
                   <div v-for="(item, index) in unAuditComments.rows" :key="index" class="msg-item">
                     <div class="msg-user">
                       <span>{{ item.nickname }}</span>
@@ -100,7 +100,7 @@ ReportApi.getUnAudit()
                   </div>
                   <a-empty v-if="!unAuditComments.rows.length" />
                 </a-tab-pane>
-                <a-tab-pane key="feedbacks" :tab="`留言(${unAuditFeedbacks.count})`">
+                <a-tab-pane key="feedbacks" :title="`留言(${unAuditFeedbacks.count})`">
                   <div v-for="(item, index) in unAuditFeedbacks.rows" :key="index" class="msg-item">
                     <div class="msg-user">
                       <span>{{ item.nickname }}</span>
@@ -110,7 +110,7 @@ ReportApi.getUnAudit()
                   </div>
                   <a-empty v-if="!unAuditFeedbacks.rows.length" />
                 </a-tab-pane>
-                <a-tab-pane key="blogrolls" :tab="`友链(${unAuditBlogrolls.count})`">
+                <a-tab-pane key="blogrolls" :title="`友链(${unAuditBlogrolls.count})`">
                   <div v-for="(item, index) in unAuditBlogrolls.rows" :key="index" class="msg-item">
                     <div class="msg-user">
                       <span>{{ item.nickname }}</span>
@@ -122,32 +122,29 @@ ReportApi.getUnAudit()
                 </a-tab-pane>
               </a-tabs>
             </div>
-          </a-menu>
+          </div>
         </template>
       </a-dropdown>
       <!--end 消息菜单-->
 
       <!--用户菜单-->
-      <a-dropdown placement="bottomRight">
+      <a-dropdown position="br" trigger="hover">
         <div class="right-avatar">
-          <a-avatar :size="40" :src="user.avatar">
-            <template #icon>
-              <UserOutlined />
-            </template>
+          <a-avatar :size="40">
+            <UserOutlined v-if="!user.avatar" />
+            <img v-else class="yzp-user-avatar" :src="user.avatar" />
           </a-avatar>
           <span class="user-name">{{ user.nickname }}</span>
         </div>
-        <template #overlay>
-          <a-menu>
-            <a-menu-item @click="changeStyle">
-              <robot-outlined />
-              <a style="margin-left: 10px;">切换布局</a>
-            </a-menu-item>
-            <a-menu-item @click="logout">
-              <logout-outlined />
-              <a style="margin-left: 10px;">退出</a>
-            </a-menu-item>
-          </a-menu>
+        <template #content>
+          <a-doption @click="changeStyle">
+            <robot-outlined />
+            <a-button type="text" style="margin-left: 10px;">切换布局</a-button>
+          </a-doption>
+          <a-doption @click="logout">
+            <logout-outlined />
+            <a-button type="text" style="margin-left: 10px;">退出</a-button>
+          </a-doption>
         </template>
       </a-dropdown>
       <!--end 用户菜单-->
@@ -221,6 +218,12 @@ ReportApi.getUnAudit()
         margin-left: 10px;
         flex-shrink: 0;
       }
+      .yzp-user-avatar {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
     }
   }
   .yzp-logo {
@@ -242,9 +245,6 @@ ReportApi.getUnAudit()
   .msg-item {
     padding: 10px 15px;
     border-bottom: 1px solid #eeeeee;
-    &:first-child {
-      margin-top: -16px;
-    }
     &:last-child {
       border: 0;
     }
@@ -273,13 +273,14 @@ ReportApi.getUnAudit()
 }
 </style>
 <style lang="less">
-.msg-tab .ant-tabs-nav-wrap {
-  display: block!important;
-  .ant-tabs-tab {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-  }
+.arco-tabs-nav-tab-list {
+  width: 100%;
+  display: flex!important;;
+}
+.arco-tabs-nav-type-line .arco-tabs-tab {
+  display: flex;
+  flex: 1;
+  justify-content: center;
 }
 </style>
 

@@ -6,7 +6,7 @@
         <a-button type="primary" @click="$router.push({ name: 'ColumnEdit' })">+ 创建栏目</a-button>
       </template>
 
-      <template #cell="{ scope: { record, column: { dataIndex } } }">
+      <template #columns="{ scope: { record, column: { dataIndex } } }">
 
         <template v-if="dataIndex === 'status'">
           <a-switch :checked="record.status" @change="changeStatus(record, $event)" />
@@ -41,11 +41,11 @@
         <template v-if="dataIndex === 'action'">
           <template v-if="(record.type === 'article' || record.type === 'case') && !record.column_id">
             <a @click="toAdd(record.id)">添加</a>
-            <a-divider type="vertical" />
+            <a-divider direction ="vertical" />
           </template>
           <a @click="toEdit(record)">编辑</a>
           <template v-if="record.can_delete">
-            <a-divider type="vertical" />
+            <a-divider direction ="vertical" />
             <a @click="confirmDelete(record)">删除</a>
           </template>
         </template>

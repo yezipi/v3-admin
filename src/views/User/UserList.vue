@@ -8,7 +8,7 @@
         <a-button type="primary" @click="toCreate">+ 创建账号</a-button>
       </template>
 
-      <template #cell="{ scope: { record, column: { dataIndex } } }">
+      <template #columns="{ scope: { record, column: { dataIndex } } }">
         <template v-if="dataIndex === 'avatar'">
           <a-avatar :size="40" :src="record.avatar"></a-avatar>
         </template>
@@ -26,7 +26,7 @@
           <span>
             <a @click="toEdit(record.id)">编辑</a>
             <template v-if="record.role.type !== 'super'">
-              <a-divider type="vertical" />
+              <a-divider direction ="vertical" />
               <a @click="confirmDelete(record)">删除</a>
             </template>
           </span>

@@ -5,13 +5,13 @@
   <div class="ky-pagintion" style="margin-top: 20px">
     <a-pagination
       :total="total"
-      :showTotal="totalText"
-      :showQuickJumper="true"
-      :showSizeChanger="true"
-      :pageSize="size"
+      :showTotal="true"
+      :showJumper="true"
+      :showPageSize="true"
+      v-model:pageSize="size"
       v-model:current="curr"
       @showSizeChange="onSizeChange"
-      @change="onPageChange"
+      @pageSizeChange	="onPageChange"
     >
     </a-pagination>
   </div>
@@ -38,19 +38,16 @@ export default defineComponent({
   setup(props, { emit }) {
     const curr = ref<number>(1)
 
-    const onPageChange = (page: number, size: number) => {
-      emit('change', { page, size })
+    const onPageChange = (page: number) => {
+      emit('change', { page })
     }
 
     const onSizeChange = (page: number, size: number) => {
       emit('change', { page, size })
     }
 
-    const totalText = (total: any) => `总共 ${total} 条`
-
     return {
       curr,
-      totalText,
       onSizeChange,
       onPageChange,
     }
