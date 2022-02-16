@@ -46,7 +46,7 @@ const editorConfig = {
   skin_url: config.BASE_URL + '/tinymce/skins/ui/oxide',
   height: 400,
   branding: true,
-  plugins: 'link lists image print codesample code table wordcount media table fullscreen preview pagebreak insertdatetime hr paste', // 插件
+  plugins: 'link lists image codesample code table wordcount media table fullscreen preview pagebreak insertdatetime hr paste', // 插件
   toolbar: 'codesample image bold italic underline alignleft aligncenter alignright alignjustify | forecolor backcolor | fontselect | fontsizeselect | formatselect |  bullist numlist | outdent indent blockquote | removeformat| undo redo | link unlink media insertdatetime table  hr pagebreak | fullscreen preview | strikethrough', // 工具条
   font_formats: 'Arial=arial,helvetica,sans-serif; 宋体=SimSun;  微软雅黑=Microsoft Yahei; Impact=impact,chicago;', // 字体
   fontsize_formats: '11px 12px 14px 16px 18px 24px 36px 48px 64px 72px', // 文字大小

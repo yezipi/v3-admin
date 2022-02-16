@@ -2,9 +2,11 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import Router from './router'
 import Store from './store'
-import AntVue from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.less'
-import '@/assets/css/reset.less'
+// import AntVue from 'ant-design-vue'
+// import 'ant-design-vue/dist/antd.less'
+// import '@/assets/css/reset.less'
+import ArcoVue from '@arco-design/web-vue'
+import '@arco-design/web-vue/dist/arco.less'
 
 const app = createApp(App)
 
@@ -39,5 +41,5 @@ Router.beforeEach((to: any, from: any, next: any) => {
 app
 .use(Store)
 .use(Router)
-.use(AntVue)
+.use(ArcoVue)
 .mount('#app')

@@ -1,18 +1,18 @@
 import { defineConfig } from 'vite'
+import { ArcoResolver } from 'unplugin-vue-components/resolvers'
 import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
-import path from 'path';
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     Components({
-      resolvers: [AntDesignVueResolver()],
+      resolvers: [ ArcoResolver() ],
       dts: true,
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-    })
+    }),
   ],
   resolve: {
     alias: {
@@ -24,9 +24,7 @@ export default defineConfig({
     preprocessorOptions: {
       less: {
         modifyVars: {
-          'primary-color': '#ff6666',
-          'link-color': '#ff6666',
-          'border-radius-base': '4px',
+          'arcoblue-6': '#f85959',
         },
         javascriptEnabled: true
       }

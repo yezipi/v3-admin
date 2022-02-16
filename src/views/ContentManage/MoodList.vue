@@ -8,7 +8,7 @@
         <a-button type="primary" @click="toCreate">+ 发布微语</a-button>
       </template>
 
-      <template #bodyCell="{ scope: { record, column: { dataIndex } } }">
+      <template #cell="{ scope: { record, column: { dataIndex } } }">
         <template v-if="dataIndex === 'content'">
           <div>{{ record.content }}</div>
           <div v-if="record.images.length" class="content-imgs">

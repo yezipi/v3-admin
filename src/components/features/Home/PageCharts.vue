@@ -51,6 +51,6 @@ init()
 
 <template>
   <div class="keywords-charts">
-    <a-table :data-source="dataSource" :columns="columns" :pagination="false" size="small"></a-table>
+    <a-table :data="dataSource" :columns="columns" :pagination="false" size="small"></a-table>
   </div>
 </template>

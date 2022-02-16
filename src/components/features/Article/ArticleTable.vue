@@ -25,7 +25,7 @@
         </a-button>
       </template>
 
-      <template v-slot:bodyCell="{ scope: { record, column: { dataIndex } } }">
+      <template v-slot:cell="{ scope: { record, column: { dataIndex } } }">
         
         <template v-if="dataIndex === 'cover'">
           <div class="article-cover">

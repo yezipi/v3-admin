@@ -4,7 +4,8 @@
       ref="formRef"
       :model="formState"
       :rules="rules"
-      :label-col="labelCol"
+      :auto-label-width="true"
+      size="large"
     >
       <a-form-item label="封面" style="margin-bottom: 12px;">
         <div style="width:150px;height:71px">
@@ -22,53 +23,53 @@
       </a-form-item>
 
       <a-form-item label="类型" name="type">
-        <a-radio-group v-model:value="formState.type">
+        <a-radio-group v-model="formState.type">
           <a-radio value="article">文章</a-radio>
           <a-radio value="case">案例</a-radio>
         </a-radio-group>
       </a-form-item>
 
       <a-form-item label="分类" name="subcolumn_id">
-        <column-select v-model:value="formState.subcolumn_id" :type="formState.type" style="width: 100%"></column-select>
+        <column-select v-model="formState.subcolumn_id" :type="formState.type" style="width: 100%"></column-select>
       </a-form-item>
 
       <a-form-item label="标题" name="title">
-        <a-input v-model:value="formState.title" :maxlength="50" placeholder="请输入标题" />
+        <a-input v-model="formState.title" :maxlength="50" placeholder="请输入标题" />
       </a-form-item>
 
       <a-form-item label="关键字" name="keywords" >
-        <a-textarea v-model:value="formState.keywords" autoSize :rows="3" placeholder="请输入关键字，英文逗号隔开" />
+        <a-textarea v-model="formState.keywords" autoSize :rows="3" placeholder="请输入关键字，英文逗号隔开" />
       </a-form-item>
 
       <a-form-item label="描述" name="description">
-        <a-textarea v-model:value="formState.description" autoSize :rows="3" placeholder="请输入描述" />
+        <a-textarea v-model="formState.description" autoSize :rows="3" placeholder="请输入描述" />
       </a-form-item>
 
-      <a-form-item label="正文" name="content" class="maxwidth-100">
-        <yzp-editor v-model:value="formState.content"></yzp-editor>
+      <a-form-item label="正文" name="content">
+        <yzp-editor v-model:value="formState.content" style="width: 100%;"></yzp-editor>
       </a-form-item>
 
       <a-form-item label="标签">
-        <a-select v-model:value="formState.tags" :options="tags" mode="tags" placeholder="请选择标签"></a-select>
+        <a-select v-model="formState.tags" :options="tags" multiple placeholder="请选择标签"></a-select>
       </a-form-item>
 
       <a-form-item label="来源">
-        <a-input v-model:value="formState.from" placeholder="请输入文章来源" />
+        <a-input v-model="formState.from" placeholder="请输入文章来源" />
       </a-form-item>
       
       <a-form-item label="点赞">
-        <a-input-number v-model:value="formState.like" placeholder="请输入点赞数" style="width: 100%" />
+        <a-input-number v-model="formState.like" placeholder="请输入点赞数" style="width: 100%" />
       </a-form-item>
       
       <a-form-item label="浏览">
-        <a-input-number v-model:value="formState.view" placeholder="请输入浏览数" style="width: 100%" />
+        <a-input-number v-model="formState.view" placeholder="请输入浏览数" style="width: 100%" />
       </a-form-item>
 
       <a-form-item label="设置">
-        <a-checkbox v-model:checked="formState.status">显示</a-checkbox>
-        <a-checkbox v-model:checked="formState.open_comment">开启评论</a-checkbox>
-        <a-checkbox v-model:checked="formState.recommend">设为推荐</a-checkbox>
-        <a-checkbox v-model:checked="formState.top">置顶</a-checkbox>
+        <a-checkbox v-model="formState.status">显示</a-checkbox>
+        <a-checkbox v-model="formState.open_comment">开启评论</a-checkbox>
+        <a-checkbox v-model="formState.recommend">设为推荐</a-checkbox>
+        <a-checkbox v-model="formState.top">置顶</a-checkbox>
       </a-form-item>
       
       <a-form-item class="btn-label">

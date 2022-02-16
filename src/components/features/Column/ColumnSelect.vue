@@ -60,13 +60,13 @@
     placeholder="请选择分类"
     @change="onChange"
   >
-    <a-select-option
+    <a-option
       v-for="(item, index) in options"
       :key="index"
       :value="item.id"
     >
       {{ item.name }}
-    </a-select-option>
+    </a-option>
   </a-select>
 </template>
 

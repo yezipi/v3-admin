@@ -5,7 +5,7 @@
     </div>
     <template v-if="loadEnd && total">
       <a-table
-        :dataSource="dataSource"
+        :data="dataSource"
         :columns="newColumns"
         :pagination="false"
         :scroll="{ x: tableWidth, y: tableHeight }"

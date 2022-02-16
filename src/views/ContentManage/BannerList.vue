@@ -8,7 +8,7 @@
         <a-button type="primary" @click="toCreate">+ 创建轮播图</a-button>
       </template>
 
-      <template #bodyCell="{ scope: { column: { dataIndex }, record } }">
+      <template #cell="{ scope: { column: { dataIndex }, record } }">
 
         <template v-if="dataIndex === 'cover'">
           <div class="article-cover">

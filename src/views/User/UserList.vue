@@ -8,7 +8,7 @@
         <a-button type="primary" @click="toCreate">+ 创建账号</a-button>
       </template>
 
-      <template #bodyCell="{ scope: { record, column: { dataIndex } } }">
+      <template #cell="{ scope: { record, column: { dataIndex } } }">
         <template v-if="dataIndex === 'avatar'">
           <a-avatar :size="40" :src="record.avatar"></a-avatar>
         </template>
