@@ -139,7 +139,7 @@ const fnName = firstToUpper(type) + '.getList'
         <a-button v-if="type !== 'comment'" type="primary" @click="toCreate">+ 创建{{ title }}</a-button>
       </template>
 
-      <template #columns="{ scope: { column: { dataIndex }, record } }">
+      <template #bodyCell="{ scope: { column: { dataIndex }, record } }">
         <template v-if="dataIndex === 'status'">
           <a-switch :checked="record.status" @change="toUpdate(record, $event, 'status')" />
         </template>

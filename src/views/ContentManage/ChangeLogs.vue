@@ -8,7 +8,7 @@
         <a-button type="primary" @click="toCreate">+ 添加版本</a-button>
       </template>
 
-      <template #columns="{ scope: { record, column } }">
+      <template #bodyCell="{ scope: { record, column } }">
         <span v-if="column.dataIndex === 'action'">
           <a @click="toEdit(record.id)">编辑</a>
           <a-divider direction ="vertical" />

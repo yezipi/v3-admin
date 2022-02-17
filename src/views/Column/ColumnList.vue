@@ -6,7 +6,7 @@
         <a-button type="primary" @click="$router.push({ name: 'ColumnEdit' })">+ 创建栏目</a-button>
       </template>
 
-      <template #columns="{ scope: { record, column: { dataIndex } } }">
+      <template #bodyCell="{ scope: { record, column: { dataIndex } } }">
 
         <template v-if="dataIndex === 'status'">
           <a-switch :checked="record.status" @change="changeStatus(record, $event)" />

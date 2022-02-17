@@ -8,12 +8,11 @@
         <a-button type="primary" @click="toCreate">+ 创建轮播图</a-button>
       </template>
 
-      <template #columns="{ scope: { column: { dataIndex }, record } }">
+      <template #bodyCell="{ scope: { column: { dataIndex }, record } }">
 
         <template v-if="dataIndex === 'cover'">
           <div class="article-cover">
-            <div class="cover-bg" :style="{ background: `url(${record.cover || defaultPic}) center` }"></div>
-            <img class="cover-default" :src="defaultPic" />
+            <a-image :width="100" :src="record.cover || defaultPic" />
           </div>
         </template>
 
@@ -23,11 +22,10 @@
             <EditOutlined />
           </a>
           <div v-else class="sort-wrap">
-            <a-input
+            <a-input-number
               v-model:value="record.sort"
               class="sort-input"
               size="small"
-              type="number"
               placeholder="请输入数字"
               @pressEnter="confirmSortChange(record)"
             />
@@ -36,21 +34,25 @@
         </template>
 
         <template v-if="dataIndex === 'target'">
-          <span v-if="record.article">《{{ record.article.title }}》</span>
-          <a v-else-if="record.url">{{ record.url }}</a>
+          <a-link v-if="record.article">《{{ record.article.title }}》</a-link>
+          <a-link v-else-if="record.url">{{ record.url }}</a-link>
           <span v-else>-</span>
         </template>
 
         <template v-if="dataIndex === 'status'">
-          <a-switch :checked="record.status" @change="changeStatus(record, $event)" />
+          <a-switch :default-checked="record.status" @change="changeStatus(record, $event)" />
         </template>
 
-        <template v-if="dataIndex === 'action'">
+        <!-- <template v-if="dataIndex === 'action'">
           <span>
             <a @click="toEdit(record.id)">编辑</a>
             <a-divider direction ="vertical" />
             <a @click="confirmDelete(record)">删除</a>
           </span>
+        </template> -->
+        <template v-if="dataIndex === 'action'">
+          <a-button size="mini" @click="toEdit(record.id)">编辑</a-button>
+          <a-button size="mini" status="danger" @click="confirmDelete(record)" style="margin-left: 10px;">删除</a-button>
         </template>
 
       </template>
@@ -79,11 +81,12 @@ export default defineComponent({
       {
         title: '封面',
         dataIndex: 'cover',
-        width: 100,
+        width: 120,
       },
       {
         title: '名称',
         dataIndex: 'name',
+        width: 100,
       },
       {
         title: '排序',
@@ -93,6 +96,7 @@ export default defineComponent({
       {
         title: '类型',
         dataIndex: 'type',
+        width: 100,
         dict: {
           1: '文章',
           2: '案例',
@@ -103,19 +107,23 @@ export default defineComponent({
       {
         title: '目标',
         dataIndex: 'target',
+        width: 200,
       },
       {
         title: '状态',
         dataIndex: 'status',
+        width: 100,
       },
       {
         title: '时间',
         dataIndex: 'createdAt',
-        format: 'YYYY-MM-DD'
+        format: 'YYYY-MM-DD',
+        width: 150,
       },
       {
         title: '操作',
         dataIndex: 'action',
+        width: 150,
       },
     ])
 
@@ -191,25 +199,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-.article-cover {
-  object-fit: cover;
-  height: 38px;
-  width: 80px;
-  position: relative;
-  .cover-bg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover!important;
-    z-index: 1;
-  }
-  .cover-default {
-    width: 100%;
-    height: 100%;
-  }
-}
 .sort-wrap {
   display: flex;
   align-items: center;

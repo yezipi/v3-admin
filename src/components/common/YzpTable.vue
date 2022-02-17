@@ -1,33 +1,36 @@
+<!--表格部分使用ant-design-table-->
 <template>
   <div class="page-list">
     <div v-if="slots.filter" id="list-filter">
       <slot name="filter"></slot>
     </div>
     <template v-if="loadEnd && total">
-      <a-table
-        :data="dataSource"
+      <my-table
+        :id="tableId"
+        :dataSource="data && data.length ? data : dataSource"
         :columns="newColumns"
         :pagination="false"
         :scroll="{ x: tableWidth, y: tableHeight }"
         :rowKey="rowKey"
         :childrenColumnName="childrenColumnName"
         :stripe="true"
-        :bordered="{ wrapper: true, cell: true} "
+        :bordered="true"
         size="small"
       >
         <template v-for="item in slotsKeys" v-slot:[item]="scope">
           <slot :name="item" :scope="scope"></slot>
         </template>
-      </a-table>
-      <yzp-pagintion :total="total" :size="size" @change="onPageChange"></yzp-pagintion>
+      </my-table>
+      <yzp-pagination v-if="pagination" :total="total" :size="size" @change="onPageChange"></yzp-pagination>
     </template>
-    <a-empty v-else style="margin-top: 30vh" />
+    <a-empty v-else :style="{ 'margin-top': emptyNoMargin ? 0 : '30vh' }" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs, ref, nextTick, computed, watch } from 'vue'
-import { message } from 'ant-design-vue'
+import 'ant-design-vue/es/table/style/index.less'
+import { message, Table as MyTable } from 'ant-design-vue'
 import { formatDate } from '@/utils/index'
 import api, { ApiConfig } from '@/api/index'
 import { useStore } from 'vuex'
@@ -37,38 +40,90 @@ interface AnyKey {
 }
 
 export default defineComponent({
+  components: {
+    MyTable,
+  },
   props: {
+    /**
+     * table的唯一id，多个表格的时候建议设置
+     */
+    tableId: {
+      type: String,
+      default: 'yzp-table'
+    },
+    /**
+     * 列是否剧中
+     */
     center: {
       type: Boolean,
       default: true,
     },
+    /**
+     * 数据源，建议不传url的时候使用
+     */
+    data: {
+      type: Array,
+      default: () => []
+    },
+    /**
+     * 数据列表，表头
+     */
     columns: {
       type: Array,
       default: () => []
     },
+    /**
+     * 横向滚动配置
+     */
     scrollWidth: {
       type: [ Number, String, Boolean ],
       default: false
     },
-    // api对象的获取列表方法
+    /**
+     * api对象的获取列表方法
+     */
     url: {
       type: String,
       default: ''
     },
+    /**
+     * 唯一id
+     */
     rowKey: {
       type: String,
       default: 'id'
     },
+    /**
+     * 页码
+     */
     size: {
       type: Number,
       default: 20,
     },
+    /**
+     * child 键名
+     */
     childrenColumnName: String,
-
-    // 额外条件
+    /**
+     * 筛选条件
+     */
     condition: {
       type: Object,
       default: () => {}
+    },
+    /**
+     * 是否分页
+     */
+    pagination: {
+      type: Boolean,
+      default: true,
+    },
+    /**
+     * 暂无数据的样式是否有间距
+     */
+    emptyNoMargin: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, { emit, slots }) {
@@ -100,6 +155,11 @@ export default defineComponent({
 
     watch(() => style.value, () => {
       seHeight()
+    })
+
+    watch(props.data, () => {
+      tableConfig.total = props.data.length
+      loadEnd.value = true
     })
 
     const seHeight = () => {
@@ -179,6 +239,10 @@ export default defineComponent({
           throw { errMsg }
         }
       } finally {
+        const tableBody: any = document.querySelector('#' + props.tableId)
+        if (tableBody) {
+          tableBody.scrollTo(0, 0)
+        }
         nextTick(() => {
           if (!loadEnd.value) {
             const filterEle: any = document.querySelector('#list-filter') // 列表的筛选统一加这个id

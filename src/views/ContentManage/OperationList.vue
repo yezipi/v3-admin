@@ -54,7 +54,7 @@ const initList = () => {
 <template>
   <div class="page-list">
     <yzp-table :columns="columns" ref="tableRef" url="Report.getOperationLogs">
-      <template #columns="{ scope: { record, column } }">
+      <template #bodyCell="{ scope: { record, column } }">
         <span v-if="column.dataIndex === 'address'">
           {{ record.province + record.city }}
         </span>

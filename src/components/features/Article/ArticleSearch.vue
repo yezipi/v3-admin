@@ -13,14 +13,14 @@
     :not-found-content="fetching ? undefined : null"
     @search="handleSearch"
   >
-    <a-select-option v-for="(item, index) in options" :value="item.id" :key="index" class="aso-cell">
+    <a-option v-for="(item, index) in options" :value="item.id" :key="index" class="aso-cell">
       <div class="aso-item">
         <span v-if="item.recommend" class="aso-label">【推荐】</span>
         <span class="aso-value">{{ item.title }}</span>
       </div>
-    </a-select-option>
+    </a-option>
     <template v-if="fetching" #notFoundContent>
-      <a-spin size="small" />
+      <a-spin />
     </template>
   </a-select>
 </template>
