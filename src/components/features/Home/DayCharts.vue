@@ -80,7 +80,7 @@ const init = async () => {
     const myChart = echarts.init(chartDom)
     const option: EChartsOption = {
       title: {
-        text: '7天日用户访问数'
+        text: '7天日访问'
       },
       tooltip: {
         trigger: 'axis',

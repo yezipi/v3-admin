@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { ReloadOutlined } from '@ant-design/icons-vue'
 import ReportApi from '@/api/report'
 
 const totalEles = ref<any>([
@@ -36,38 +35,50 @@ getTotalCount()
 </script>
 
 <template>
-  <div class="home-page">
-    <div class="count-wrap">
-      <div v-for="(item, index) in totalEles" :key="index" class="count-item">
-        <div class="count-main">
-          <span class="count-name">{{ item.name }}</span>
-          <div class="count-text">
-            <div class="count-icon" :style="{ background: `url(../src/assets/img/${item.icon}) no-repeat center` }"></div>
-            <span class="count-number">{{ item.count || 0 }}</span>
+  <div class="yzp-home-page">
+    <!--数据概览-->
+    <div class="yzp-count-box">
+      <div class="yzp-count-wrap">
+        <div v-for="(item, index) in totalEles" :key="index" class="yzp-count-item">
+          <div class="yzp-count-main">
+            <span class="yzp-count-name">{{ item.name }}</span>
+            <div class="yzp-count-text">
+              <div class="yzp-count-icon" :style="{ background: `url(../src/assets/img/${item.icon}) no-repeat center` }"></div>
+              <span class="yzp-count-number">{{ item.count || 0 }}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div class="yzp-charts-part">
+        <day-charts class="yzp-charts-item" ref="dayRef" :start-date="startDate" :end-date="endDate"></day-charts>
+        <district-charts class="yzp-charts-item" ref="districtRef" :start-date="startDate" :end-date="endDate"></district-charts>
+      </div>
 
-    <div class="charts-part">
-      <day-charts class="charts-item" ref="dayRef" :start-date="startDate" :end-date="endDate"></day-charts>
-      <district-charts class="charts-item" ref="districtRef" :start-date="startDate" :end-date="endDate"></district-charts>
+      <div class="yzp-charts-part">
+        <keywords-charts class="yzp-charts-item" ref="keywordsRef" :start-date="day1" :end-date="day2" style="margin-right: 10px;"></keywords-charts>
+        <page-charts class="yzp-charts-item" ref="pageRef" :start-date="day1" :end-date="day2"></page-charts>
+      </div>
     </div>
+    <!--end -->
 
-    <div class="charts-part">
-      <keywords-charts class="charts-item" ref="keywordsRef" :start-date="day1" :end-date="day2" style="margin-right: 10px;"></keywords-charts>
-      <page-charts class="charts-item" ref="pageRef" :start-date="day1" :end-date="day2"></page-charts>
-    </div>
-
+    <div class=""></div>
+    
   </div>
 </template>
 
 <style scoped lang="less">
-.count-wrap {
+.yzp-home-page {
+  display: flex;
+  justify-content: space-between;
+  .yzp-count-box {
+    flex: 1;
+  }
+}
+.yzp-count-wrap {
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
-  .count-item {
+  .yzp-count-item {
     width: 15%;
     border-radius: 6px;
     background: rgba(255,255,255,0.5);
@@ -75,10 +86,10 @@ getTotalCount()
     &:last-child {
       border: 0;
     }
-    .count-main {
+    .yzp-count-main {
       padding: 10px;
     }
-    .count-icon {
+    .yzp-count-icon {
       flex-shrink: 0;
       width: 40px;
       height: 40px;
@@ -89,32 +100,29 @@ getTotalCount()
       margin-right: 10px;
       background-size: 70%!important;
     }
-    .count-text {
+    .yzp-count-text {
       display: flex;
       align-items: center;
     }
-    .count-name {
+    .yzp-count-name {
       display: block;
       color: #999999;
     }
-    .count-number {
+    .yzp-count-number {
       font-size: 24px;
       font-weight: bold;
       color: #333333;
     }
-    .count-name {
+    .yzp-count-name {
       color: #999999;
     }
   }
 }
-.charts-part {
+.yzp-charts-part {
   display: flex;
   margin-top: 15px;
-  .charts-item {
+  .yzp-charts-item {
     flex: 1;
   }
-}
-:deep(.ant-table.ant-table-small) {
-  font-size: 12px;
 }
 </style>

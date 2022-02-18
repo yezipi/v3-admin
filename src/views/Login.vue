@@ -2,23 +2,23 @@
   <div class="login-page">
     <div class="lp-main">
       <h2>管理员登录</h2>
-      <a-form ref="formRef" :model="formVal" :rules="rules" class="lp-form">
+      <a-form ref="formRef" :model="formVal" :rules="rules" size="large" class="lp-form">
         <a-form-item class="lp-input" name="name">
-          <a-input placeholder="请输入账号" v-model:value="formVal.name">
+          <a-input placeholder="请输入账号" v-model="formVal.name">
             <template #prefix>
               <UserOutlined :style="{ color: '#999999' }" />
             </template>
           </a-input>
         </a-form-item>
         <a-form-item class="lp-input" name="password">
-          <a-input placeholder="请输入密码" type="password" v-model:value="formVal.password">
+          <a-input placeholder="请输入密码" type="password" v-model="formVal.password">
             <template #prefix>
               <LockOutlined :style="{ color: '#999999' }" />
             </template>
           </a-input>
         </a-form-item>
         <a-form-item class="lp-submit">
-          <a-button size="large" block type="primary" :loading="loading" @click="onSubmit">登录</a-button>
+          <a-button type="primary" :loading="loading" long @click="onSubmit">登录</a-button>
         </a-form-item>
       </a-form>
       <span class="lp-copyright">椰子皮博客2016 - {{ new Date().getFullYear() }} © 版权所有</span>

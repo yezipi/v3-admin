@@ -41,7 +41,7 @@ const init = async () => {
   } catch (e) {
     console.log(e)
   } finally {
-    loading.value = true
+    loading.value = false
   }
 }
 
@@ -51,6 +51,6 @@ init()
 
 <template>
   <div class="keywords-charts">
-    <a-table :data="dataSource" :columns="columns" :pagination="false" size="small"></a-table>
+    <a-table :loading="loading" :data="dataSource" :columns="columns" :pagination="false" size="small"></a-table>
   </div>
 </template>
