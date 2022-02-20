@@ -12,8 +12,7 @@
 
         <template v-if="dataIndex === 'cover'">
           <div class="article-cover">
-            <div class="cover-bg" :style="{ background: `url(${record.cover || defaultPic}) center` }"></div>
-            <img class="cover-default" :src="defaultPic" />
+            <img :src="record.cover || defaultPic" style="width: 100px;object-fit: cover" />
           </div>
         </template>
 
@@ -79,7 +78,7 @@ export default defineComponent({
       {
         title: '封面',
         dataIndex: 'cover',
-        width: 100,
+        width: 120,
       },
       {
         title: '名称',
@@ -111,7 +110,7 @@ export default defineComponent({
       {
         title: '时间',
         dataIndex: 'createdAt',
-        format: 'YYYY-MM-DD'
+        format: true
       },
       {
         title: '操作',

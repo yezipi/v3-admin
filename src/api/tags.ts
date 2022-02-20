@@ -61,6 +61,6 @@ export default new class Tags extends Request {
    */
    public getList(params?: TagsListConfig) {
     const url = 'v1/tags'
-    return this.get(url, { ...params, loading: true })
+    return this.get(url, params)
   }
 }

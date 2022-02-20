@@ -110,6 +110,6 @@ export default new class Article extends Request {
    */
    public getList(params?: ArticleListConfig) {
     const url = 'v1/article'
-    return this.get(url, { loading: true, ...params })
+    return this.get(url, params)
   }
 }

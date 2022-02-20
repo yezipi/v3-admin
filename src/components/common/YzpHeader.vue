@@ -59,64 +59,64 @@ ReportApi.getUnAudit()
 <template>
   <div :class="{ collapsed, hasMenu: $slots.menu }" class="yzp-head">
     <div v-if="!$slots.menu" class="head-left">
-      <div class="left-btn" @click="toggleMenu">
+      <div class="yzp-left-btn" @click="toggleMenu">
         <MenuFoldOutlined v-if="collapsed" />
         <MenuUnfoldOutlined v-else />
       </div>
-      <div class="left-btn">
+      <div class="yzp-left-btn">
         <ReloadOutlined />
       </div>
       <a-breadcrumb style="margin-left: 10px">
         <a-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index">{{ item }}</a-breadcrumb-item>
       </a-breadcrumb>
     </div>
-    <div v-if="$slots.menu" class="head-left">
-      <div class="yzp-logo">
+    <div v-if="$slots.menu" class="yzp-head-left">
+      <div class="yzp-head-logo">
         <img src="@/assets/logo.png" />
       </div>
-      <div class="head-menu">
+      <div class="yzp-head-menu">
         <slot name="menu"></slot>
       </div>
     </div>
-    <div class="head-right">
+    <div class="yzp-head-right">
       <!--消息菜单-->
       <a-dropdown placement="bottomRight">
-        <div class="user-message">
+        <div class="yzp-head-user-message">
         <a-badge :count="msgCount">
           <bell-outlined style="font-size: 20px;" />
         </a-badge>
       </div>
         <template #overlay>
           <a-menu>
-            <div class="msg-wrap">
-              <a-tabs v-model:value="activeMsgType" class="msg-tab" centered>
+            <div class="yzp-head-msg-wrap">
+              <a-tabs v-model:value="activeMsgType" class="yzp-head-msg-tab" centered>
                 <a-tab-pane key="comments" :tab="`评论(${unAuditComments.count})`">
-                  <div v-for="(item, index) in unAuditComments.rows" :key="index" class="msg-item">
-                    <div class="msg-user">
+                  <div v-for="(item, index) in unAuditComments.rows" :key="index" class="yzp-head-msg-item">
+                    <div class="yzp-head-msg-user">
                       <span>{{ item.nickname }}</span>
                       <span>{{ timeAgao(item.createdAt) }}</span>
                     </div>
-                    <span class="msg-content">{{ item.content }}</span>
+                    <span class="yzp-head-msg-content">{{ item.content }}</span>
                   </div>
                   <a-empty v-if="!unAuditComments.rows.length" />
                 </a-tab-pane>
                 <a-tab-pane key="feedbacks" :tab="`留言(${unAuditFeedbacks.count})`">
-                  <div v-for="(item, index) in unAuditFeedbacks.rows" :key="index" class="msg-item">
-                    <div class="msg-user">
+                  <div v-for="(item, index) in unAuditFeedbacks.rows" :key="index" class="yzp-head-msg-item">
+                    <div class="yzp-head-msg-user">
                       <span>{{ item.nickname }}</span>
                       <span>{{ timeAgao(item.createdAt) }}</span>
                     </div>
-                    <span class="msg-content">{{ item.content }}</span>
+                    <span class="yzp-head-msg-content">{{ item.content }}</span>
                   </div>
                   <a-empty v-if="!unAuditFeedbacks.rows.length" />
                 </a-tab-pane>
                 <a-tab-pane key="blogrolls" :tab="`友链(${unAuditBlogrolls.count})`">
-                  <div v-for="(item, index) in unAuditBlogrolls.rows" :key="index" class="msg-item">
-                    <div class="msg-user">
+                  <div v-for="(item, index) in unAuditBlogrolls.rows" :key="index" class="yzp-head-msg-item">
+                    <div class="yzp-head-msg-user">
                       <span>{{ item.nickname }}</span>
                       <span>{{ timeAgao(item.createdAt) }}</span>
                     </div>
-                    <span class="msg-content">{{ item.content }}</span>
+                    <span class="yzp-head-msg-content">{{ item.content }}</span>
                   </div>
                   <a-empty v-if="!unAuditBlogrolls.rows.length" />
                 </a-tab-pane>
@@ -129,13 +129,13 @@ ReportApi.getUnAudit()
 
       <!--用户菜单-->
       <a-dropdown placement="bottomRight">
-        <div class="right-avatar">
+        <div class="yzp-head-right-avatar">
           <a-avatar :size="40" :src="user.avatar">
             <template #icon>
               <UserOutlined />
             </template>
           </a-avatar>
-          <span class="user-name">{{ user.nickname }}</span>
+          <span class="yzp-head-user-name">{{ user.nickname }}</span>
         </div>
         <template #overlay>
           <a-menu>
@@ -172,12 +172,13 @@ ReportApi.getUnAudit()
   &.hasMenu {
     left: 0;
   }
-  .head-left {
+  .yzp-head-left {
     display: flex;
     align-items: center;
     flex: 1;
     position: relative;
-    .left-btn {
+    height: 100%;
+    .yzp-head-btn {
       width: 60px;
       height: 60px;
       display: flex;
@@ -190,16 +191,16 @@ ReportApi.getUnAudit()
         background: #eeeeee;
       }
     }
-    .head-menu {
+    .yzp-head-menu {
       width: calc(100vw - 280px);
     }
   }
-  .head-right {
+  .yzp-head-right {
     margin-right: 15px;
     display: flex;
     align-items: center;
     height: 100%;
-    .user-message {
+    .yzp-head-user-message {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -211,19 +212,19 @@ ReportApi.getUnAudit()
         background: #eeeeee;
       }
     }
-    .right-avatar {
+    .yzp-head-right-avatar {
       display: flex;
       align-items: center;
       flex-shrink: 0;
       cursor: pointer;
-      .user-name {
+      .yzp-head-user-name {
         display: inline-block;
         margin-left: 10px;
         flex-shrink: 0;
       }
     }
   }
-  .yzp-logo {
+  .yzp-head-logo {
     width: 40px;
     height: 40px;
     margin: 20px;
@@ -234,52 +235,42 @@ ReportApi.getUnAudit()
     }
   }
 }
-.msg-wrap {
-  background: #ffffff;
-  width: 300px;
-  max-height: 500px;
-  overflow-y: auto;
-  .msg-item {
-    padding: 10px 15px;
-    border-bottom: 1px solid #eeeeee;
-    &:first-child {
-      margin-top: -16px;
-    }
-    &:last-child {
-      border: 0;
-    }
-    &:hover {
-      background: #f5f5f5;
-    }
-    .msg-user {
-      display: flex;
-      align-items: center;
-      span:first-child {
-        display: inline-block;
-        color: #ff6666;
-        margin-right: 10px;
+  .yzp-head-msg-wrap {
+    background: #ffffff;
+    width: 300px;
+    max-height: 500px;
+    overflow-y: auto;
+    .yzp-head-msg-item {
+      padding: 10px 15px;
+      border-bottom: 1px solid #eeeeee;
+      &:first-child {
+        margin-top: -16px;
+      }
+      &:last-child {
+        border: 0;
+      }
+      &:hover {
+        background: #f5f5f5;
+      }
+      .yzp-head-msg-user {
+        display: flex;
+        align-items: center;
+        span:first-child {
+          display: inline-block;
+          color: #ff6666;
+          margin-right: 10px;
+          font-size: 12px;
+        }
+        span:nth-child(2) {
+          color: #999999;
+          font-size: 12px;
+        }
+      }
+      .yzp-head-msg-content {
+        color: #666666;
         font-size: 12px;
       }
-      span:nth-child(2) {
-        color: #999999;
-        font-size: 12px;
-      }
-    }
-    .msg-content {
-      color: #666666;
-      font-size: 12px;
     }
   }
-}
-</style>
-<style lang="less">
-.msg-tab .ant-tabs-nav-wrap {
-  display: block!important;
-  .ant-tabs-tab {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-  }
-}
 </style>
 

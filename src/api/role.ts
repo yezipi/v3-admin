@@ -47,6 +47,6 @@ export default new class Role extends Request {
    */
    public getList(params?: RoleListConfig) {
     const url = 'v1/role'
-    return this.get(url, { ...params, loading: true })
+    return this.get(url, params)
   }
 }

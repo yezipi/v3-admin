@@ -61,7 +61,7 @@ export default new class User extends Request {
    */
   public getList() {
     const url = 'v1/user'
-    return this.get(url, { loading: true })
+    return this.get(url)
   }
 
   /**

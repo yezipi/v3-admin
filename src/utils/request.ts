@@ -32,7 +32,7 @@ axios.interceptors.request.use((config: AxiosRequestConfig) => {
 
 // 添加响应拦截器
 axios.interceptors.response.use((response: AxiosResponse) => {
-  console.log(response.config)
+  // console.log(response.config)
 
   if (!response.data) {
     return response

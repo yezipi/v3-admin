@@ -13,7 +13,7 @@ const columns = reactive([
   {
     title: '时间',
     dataIndex: 'createdAt',
-    format: 'YYYY-MM-DD'
+    format: true
   },
   {
     title: '操作',
@@ -41,7 +41,7 @@ const initList = () => {
 </script>
 
 <template>
-  <div class="page-list">
+  <div class="yzp-role-page">
     <yzp-table :columns="columns" ref="tableRef" url="Role.getList">
       <template #bodyCell="{ scope: { record, column } }">
         <span v-if="column.dataIndex === 'action'">

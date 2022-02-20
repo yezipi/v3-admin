@@ -63,6 +63,6 @@ export default new class Feedback extends Request {
    */
    public getList(params?: CommentListConfig) {
     const url = 'v1/feedback'
-    return this.get(url, { ...params, loading: true })
+    return this.get(url, params)
   }
 }

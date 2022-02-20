@@ -12,15 +12,18 @@
       :multiple="multiple"
     >
       <template v-if="!isButton">
-        <img v-if="imageUrl && !multiple" class="img-privew" :src="imageUrl" />
-        <div v-else class="upload-tips">
+        <template v-if="imageUrl && !multiple" >
+          <img class="yzp-upload-img-privew" :src="imageUrl" />
+          <close-circle-outlined class="yzp-upload-img-remove" @click.stop="imageUrl = ''" />
+        </template>
+        <div v-else class="yzp-upload-tips">
           <loading-outlined v-if="loading"></loading-outlined>
           <plus-outlined v-else></plus-outlined>
-          <div class="ant-upload-text"></div>
+          <div class="yzp-upload-text"></div>
         </div>
       </template>
       <template v-else>
-        <a-button :loading="loading" class="ku-btn" type="primary">选择文件</a-button>
+        <a-button :loading="loading" class="yzp-upload-btn" type="primary">选择文件</a-button>
       </template>
     </a-upload>
 
@@ -35,8 +38,8 @@
       cancel-text="取消"
       @ok="confirmClip"
     >
-      <div class="cropper-dialog" style="height: 350px;">
-        <a-spin :spinning="loading"></a-spin>
+      <div class="yzp-upload-cropper-dialog" style="height: 350px;">
+        <a-spin :spinning="loading" tip="正在上传中..."></a-spin>
         <vue-cropper
           v-if="!loading"
           ref="cropperRef"
@@ -54,7 +57,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, reactive, computed } from 'vue'
-import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue'
+import { PlusOutlined, LoadingOutlined, CloseCircleOutlined } from '@ant-design/icons-vue'
 import { VueCropper }  from 'vue-cropper'
 import { message } from 'ant-design-vue'
 import CommonApi from '@/api/common'
@@ -75,6 +78,7 @@ export default defineComponent({
   components: {
     LoadingOutlined,
     PlusOutlined,
+    CloseCircleOutlined,
     VueCropper,
   },
   props: {
@@ -319,34 +323,66 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-:deep(.yu-btn) {
-  padding-top: 6px!important;
-  padding-bottom: 6px!important;
-  height: 40px;
-}
 :deep(.ant-upload.ant-upload-select-picture-card > .ant-upload) {
   padding: 0;
 }
-.upload-tips {
-  font-size: 34px; color: #999999
-}
-.img-privew {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+
 :deep(.ant-upload-select-picture-card i) {
   font-size: 32px;
   color: #999;
 }
 
-:deep(.ant-upload-text) {
-  margin-top: 8px;
-  color: #666;
+.yzp-upload {
+  position: relative;
+  height: 100%;
+  :deep(.withParentWith .ant-upload.ant-upload-select-picture-card) {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .yzp-upload-tips {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 34px;
+    color: #999999;
+  }
+  .yzp-upload-img-privew {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .yzp-upload-img-remove {
+    color: red;
+    position: absolute;
+    font-size: 20px;
+    right: -10px;
+    top: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+  }
+  .withParentWith {
+    display: block;
+    height: 100%;
+  }
+  .withParentWith .yzp-upload-img-privew{
+    width: 100%;
+    height: 100%;
+  }
 }
-.cropper-dialog {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
+
+  .yzp-upload-cropper-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
 </style>

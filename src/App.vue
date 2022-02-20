@@ -27,17 +27,11 @@
         <a-breadcrumb class="yzp-breadcrumb" v-if="menuStyle === 2">
           <a-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index">{{ item }}</a-breadcrumb-item>
         </a-breadcrumb>
-        <section :class="{ hasBreadcrumb: menuStyle === 2 }"  class="yzp-section">
-          <div class="yzp-content">
-            <router-view />
-          </div>
-        </section>
+        <router-view :class="{ hasBreadcrumb: menuStyle === 2 }"  class="yzp-section" />
       </div>
 
       <!--未登录显示-->
-      <div v-else class="yzp-main no-margin">
-        <router-view />
-      </div>
+      <router-view v-else class="yzp-main no-margin" />
     </a-config-provider>
   </div>
 </template>
@@ -46,7 +40,11 @@
 import { defineComponent, ref, watch, toRefs, reactive, computed } from 'vue'
 import { useRouter, useRoute  } from 'vue-router'
 import { useStore } from 'vuex'
+import 'dayjs/locale/zh-cn'
+import dayjs from 'dayjs'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
+
+dayjs.locale('zh-cn')
 
 export default defineComponent({
   setup() {
@@ -171,9 +169,7 @@ body {
       border-radius: 0;
       backdrop-filter: saturate(0%) blur(0);
       background: none;
-      .yzp-content {
-        padding: 0;
-      }
+      padding: 0;
     }
   }
 }
@@ -182,12 +178,11 @@ body {
   margin: 15px;
   border-radius: 5px;
   min-height: calc(100vh - 90px);
+  padding: 15px;
+  position: relative;
   &.hasBreadcrumb {
     min-height: calc(100vh - 130px);
   }
-}
-.yzp-content {
-  padding: 15px;
 }
 .yzp-breadcrumb {
   margin-left: 15px!important;

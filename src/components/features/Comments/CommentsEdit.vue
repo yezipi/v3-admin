@@ -126,11 +126,16 @@ const closeDraw = () => {
 </script>
 
 <template>
-  <yzp-draw v-model:visible="drawState" :title="drawTitle" @hide="closeDraw">
+  <yzp-draw
+    v-model:visible="drawState"
+    :title="drawTitle"
+    :ok-loading="btnLoading"
+    :wrap-loading="wrapLoading"
+    @hide="closeDraw"
+    @confirm="onSubmit"
+  >
     <template #content>
-      <a-spin class="center-spin" :spinning="wrapLoading" tip="加载中..."></a-spin>
       <a-form
-        v-if="!wrapLoading"
         ref="formRef"
         :model="ruleForm"
         :rules="rules"
@@ -185,15 +190,6 @@ const closeDraw = () => {
         </a-form-item>
         
       </a-form>
-    </template>
-    <template v-if="!wrapLoading" #footer>
-      <a-button style="flex: 1;margin-right: 10px" @click="closeDraw">取消</a-button>
-      <a-button
-        :loading="btnLoading"
-        style="flex: 1"
-        type="primary"
-        @click="onSubmit"
-      >{{ props.id ? '立即保存' : '立即添加' }}</a-button>
     </template>
   </yzp-draw>
 </template>

@@ -61,6 +61,6 @@ export default new class Blogroll extends Request {
    */
    public getList(params?: BlogrollListConfig) {
     const url = 'v1/blogroll'
-    return this.get(url, { ...params, loading: true })
+    return this.get(url, params)
   }
 }

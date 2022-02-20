@@ -2,20 +2,9 @@
   <div class="page-list">
     <yzp-table :columns="columns" :condition="condition" :scroll-width="true" ref="tableRef" url="Article.getList">
       <template #filter>
-        <a-form :model="condition" class="filter-left">
-          <div class="column-select" style="margin-right: 10px">
-            <column-select
-              v-model:value="condition.subcolumn_id"
-              style="width: 200px;"
-              :type="type"
-            ></column-select>
-          </div>
-          <a-input-search
-            v-model:value="condition.title"
-            placeholder="请输入关键字"
-            enter-button
-            @search="onSearch"
-          />
+        <a-form :model="condition" class="filter-left" style="display: flex">
+          <column-select v-model:value="condition.subcolumn_id" :type="type" style="margin-right: 10px;width: 300px"></column-select>
+          <a-input-search v-model:value="condition.title" placeholder="请输入关键字" enter-button @search="onSearch" style="width: 300px" />
         </a-form>
         <a-button type="primary" @click="toCreate">
           <template #icon>
@@ -28,18 +17,13 @@
       <template v-slot:bodyCell="{ scope: { record, column: { dataIndex } } }">
         
         <template v-if="dataIndex === 'cover'">
-          <div class="article-cover">
-            <div class="cover-bg" :style="{ background: `url(${record.cover || defaultPic}) center` }"></div>
-            <img class="cover-default" :src="defaultPic" />
-          </div>
+          <img :src="record.cover || defaultPic" style="width: 100px;object-fit: cover" />
         </template>
 
         <template v-if="dataIndex === 'title'">
-          <a class="article-title">
-            <span v-if="record.recommend" class="at-recommend">【推荐】</span>
-            <span v-if="record.top" class="at-top">【置顶】</span>
-            <span class="at-text">{{ record.title }}</span>
-          </a>
+          <span v-if="record.recommend" style="color: rgb(0, 183, 255)">【推荐】</span>
+          <span v-if="record.top" style="color: red">【置顶】</span>
+          <a>{{ record.title }}</a>
         </template>
 
         <template v-if="dataIndex === 'subcolumn'">
@@ -100,7 +84,7 @@ export default defineComponent({
       {
         title: '封面',
         dataIndex: 'cover',
-        width: 100,
+        width: 120,
       },
       {
         title: '标题',
@@ -130,7 +114,7 @@ export default defineComponent({
       {
         title: '标签',
         dataIndex: 'tags',
-        width: 200,
+        width: 100,
       },
       {
         title: '推荐',
@@ -217,36 +201,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="less" scoped>
-.filter-left {
-  display: flex;
-}
-.article-cover {
-  object-fit: cover;
-  height: 38px;
-  width: 80px;
-  position: relative;
-  .cover-bg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover!important;
-    z-index: 1;
-  }
-  .cover-default {
-    width: 100%;
-    height: 100%;
-  }
-}
-.article-title {
-  .at-recommend {
-    color: red;
-  }
-  .at-top {
-    color: rgb(69, 184, 3);
-  }
-}
-</style>

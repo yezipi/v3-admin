@@ -106,14 +106,7 @@
 .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
   background: rgba(0,0,0,0.5)!important;
 }
-.withParentWith .ant-upload.ant-upload-select-picture-card {
-  width: 100%!important;
-  height: 100%!important;
-  margin: 0;
-}
-.yzp-upload, .withParentWith {
-  height: 100%!important;
-}
+
 .maxwidth-100.ant-form-item .ant-form-item-control {
   max-width: 100%;
 }
@@ -175,40 +168,50 @@
 
 
 /*主题样式覆盖*/
-
+.ant-form-item-control {
+  max-width: 750px!important;
+}
+.ant-table-thead > tr > th {
+  background: #eeeeee!important;
+}
 .ant-radio-checked .ant-radio-inner,
 .ant-checkbox-checked::after,
 .ant-checkbox-checked .ant-checkbox-inner,
 .ant-checkbox-wrapper:hover .ant-checkbox-inner,
 .ant-radio-wrapper:hover .ant-radio-inner,
-.ant-pagination-item-active
+.ant-pagination-item-active,
+.ant-picker-focused,
+.ant-input:hover,
+.ant-select-selector:hover,
+.ant-picker:hover,
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector
 {
   border-color: @primary-color!important;
 }
 .ant-radio-inner:after,
 .ant-checkbox-checked .ant-checkbox-inner,
-.ant-switch-checked
+.ant-switch-checked,
+.ant-tabs-ink-bar,
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner
 {
   background-color: @primary-color!important;
 }
-.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector,
+.ant-picker-focused
+{
   box-shadow: @box-shadow-base!important;
 }
 .ant-input:focus {
   border-color: @primary-color!important;
   box-shadow: @box-shadow-base!important;
 }
-.ant-input:hover, .ant-select-selector:hover {
-  border-color: @primary-color!important;
-}
-.ant-pagination-item-active a {
-  color: @primary-color!important;
-}
-.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn
+.ant-pagination-item-active a,
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
+.ant-picker-today-btn
 {
   color: @primary-color!important;
 }
-.ant-tabs-ink-bar {
-  background: @primary-color!important;
+.maxwidth-100 .ant-form-item-control {
+  max-width: none!important;
 }
 /*end*/

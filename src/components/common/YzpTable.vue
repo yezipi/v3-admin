@@ -1,28 +1,33 @@
 <template>
-  <div class="page-list">
-    <div v-if="slots.filter" id="list-filter">
+  <div class="yzp-page-list">
+    <div v-if="slots.filter" class="yzp-page-filter" :id="tableId">
       <slot name="filter"></slot>
     </div>
-    <template v-if="loadEnd && total">
-      <a-table
-        :dataSource="dataSource"
-        :columns="newColumns"
-        :pagination="false"
-        :scroll="{ x: tableWidth, y: tableHeight }"
-        :rowKey="rowKey"
-        :childrenColumnName="childrenColumnName"
-        :row-class-name="setRowClassName"
-        :bordered="bordered"
-        class="ant-table-striped"
-        size="small"
-      >
-        <template v-for="item in slotsKeys" v-slot:[item]="scope">
-          <slot :name="item" :scope="scope"></slot>
-        </template>
-      </a-table>
-      <yzp-pagintion :total="total" :size="size" @change="onPageChange"></yzp-pagintion>
-    </template>
-    <a-empty v-else style="margin-top: 30vh" />
+    <div :style="{ height: tableHeight + 100 + 'px' }" class="yzp-table-main">
+      <div v-if="loading" class="yzp-table-spin">
+        <a-spin :spinning="loading" tip="加载中..."></a-spin>
+      </div>
+      <template v-if="total && !loading">
+        <a-table
+          :dataSource="dataSource"
+          :columns="newColumns"
+          :pagination="false"
+          :scroll="{ x: tableWidth, y: total < 10 ? null : tableHeight }"
+          :rowKey="rowKey"
+          :childrenColumnName="childrenColumnName"
+          :row-class-name="setRowClassName"
+          :bordered="bordered"
+          class="ant-table-striped"
+          size="small"
+        >
+          <template v-for="item in slotsKeys" v-slot:[item]="scope">
+            <slot :name="item" :scope="scope"></slot>
+          </template>
+        </a-table>
+        <yzp-pagintion :total="total" :size="size" @change="onPageChange"></yzp-pagintion>
+      </template>
+      <a-empty v-if="!total && !loading" />
+    </div>
   </div>
 </template>
 
@@ -39,6 +44,10 @@ interface AnyKey {
 
 export default defineComponent({
   props: {
+    tableId: {
+      type: String,
+      default: 'yzp-page-filter'
+    },
     bordered: {
       type: Boolean,
       default: true,
@@ -68,13 +77,18 @@ export default defineComponent({
       type: Number,
       default: 20,
     },
-    childrenColumnName: String,
-
-    // 额外条件
+    childrenColumnName: {
+      type: String,
+      default: ''
+    },
     condition: {
       type: Object,
       default: () => {}
-    }
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, { emit, slots }) {
 
@@ -83,6 +97,7 @@ export default defineComponent({
     const tableConfig = reactive({
       dataSource: [] as any,
       total: 0,
+      loading: false
     })
 
     const slotsKeys = Object.keys(slots).filter((e: any) => e !== 'filter')
@@ -90,7 +105,6 @@ export default defineComponent({
     const tableHeight = ref<any>(undefined)
     const tableWidth = ref<any>(undefined)
     const bakcupHeight = ref<any>(undefined)
-    const loadEnd = ref(false)
     const page = ref(1)
     const newColumns = ref<Array<any>>(columns)
     const Store = useStore()
@@ -104,15 +118,21 @@ export default defineComponent({
     }
 
     watch(() => style.value, () => {
-      seHeight()
+      setTableHeight()
     })
 
-    const seHeight = () => {
+    const setTableHeight = () => {
+      const filterEle: any = document.querySelector('#' + props.tableId) // 列表的筛选统一加这个id
+      const filterHeight = filterEle ? (filterEle.offsetHeight + 10) : 0
+      tableHeight.value = screen.height - 350 - filterHeight
+      bakcupHeight.value = tableHeight.value
+      tableWidth.value = scrollWidth
       if (style.value === 2) {
         tableHeight.value = bakcupHeight.value - 35
       } else {
         tableHeight.value = bakcupHeight.value
       }
+      console.log('tableHeight: ' + tableHeight.value)
     }
 
     const mapColumns = (e: any) => {
@@ -132,7 +152,7 @@ export default defineComponent({
 
         // 格式化时间，如果传入的是布尔值，则默认YYYY-MM-DD，否则就传入时间格式
         if (i.format) {
-          e[key] = formatDate(e[key], typeof i.format === 'boolean' ? 'YYYY-MM-DD' : i.format)
+          e[key] = formatDate(e[key], typeof i.format === 'boolean' ? 'YYYY-MM-DD hh:mm' : i.format)
         }
         
       })
@@ -145,6 +165,7 @@ export default defineComponent({
         return
       }
       try {
+        tableConfig.loading = true
         const str = url.split('.')
         const obj: AnyKey = api[str[0] as keyof ApiConfig] // class对象
         const fn = str[1] // 对象下面的方法
@@ -188,17 +209,7 @@ export default defineComponent({
         if (tableBody) {
           tableBody.scrollTo(0, 0)
         }
-        nextTick(() => {
-          if (!loadEnd.value) {
-            const filterEle: any = document.querySelector('#list-filter') // 列表的筛选统一加这个id
-            const filterHeight = filterEle ? (filterEle.offsetHeight + 10) : 0
-            tableHeight.value = screen.height - 350 - filterHeight
-            bakcupHeight.value = tableHeight.value
-            tableWidth.value = scrollWidth
-            seHeight()
-            loadEnd.value = true
-          }
-        })
+        tableConfig.loading = false
       }
     }
 
@@ -211,6 +222,7 @@ export default defineComponent({
     const setRowClassName = (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : '')
 
     onMounted(() => {
+      setTableHeight()
       init()
     })
 
@@ -219,7 +231,6 @@ export default defineComponent({
       newColumns,
       tableHeight,
       tableWidth,
-      loadEnd,
       slotsKeys,
       slots,
       init,
@@ -231,7 +242,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-#list-filter {
+.yzp-page-filter {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -239,6 +250,21 @@ export default defineComponent({
   .filter-left, .filter-right {
     display: flex;
     align-items: center;
+  }
+}
+.yzp-table-main {
+  position: relative;
+  .yzp-table-spin {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
 }
 </style>

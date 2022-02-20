@@ -109,12 +109,16 @@ const closeDraw = () => {
 </script>
 
 <template>
-  <yzp-draw v-model:visible="drawState" :title="id ? '编辑相册' : '添加相册'" @hide="closeDraw">
+  <yzp-draw
+    v-model:visible="drawState"
+    :title="id ? '编辑相册' : '添加相册'"
+    :ok-loading="btnLoading"
+    :wrap-loading="wrapLoading"
+    @hide="closeDraw"
+    @confirm="onSubmit"
+  >
     <template #content>
-      <a-spin class="center-spin" :spinning="wrapLoading" tip="加载中..."></a-spin>
-
       <a-form
-        v-if="!wrapLoading"
         ref="formRef"
         :model="ruleForm"
         :rules="rules"
@@ -129,7 +133,7 @@ const closeDraw = () => {
         </a-form-item>
 
         <a-form-item label="标题" name="title">
-          <a-input v-model:value="ruleForm.title" placeholder="填写相册标题" :maxlength="30"></a-input>
+          <a-input v-model:value="ruleForm.title" placeholder="填写相册标题" :maxlength="30" />
         </a-form-item>
 
         <a-form-item label="描述" name="description">
@@ -138,7 +142,7 @@ const closeDraw = () => {
             :rows="3"
             placeholder="填写相册描述"
             :maxlength="100"
-          ></a-textarea>
+          />
         </a-form-item>
 
         <a-form-item label="设置">
@@ -146,11 +150,6 @@ const closeDraw = () => {
           <a-checkbox v-model:checked="ruleForm.recommend">设为推荐</a-checkbox>
         </a-form-item>
       </a-form>
-    </template>
-
-    <template v-if="!wrapLoading" #footer>
-      <a-button @click="closeDraw" style="flex: 1;margin-right: 10px;">取 消</a-button>
-      <a-button type="primary" @click="onSubmit" style="flex: 1">{{ id ? '立即保存' : '立即添加' }}</a-button>
     </template>
   </yzp-draw>
 </template>

@@ -27,7 +27,7 @@ const columns = reactive([
   {
     title: '时间',
     dataIndex: 'createdAt',
-    format: 'YYYY-MM-DD'
+    format: true
   },
   {
     title: '操作',

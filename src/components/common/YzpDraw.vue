@@ -1,27 +1,30 @@
 <template>
   <a-drawer
+    v-model:visible="state"
     :title="title"
     :width="width"
-    :size="size"
     :maskClosable="maskClosable"
-    :visible="state"
-    :destroyOnClose="true"
+    :wrapLoading="wrapLoading"
+    :okLoading="okLoading"
+    class="yzp-draw"
     @close="hide"
   > 
-    <div class="draw-wrap">
-      <div class="draw-content">
-        <slot name="content"></slot>
-      </div>
-      <div class="draw-footer">
-        <!-- <a-button style="flex: 1;margin-right: 24px" @click="cancel">取消</a-button>
-        <a-button type="primary" style="flex: 1" @click="confirm">确定</a-button> -->
-        <slot name="footer"></slot>
-      </div>
+    <div v-if="wrapLoading" class="yzp-draw-spin" >
+      <a-spin :spinning="wrapLoading" tip="加载中..."></a-spin>
     </div>
+    <div v-if="!wrapLoading" class="yzp-draw-content ">
+      <slot name="content"></slot>
+    </div>
+    <template v-if="!wrapLoading" #footer>
+      <div class="yzp-draw-footer">
+        <a-button style="margin-right: 10px;flex: 1" @click="hide">取消</a-button>
+        <a-button style="flex: 1" type="primary" :loading="okLoading" @click="confirm">确定</a-button>
+      </div>
+    </template>
   </a-drawer>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, ref } from 'vue';
 export default defineComponent({
 
   props: {
@@ -37,7 +40,18 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    title: String,
+    title: {
+      type: String,
+      default: ''
+    },
+    wrapLoading: {
+      type: Boolean,
+      default: false,
+    },
+    okLoading: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   setup(props, ctx) {
@@ -75,22 +89,20 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-.draw-wrap {
-  display: flex;
-  flex-direction: column;
-  margin-right: -24px;
-  .draw-content {
-    padding-right: 24px;
-    height: calc(100vh - 170px);
-    overflow-y: auto;
-    position: relative;
+.yzp-draw {
+  .yzp-draw-spin {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
   }
-  .draw-footer {
-    margin-top: 24px;
+  .yzp-draw-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-right: 24px;
   }
 }
+
 </style>

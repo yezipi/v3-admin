@@ -80,6 +80,6 @@ export default new class Banner extends Request {
    */
    public getList(params?: BannerListConfig) {
     const url = 'v1/banner'
-    return this.get(url, { ...params, loading: true })
+    return this.get(url, params)
   }
 }

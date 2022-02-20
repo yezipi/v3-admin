@@ -138,8 +138,8 @@ export default defineComponent({
 
 <style scoped lang="less">
 .yzp-aside {
-  backdrop-filter: saturate(150%) blur(10px);
-  background: rgba(0,0,0,0.5);
+  // backdrop-filter: saturate(150%) blur(10px);
+  background: #001529;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -179,6 +179,17 @@ export default defineComponent({
   .yzp-menu.ant-menu-dark .ant-menu-sub
   {
     background: none
+  }
+  
+  :deep(.ant-menu-submenu-horizontal .ant-menu-submenu-arrow) {
+    display: block;
+    right: -16px;
+    color: #999999;
+    font-weight: normal;
+    transform: rotate(90deg);
+  }
+  :deep(.ant-menu-submenu-selected .ant-menu-submenu-arrow) {
+    color: @primary-color;
   }
 }
 </style>

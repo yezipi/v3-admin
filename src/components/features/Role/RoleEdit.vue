@@ -40,13 +40,6 @@ const user = computed(() => store.state.user)
 const router = useRouter()
 const routes = [ ...router.options.routes ]
 
-// treeData.value = routes.map((e: any) => {
-//   return {
-//     disableCheckbox: e.meta.noMenu || e.name === 'Home',
-//     ...e,
-//   }
-// })
-
 watch(() => props.visible, (val: boolean) => {
   drawState.value = val
   if (!props.id) {
@@ -69,11 +62,14 @@ const getInfo = async (id: any) => {
     wrapLoading.value = true
     const { data } = await RoleApi.getDetail(id)
     const isSuper = state.user.role.type === 'super' && data.type === 'super'
+    const noAuthRuotes = routes.filter((e: any) => e.meta.noAuth || e.name === 'Home').map((e: any) => e.name)
+    const allRoutesName: Array<string> = []
+
     ruleForm.value = data
     
     // 如果是超级管理员，默认全选, 否则默认选择其他几个
     if (data.type === 'super') {
-      const allRoutesName: Array<string> = []
+      
       routes.forEach((e: any) => {
         allRoutesName.push(e.name)
         if (e.children) {
@@ -82,27 +78,22 @@ const getInfo = async (id: any) => {
          }) 
         }
       })
-      console.log(allRoutesName)
       ruleForm.value.permissions = allRoutesName
     } else {
-      ruleForm.value.permissions = routes.filter((e: any) => e.meta.noAuth || e.name === 'Home').map((e: any) => e.name)
+      ruleForm.value.permissions = [ ...noAuthRuotes, ...data.permissions ]
     }
-    console.log(isSuper)
     treeData.value = routes.map((e: any) => {
       const item = {
-        disableCheckbox: e.meta.noMenu || e.name === 'Home',
+        disableCheckbox: isSuper || e.meta.noMenu || e.name === 'Home',
         ...e
       }
-      if (isSuper) {
-        item.disableCheckbox = true
-        if (item.children) {
-          item.children = item.children.map((i: any) => {
-            return {
-              disableCheckbox: true,
-              ...i
-            }
-          })
-        }
+      if (item.children) {
+        item.children = item.children.map((i: any) => {
+          return {
+            disableCheckbox: isSuper,
+            ...i
+          }
+        })
       }
       return item
     })
@@ -142,11 +133,16 @@ const closeDraw = () => {
 
 </script>
 <template>
-  <yzp-draw v-model:visible="drawState" :title="id ? '编辑角色' : '添加角色'" @hide="closeDraw">
+  <yzp-draw
+    v-model:visible="drawState"
+    :title="id ? '编辑角色' : '添加角色'"
+    :ok-loading="btnLoading"
+    :wrap-loading="wrapLoading"
+    @hide="closeDraw"
+    @confirm="onSubmit"
+  >
     <template #content>
-      <a-spin class="center-spin" :spinning="wrapLoading" tip="加载中..."></a-spin>
       <a-form
-        v-if="!wrapLoading"
         ref="formRef"
         :model="ruleForm"
         :rules="rules"
@@ -158,7 +154,8 @@ const closeDraw = () => {
             autocomplete="off"
             :maxlength="20"
             placeholder="请填写角色名称"
-          ></a-input>
+          >
+          </a-input>
         </a-form-item>
 
         <a-form-item label="类型" name="type">
@@ -168,7 +165,8 @@ const closeDraw = () => {
         <a-form-item label="权限设置" name="permission">
           <a-tree
             v-model:checkedKeys="ruleForm.permissions"
-            checkable
+            :checkable="true"
+            :defaultExpandAll="true"
             :fieldNames="fieldNames"
             :tree-data="treeData"
           >
@@ -178,15 +176,6 @@ const closeDraw = () => {
           </a-tree>
         </a-form-item>
       </a-form>
-    </template>
-    <template v-if="!wrapLoading" #footer>
-      <a-button style="flex: 1;margin-right: 10px" @click="closeDraw">取消</a-button>
-      <a-button
-        :loading="btnLoading"
-        style="flex: 1"
-        type="primary"
-        @click="onSubmit"
-      >{{ id ? '立即保存' : '立即添加' }}</a-button>
     </template>
   </yzp-draw>
 </template>
