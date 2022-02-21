@@ -290,5 +290,8 @@ export default defineComponent({
     justify-content: center;
     flex-direction: column;
   }
+  :deep(.ant-spin-nested-loading > div > .ant-spin) {
+    max-height: none;
+  }
 }
 </style>
