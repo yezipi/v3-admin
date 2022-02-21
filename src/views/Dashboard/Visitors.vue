@@ -30,6 +30,7 @@ const columns = reactive([
   {
     title: '访问时长',
     dataIndex: 'stay',
+    noTransform: true,
   },
   {
     title: '访问页数',
@@ -64,7 +65,7 @@ const getBaiduVisitors = async () => {
       visitedPage: field[index][3],
       keywords: field[index][4],
       ip: field[index][5],
-      stay: field[index][7] + '秒',
+      stay: field[index][7],
       visitedCount: field[index][8],
       browser: detail.browser,
       os: detail.os,
@@ -82,10 +83,16 @@ onMounted(() => getBaiduVisitors())
   <div class="baidu-visitors-wrap">
     <yzp-table :columns="columns" :data="list" ref="tableRef">
       <template #bodyCell="{ scope: { record, column } }">
-        <span v-if="column.dataIndex === 'from'">
+
+        <div v-if="column.dataIndex === 'from'">
           <a v-if="record.from.url" :href="record.from.url" target="_blank">{{ record.from.fromType }}</a>
           <span v-else>{{ record.from.fromType }}</span>
-        </span>
+        </div>
+
+        <div v-if="column.dataIndex === 'stay'">
+          {{ record.stay !== '未知' ? record.stay + '秒' : '-' }}
+        </div>
+
       </template>
     </yzp-table>
   </div>

@@ -44,11 +44,8 @@ watch(() => props.visible, (val: boolean) => {
     content: '',
     version: '',
   }
-})
-
-watch(() => props.id, (val: any) => {
-  if (val) {
-    getInfo(val)
+  if (val && props.id) {
+    getInfo(props.id)
   }
 })
 

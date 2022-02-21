@@ -14,6 +14,10 @@ const columns = reactive([
     dataIndex: 'content',
   },
   {
+    title: '回复',
+    dataIndex: 'reply_content',
+  },
+  {
     title: '站点',
     dataIndex: 'site',
   },
@@ -140,17 +144,18 @@ const fnName = firstToUpper(type) + '.getList'
       </template>
 
       <template #bodyCell="{ scope: { column: { dataIndex }, record } }">
-        <template v-if="dataIndex === 'status'">
+        <div v-if="dataIndex === 'status'">
           <a-switch :checked="record.status" @change="toUpdate(record, $event, 'status')" />
-        </template>
+        </div>
 
-        <template v-if="dataIndex === 'action'">
+        <div v-if="dataIndex === 'action'">
           <span>
             <a @click="toEdit(record.id)">编辑</a>
             <a-divider type="vertical" />
             <a @click="toDelete(record)">删除</a>
           </span>
-        </template>
+        </div>
+
       </template>
 
     </yzp-table>

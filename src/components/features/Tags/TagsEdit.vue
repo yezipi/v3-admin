@@ -35,11 +35,8 @@ watch(() => props.visible, (val: boolean) => {
     name: '',
     sort: 100,
   }
-})
-
-watch(() => props.id, (val: any) => {
-  if (val) {
-    getInfo(val)
+  if (val && props.id) {
+    getInfo(props.id)
   }
 })
 

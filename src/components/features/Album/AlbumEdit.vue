@@ -53,11 +53,8 @@ watch(() => props.visible, (val: boolean) => {
   if (!props.id) {
     ruleForm.value = { ...initForm }
   }
-})
-
-watch(() => props.id, (val: any) => {
-  if (val) {
-    getInfo(val)
+  if (val && props.id) {
+    getInfo(props.id)
   }
 })
 

@@ -44,7 +44,7 @@ const editorConfig = {
   language_url: config.BASE_URL + '/tinymce/langs/zh_CN.js',
   language: 'zh_CN',
   skin_url: config.BASE_URL + '/tinymce/skins/ui/oxide',
-  height: 400,
+  height: 500,
   branding: true,
   plugins: 'link lists image codesample code table wordcount media table fullscreen preview pagebreak insertdatetime hr paste', // 插件
   toolbar: 'codesample image bold italic underline alignleft aligncenter alignright alignjustify | forecolor backcolor | fontselect | fontsizeselect | formatselect |  bullist numlist | outdent indent blockquote | removeformat| undo redo | link unlink media insertdatetime table  hr pagebreak | fullscreen preview | strikethrough', // 工具条
