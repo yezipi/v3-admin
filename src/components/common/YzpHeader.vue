@@ -58,12 +58,12 @@ ReportApi.getUnAudit()
 
 <template>
   <div :class="{ collapsed, hasMenu: $slots.menu }" class="yzp-head">
-    <div v-if="!$slots.menu" class="head-left">
-      <div class="yzp-left-btn" @click="toggleMenu">
+    <div v-if="!$slots.menu" class="yzp-head-left">
+      <div class="yzp-head-left-btn" @click="toggleMenu">
         <MenuFoldOutlined v-if="collapsed" />
         <MenuUnfoldOutlined v-else />
       </div>
-      <div class="yzp-left-btn">
+      <div class="yzp-head-left-btn">
         <ReloadOutlined />
       </div>
       <a-breadcrumb style="margin-left: 10px">
@@ -178,7 +178,7 @@ ReportApi.getUnAudit()
     flex: 1;
     position: relative;
     height: 100%;
-    .yzp-head-btn {
+    .yzp-head-left-btn {
       width: 60px;
       height: 60px;
       display: flex;
