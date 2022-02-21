@@ -294,4 +294,7 @@ export default defineComponent({
     max-height: none;
   }
 }
+.ant-table-striped :deep(.table-striped) td {
+  background-color: #f5f5f5;
+}
 </style>
