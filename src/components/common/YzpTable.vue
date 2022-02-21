@@ -185,6 +185,7 @@ export default defineComponent({
         return
       }
       try {
+        tableConfig.loading = true
         const str = url.split('.')
         const obj: AnyKey = api[str[0] as keyof ApiConfig] // class对象
         const fn = str[1] // 对象下面的方法
