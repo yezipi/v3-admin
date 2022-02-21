@@ -7,7 +7,7 @@
       <div v-if="loading && !total" class="yzp-table-spin">
         <a-spin :spinning="loading" tip="加载中..."></a-spin>
       </div>
-      <div v-show="total">
+      <template v-if="total">
         <a-table
           :dataSource="dataSource"
           :loading="loading"
@@ -26,7 +26,7 @@
           </template>
         </a-table>
         <yzp-pagintion v-if="pagintion" :total="total" :size="pageSize" @change="onPageChange"></yzp-pagintion>
-      </div>
+      </template>
       <div v-if="!total && !loading" class="yzp-table-empty">
         <a-empty />
       </div>
@@ -86,7 +86,7 @@ export default defineComponent({
     },
     childrenColumnName: {
       type: String,
-      default: ''
+      default: 'children'
     },
     condition: {
       type: Object,
