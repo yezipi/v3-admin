@@ -4,12 +4,13 @@
       <slot name="filter"></slot>
     </div>
     <div :style="{ height: tableHeight + 100 + 'px' }" class="yzp-table-main">
-      <div v-if="loading" class="yzp-table-spin">
+      <div v-if="loading && !total" class="yzp-table-spin">
         <a-spin :spinning="loading" tip="加载中..."></a-spin>
       </div>
-      <template v-if="total && !loading">
+      <div v-show="total">
         <a-table
           :dataSource="dataSource"
+          :loading="loading"
           :columns="newColumns"
           :pagination="false"
           :scroll="{ x: tableWidth, y: total < 10 ? null : tableHeight }"
@@ -24,9 +25,11 @@
             <slot :name="item" :scope="scope"></slot>
           </template>
         </a-table>
-        <yzp-pagintion v-if="pagintion" :total="total" :size="size" @change="onPageChange"></yzp-pagintion>
-      </template>
-      <a-empty v-if="!total && !loading" />
+        <yzp-pagintion v-if="pagintion" :total="total" :size="pageSize" @change="onPageChange"></yzp-pagintion>
+      </div>
+      <div v-if="!total && !loading" class="yzp-table-empty">
+        <a-empty />
+      </div>
     </div>
   </div>
 </template>
@@ -114,6 +117,7 @@ export default defineComponent({
     const tableWidth = ref<any>(undefined)
     const bakcupHeight = ref<any>(undefined)
     const page = ref(1)
+    const pageSize = ref(size)
     const newColumns = ref<Array<any>>(columns)
     const Store = useStore()
     const style = computed(() => Number(Store.state.style))
@@ -131,8 +135,8 @@ export default defineComponent({
 
     watch(() => props.data, (data: any[]) => {
       if (!props.url) {
-        tableConfig.dataSource = props.data
-        tableConfig.total = props.data.length
+        tableConfig.dataSource = data
+        tableConfig.total = data.length
         tableConfig.loading = false
       }
     })
@@ -184,7 +188,7 @@ export default defineComponent({
         const str = url.split('.')
         const obj: AnyKey = api[str[0] as keyof ApiConfig] // class对象
         const fn = str[1] // 对象下面的方法
-        const { data } = await obj[fn]({ size, page: page.value, ...props.condition, ...filters })
+        const { data } = await obj[fn]({ size: pageSize.value, page: page.value, ...props.condition, ...filters })
         const { rows, count } = data
         // 匹配字典
         tableConfig.dataSource = rows.map((e: any[]) => {
@@ -231,6 +235,8 @@ export default defineComponent({
     // 分页
     const onPageChange = (res: any) => {
       page.value = res.page
+      pageSize.value = res.size
+      tableConfig.loading = true
       init(res)
     }
 
@@ -248,6 +254,8 @@ export default defineComponent({
       tableWidth,
       slotsKeys,
       slots,
+      page,
+      pageSize,
       init,
       setRowClassName,
       onPageChange,
@@ -269,7 +277,7 @@ export default defineComponent({
 }
 .yzp-table-main {
   position: relative;
-  .yzp-table-spin {
+  .yzp-table-spin, .yzp-table-empty {
     position: absolute;
     left: 0;
     right: 0;
