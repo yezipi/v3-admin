@@ -10,6 +10,7 @@ import {
   AppstoreOutlined,
   UserOutlined,
   SettingOutlined,
+  LineChartOutlined,
 } from '@ant-design/icons-vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -30,6 +31,20 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Result',
     component: () => import( '@/views/Result.vue'),
     meta: { title: '结果页', noAuth: true, noMenu: true },
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    meta: { title: '数据看板', noLink: true, icon: LineChartOutlined },
+    component: () => import('@/views/Comments/Index.vue'),
+    children: [
+      {
+        path: '/dashboard/visitors',
+        name: 'DashboardVisitors',
+        meta: { title: '实时访客', icon: '' },
+        component: () => import('@/views/Dashboard/Visitors.vue'),
+      },
+    ],
   },
   {
     path: '/content-publish',
@@ -66,7 +81,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/content-manage',
     name: 'ContentManage',
-    meta: { title: '内容管理', noLink: true, role: [1, 2], icon: CopyOutlined },
+    meta: { title: '内容管理', noLink: true, icon: CopyOutlined },
     component: () => import('@/views/ContentManage/Index.vue'),
     children: [
       {
@@ -116,19 +131,19 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/comments',
     name: 'Comments',
-    meta: { title: '互动管理', noLink: true, role: [1, 2], icon: CommentOutlined },
+    meta: { title: '互动管理', noLink: true, icon: CommentOutlined },
     component: () => import('@/views/Comments/Index.vue'),
     children: [
       {
         path: '/comment/list',
         name: 'CommentList',
-        meta: { title: '评论管理', role: [1, 2], icon: '' },
+        meta: { title: '评论管理', icon: '' },
         component: () => import('@/views/Comments/CommentList.vue'),
       },
       {
         path: '/feedback/list',
         name: 'FeedbackList',
-        meta: { title: '留言管理', role: [1, 2], icon: '' },
+        meta: { title: '留言管理', icon: '' },
         component: () => import('@/views/Comments/FeedbackList.vue'),
       },
     ],
@@ -136,13 +151,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/blogroll',
     name: 'Blogroll',
-    meta: { title: '友链管理', noLink: true, role: [1, 2], icon: LinkOutlined },
+    meta: { title: '友链管理', noLink: true, icon: LinkOutlined },
     component: () => import('@/views/Blogroll/Index.vue'),
     children: [
       {
         path: '/blogroll/list',
         name: 'BlogrollList',
-        meta: { title: '友链列表', role: [1, 2], icon: '' },
+        meta: { title: '友链列表', icon: '' },
         component: () => import('@/views/Blogroll/BlogrollList.vue'),
       },
     ],
@@ -150,19 +165,19 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/albums',
     name: 'Albums',
-    meta: { title: '相册管理', noLink: true, role: [1, 2], icon: PictureOutlined },
+    meta: { title: '相册管理', noLink: true, icon: PictureOutlined },
     component: () => import('@/views/Album/Index.vue'),
     children: [
       {
         path: '/albums/list',
         name: 'AlbumList',
-        meta: { title: '相册列表', role: [1, 2], icon: '' },
+        meta: { title: '相册列表', icon: '' },
         component: () => import('@/views/Album/AlbumList.vue'),
       },
       {
         path: '/picture/list',
         name: 'PictureList',
-        meta: { title: '图片列表', role: [1, 2], icon: '' },
+        meta: { title: '图片列表', icon: '' },
         component: () => import('@/views/Album/PictureList.vue'),
       },
     ],
@@ -170,7 +185,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/columns',
     name: 'Columns',
-    meta: { title: '栏目管理', noLink: true, role: [1, 2], icon: AppstoreOutlined },
+    meta: { title: '栏目管理', noLink: true, icon: AppstoreOutlined },
     component: () => import('@/views/Column/Index.vue'),
     children: [
       {
@@ -208,7 +223,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/users',
     name: 'Users',
-    meta: { title: '用户管理', noLink: true, role: [1, 2], icon: UserOutlined },
+    meta: { title: '用户管理', noLink: true, icon: UserOutlined },
     component: () => import('@/views/User/Index.vue'),
     children: [
       {
@@ -222,7 +237,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/settings',
     name: 'Settings',
-    meta: { title: '系统设置', noLink: true, role: [1, 2], icon: SettingOutlined },
+    meta: { title: '系统设置', noLink: true, icon: SettingOutlined },
     component: () => import('@/views/Settings/Index.vue'),
     children: [
       {

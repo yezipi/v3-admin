@@ -23,6 +23,10 @@ const columns = ref([
     title: '浏览量',
     dataIndex: 'pv',
   },
+  {
+    title: '停留时长',
+    dataIndex: 'stay',
+  },
 ])
 
 const dataSource = ref<any>([])
@@ -34,14 +38,15 @@ const init = async () => {
     items[0].forEach((e: any, index: number) => {
       dataSource.value.push({
         page: e[0].name,
-        pv: items[1][index][0]
+        pv: items[1][index][0],
+        stay: items[1][index][2]
       })
     })
     console.log(dataSource.value)
   } catch (e) {
     console.log(e)
   } finally {
-    loading.value = true
+    loading.value = false
   }
 }
 
@@ -51,6 +56,12 @@ init()
 
 <template>
   <div class="keywords-charts">
-    <a-table :data-source="dataSource" :columns="columns" :pagination="false" size="small"></a-table>
+    <a-table :data-source="dataSource" :loading="loading" :columns="columns" :pagination="false" size="small">
+      <template #bodyCell="{ column: { dataIndex }, record }">
+        <template v-if="dataIndex === 'stay'">
+          {{ record.stay }}秒
+        </template>
+      </template>
+    </a-table>
   </div>
 </template>

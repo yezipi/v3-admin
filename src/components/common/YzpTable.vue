@@ -24,7 +24,7 @@
             <slot :name="item" :scope="scope"></slot>
           </template>
         </a-table>
-        <yzp-pagintion :total="total" :size="size" @change="onPageChange"></yzp-pagintion>
+        <yzp-pagintion v-if="pagintion" :total="total" :size="size" @change="onPageChange"></yzp-pagintion>
       </template>
       <a-empty v-if="!total && !loading" />
     </div>
@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs, ref, nextTick, computed, watch } from 'vue'
+import { defineComponent, onMounted, reactive, toRefs, ref, computed, watch } from 'vue'
 import { message } from 'ant-design-vue'
 import { formatDate } from '@/utils/index'
 import api, { ApiConfig } from '@/api/index'
@@ -44,6 +44,10 @@ interface AnyKey {
 
 export default defineComponent({
   props: {
+    data: {
+      type: Array,
+      default: () => []
+    },
     tableId: {
       type: String,
       default: 'yzp-page-filter'
@@ -89,6 +93,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    pagintion: {
+      type: Boolean,
+      default: true,
+    }
   },
   setup(props, { emit, slots }) {
 
@@ -97,7 +105,7 @@ export default defineComponent({
     const tableConfig = reactive({
       dataSource: [] as any,
       total: 0,
-      loading: false
+      loading: true
     })
 
     const slotsKeys = Object.keys(slots).filter((e: any) => e !== 'filter')
@@ -119,6 +127,14 @@ export default defineComponent({
 
     watch(() => style.value, () => {
       setTableHeight()
+    })
+
+    watch(() => props.data, (data: any[]) => {
+      if (!props.url) {
+        tableConfig.dataSource = props.data
+        tableConfig.total = props.data.length
+        tableConfig.loading = false
+      }
     })
 
     const setTableHeight = () => {
@@ -165,7 +181,6 @@ export default defineComponent({
         return
       }
       try {
-        tableConfig.loading = true
         const str = url.split('.')
         const obj: AnyKey = api[str[0] as keyof ApiConfig] // class对象
         const fn = str[1] // 对象下面的方法
