@@ -45,13 +45,10 @@ const isSuper = computed(() => roles.value.some((e: any) => e.id === ruleForm.va
 watch(() => props.visible, (val: boolean) => {
   drawState.value = val
   ruleForm.value = { ...initForm }
-})
-
-watch(() => props.id, (val: any) => {
-  if (val) {
-    getInfo(val)
+  if (val && props.id) {
+    getInfo(props.id)
   }
-  rules.password[0].required = !val
+  rules.password[0].required = !props.id
 })
 
 const getRole = async () => {

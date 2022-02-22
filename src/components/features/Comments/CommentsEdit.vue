@@ -65,22 +65,19 @@ const drawTitle = ref('')
 
 const rules = ref<any>({
   nickname: [{ message: '名称必须', required: true, trigger: 'blur' }],
-  content: [{ message: '内容必须', required: true, trigger: 'blur' }]
+  content: [{ message: '内容必须', required: true, trigger: 'blur' }],
+  site: [{ message: '站点必须', required: false, trigger: 'blur' }]
 })
-
-if (props.type === 'blogroll') {
-  rules.site = [{ message: '站点必须', required: true, trigger: 'blur' }]
-}
 
 watch(() => props.visible, (val: boolean) => {
   drawState.value = val
   if (!props.id) {
     ruleForm.value = { ...initForm }
   }
-})
-
-watch(() => props.id, (val: any) => {
-  if (val) {
+  if (props.type === 'blogroll') {
+    rules.value.site[0].required = true
+  }
+  if (props.id && val) {
     getInfo(val)
   }
 })
@@ -182,11 +179,12 @@ const closeDraw = () => {
 
         <a-form-item label="回复">
           <a-textarea v-model:value="ruleForm.reply_content" :rows="3" placeholder="请填写内容"></a-textarea>
+          <div style="margin-top: 10px;color: #e79519">填写了回复和邮箱内容才可以发送邮件</div>
         </a-form-item>
 
         <a-form-item label="设置">
           <a-checkbox v-model:checked="ruleForm.status">显示</a-checkbox>
-          <a-checkbox v-model:checked="ruleForm.notice" :disabled="!ruleForm.email">邮件通知TA</a-checkbox>
+          <a-checkbox v-model:checked="ruleForm.notice" :disabled="!ruleForm.email && !ruleForm.reply_content">邮件通知TA</a-checkbox>
         </a-form-item>
         
       </a-form>

@@ -199,6 +199,14 @@ export default defineComponent({
 
     watch(() => props.value, (val: string | Array<any>) => {
       imageUrl.value = val
+      if (Array.isArray(val)) {
+        fileList.value = val.map((e: string, index: number) => {
+          return {
+            url: e,
+            uid: index
+          }
+        })
+      }
     })
 
     const beforeUpload = (file: FileItem) => {
@@ -335,6 +343,7 @@ export default defineComponent({
 .yzp-upload {
   position: relative;
   height: 100%;
+  display: flex;
   :deep(.withParentWith .ant-upload.ant-upload-select-picture-card) {
     width: 100%;
     height: 100%;

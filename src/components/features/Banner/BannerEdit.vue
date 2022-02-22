@@ -53,11 +53,8 @@ const rules = reactive({
 watch(() => props.visible, (val: boolean) => {
   drawState.value = val
   restFrom()
-})
-
-watch(() => props.id, (val: any) => {
-  if (val) {
-    getInfo(val)
+  if (val && props.id) {
+    getInfo(props.id)
   }
 })
 
