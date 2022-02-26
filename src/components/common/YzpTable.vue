@@ -120,7 +120,7 @@ export default defineComponent({
     const pageSize = ref(size)
     const newColumns = ref<Array<any>>(columns)
     const Store = useStore()
-    const style = computed(() => Number(Store.state.style))
+    const menuStyle = computed(() => Number(Store.state.menuStyle))
 
     if (props.center) {
       newColumns.value = columns.map((e: any) => {
@@ -129,7 +129,7 @@ export default defineComponent({
       })
     }
 
-    watch(() => style.value, () => {
+    watch(() => menuStyle.value, () => {
       setTableHeight()
     })
 
@@ -144,11 +144,11 @@ export default defineComponent({
     const setTableHeight = () => {
       const filterEle: any = document.querySelector('#' + props.tableId) // 列表的筛选统一加这个id
       const filterHeight = filterEle ? (filterEle.offsetHeight + 10) : 0
-      tableHeight.value = screen.height - 350 - filterHeight
+      tableHeight.value = screen.height - 340 - filterHeight
       bakcupHeight.value = tableHeight.value
       tableWidth.value = scrollWidth
-      if (style.value === 2) {
-        tableHeight.value = bakcupHeight.value - 35
+      if (menuStyle.value === 2) {
+        tableHeight.value = bakcupHeight.value - 40
       } else {
         tableHeight.value = bakcupHeight.value
       }

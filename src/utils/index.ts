@@ -86,8 +86,9 @@ const dataURItoBlob = (file: File) => {
  * @param { String } text 文本内容
  * @version 2021-11-18 zzc
  */
- const copyText = (text: string | number) => {
-  const inputEle: any = document.createElement('input')
+const copyText = (text: string | number) => {
+  const doc: any = document
+  const inputEle: any = doc.createElement('input')
   inputEle.id = 'copyId'
   inputEle.value = text
   inputEle.type = 'text'
@@ -96,7 +97,7 @@ const dataURItoBlob = (file: File) => {
   inputEle.select()
   document.execCommand('copy')
   alert('复制成功')
-  document.querySelector('#copyId')?.remove()
+  doc.querySelector('#copyId').remove()
 }
 
 /**

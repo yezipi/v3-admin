@@ -24,14 +24,19 @@ const mutations: MutationTree<StateConfig> = {
     }
   },
   // 切换布局
-  updateStyle(state, data) {
-    state.style = data
-    db.set('style', data)
+  changeMenuStyle(state, data) {
+    state.menuStyle = data
+    db.set('menuStyle', data)
+  },
+  // 暗黑主题切换
+  changeTheme(state, data) {
+    state.theme = data
+    db.set('theme', data)
   },
   updateMsgData(state, data) {
     state.msgData = data
     db.set('msgData', data)
-  }
+  },
 }
 
 export default mutations

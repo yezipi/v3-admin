@@ -1,18 +1,20 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined, 
   ReloadOutlined,
   UserOutlined,
   LogoutOutlined,
-  RobotOutlined,
+  BgColorsOutlined,
+  CloudOutlined,
   BellOutlined
 } from '@ant-design/icons-vue'
 import Store from '@/store/index'
 import { useRouter } from 'vue-router'
 import ReportApi from '@/api/report'
 import { timeAgao } from '@/utils/index'
+import { toggleTheme } from '@zougt/vite-plugin-theme-preprocessor/dist/browser-utils'
 
 const props = defineProps({
   breadcrumbs: {
@@ -32,6 +34,9 @@ const unAuditFeedbacks = computed(() => Store.state.msgData.data.feedbacks)
 const unAuditBlogrolls = computed(() => Store.state.msgData.data.blogrolls)
 const activeMsgType = ref('comments')
 
+const menuStyle = computed(() => +Store.state.menuStyle)
+const theme = computed(() => Store.state.theme)
+
 const toggleMenu = () => {
   collapsed.value = !collapsed.value
   emit('collapseMenu', collapsed.value)
@@ -47,12 +52,19 @@ const logout = () => {
   Store.dispatch('clearUser')
 }
 
-const changeStyle = () => {
-  Store.commit('updateStyle', Store.state.style === 1 ? 2 : 1)
+const changeMenuStyle = () => {
+  Store.commit('changeMenuStyle', Store.state.menuStyle === 1 ? 2 : 1)
+}
+
+const changeTheme = (theme: string) => {
+  toggleTheme({ scopeName: theme })
+  Store.commit('changeTheme', theme )
 }
 
 // 获取未审核内容
 ReportApi.getUnAudit()
+
+onMounted(() => changeTheme(theme.value))
 
 </script>
 
@@ -139,9 +151,13 @@ ReportApi.getUnAudit()
         </div>
         <template #overlay>
           <a-menu>
-            <a-menu-item @click="changeStyle">
-              <robot-outlined />
-              <a style="margin-left: 10px;">切换布局</a>
+            <a-menu-item  @click="changeMenuStyle">
+              <cloud-outlined />
+              <a style="margin-left: 10px;">{{ menuStyle === 2 ? '垂直菜单' : '水平菜单' }}</a>
+            </a-menu-item>
+            <a-menu-item  @click="changeTheme(theme === 'theme-dark' ? 'theme-default' : 'theme-dark')">
+              <bg-colors-outlined />
+              <a style="margin-left: 10px;">{{ theme === 'theme-dark' ? '默认主题' : '暗黑主题' }}</a>
             </a-menu-item>
             <a-menu-item @click="logout">
               <logout-outlined />
@@ -250,7 +266,7 @@ ReportApi.getUnAudit()
         border: 0;
       }
       &:hover {
-        background: #f5f5f5;
+        opacity: 0.7;
       }
       .yzp-head-msg-user {
         display: flex;

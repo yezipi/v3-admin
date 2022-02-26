@@ -17,7 +17,6 @@ import 'tinymce/plugins/table'
 import 'tinymce/plugins/lists'
 import 'tinymce/plugins/wordcount'
 import 'tinymce/plugins/media'
-import 'tinymce/plugins/emoticons'
 import 'tinymce/plugins/fullscreen'
 import 'tinymce/plugins/preview'
 import 'tinymce/plugins/pagebreak'
@@ -41,9 +40,9 @@ const content = ref(props.value)
 
 const editorConfig = {
   selector: '#' + props.id,
-  language_url: config.BASE_URL + '/tinymce/langs/zh_CN.js',
+  language_url: config.BASE_URL + 'tinymce/langs/zh_CN.js',
   language: 'zh_CN',
-  skin_url: config.BASE_URL + '/tinymce/skins/ui/oxide',
+  skin_url: config.BASE_URL + 'tinymce/skins/ui/oxide',
   height: 500,
   branding: true,
   plugins: 'link lists image codesample code table wordcount media table fullscreen preview pagebreak insertdatetime hr paste', // 插件
@@ -55,7 +54,6 @@ const editorConfig = {
     { text: 'HTML/XML', value: 'markup' },
     { text: 'JavaScript', value: 'javascript' },
     { text: 'CSS', value: 'css' },
-    { text: 'Java', value: 'java' },
     { text: 'C++', value: 'cpp' },
   ],
   // 图片上传回调

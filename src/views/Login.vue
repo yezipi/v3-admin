@@ -4,14 +4,14 @@
       <h2>管理员登录</h2>
       <a-form ref="formRef" :model="formVal" :rules="rules" class="lp-form">
         <a-form-item class="lp-input" name="name">
-          <a-input placeholder="请输入账号" v-model:value="formVal.name">
+          <a-input placeholder="请输入账号" v-model:value="formVal.name" size="large">
             <template #prefix>
               <UserOutlined :style="{ color: '#999999' }" />
             </template>
           </a-input>
         </a-form-item>
         <a-form-item class="lp-input" name="password">
-          <a-input placeholder="请输入密码" type="password" v-model:value="formVal.password">
+          <a-input placeholder="请输入密码" type="password" v-model:value="formVal.password" size="large">
             <template #prefix>
               <LockOutlined :style="{ color: '#999999' }" />
             </template>

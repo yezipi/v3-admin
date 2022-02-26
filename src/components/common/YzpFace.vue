@@ -8,6 +8,13 @@ import { ref, onMounted, watch } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import api from '@/api/common'
 
+interface FaceItem {
+  path: string,
+  index: number,
+  dir: string,
+  data?: any,
+}
+
 const emit = defineEmits(['change', 'update:value'])
 const props = defineProps({
   value: {
@@ -16,7 +23,7 @@ const props = defineProps({
   }
 })
 
-const faces = ref([])
+const faces = ref<Array<FaceItem>>([])
 const curr = ref({
   path: '',
   alias: ''
@@ -79,14 +86,14 @@ onMounted(() => getFace())
 
 </script>
 <template>
-  <div v-if="state" class="emoji-wrap">
-    <div v-if="!loadEnd" class="emoji-loading">
+  <div v-if="state" class="yzp-emoji-wrap">
+    <div v-if="!loadEnd" class="yzp-emoji-loading">
       <a-spin />
     </div>
-    <div v-if="faces.length && loadEnd" class="ew-main">
-      <div class="ew-tab">
+    <div v-if="faces.length && loadEnd" class="yzp-ew-main">
+      <div class="yzp-ew-tab">
         <span
-          v-for="(item: any, index) in faces"
+          v-for="(item, index) in faces"
           :key="index"
           :class="{ active: item.index === dirIndex }"
           @click.stop="selectType(item.index)"
@@ -94,32 +101,32 @@ onMounted(() => getFace())
           {{ item.dir }}
         </span>
       </div>
-      <img v-if="curr.path" class="ew-zoom" :src="setStyle(curr.path, 1)" />
+      <img v-if="curr.path" class="yzp-ew-zoom" :src="setStyle(curr.path, 1)" />
       <div
-        v-for="(item: any, index) in faces"
+        v-for="(item, index) in faces"
         v-show="item.index === dirIndex"
         :key="index"
-        class="ew-content"
+        class="yzp-ew-content"
       >
-        <ul class="ew-list">
+        <ul class="yzp-ew-list">
           <li
             v-for="(sub, key) in item.data"
             :key="key"
             @click.stop="selectEmoji(sub)"
             @mouseover="hoverEmoji(sub)"
           >
-            <div class="ew-item" :style="setStyle(sub.path)"></div>
+            <div class="yzp-ew-item" :style="setStyle(sub.path)"></div>
           </li>
         </ul>
       </div>
-      <close-outlined class="ew-close" />
+      <close-outlined class="yzp-ew-close" />
     </div>
     <a-empty v-if="!faces.length && loadEnd" />
   </div>
 </template>
 
 <style scoped lang="less">
-.emoji-wrap {
+.yzp-emoji-wrap {
   position: absolute;
   width: 500px;
   left: 0;
@@ -129,15 +136,15 @@ onMounted(() => getFace())
   background: #ffffff;
   box-shadow: 0 0 10px #cccccc;
   border-radius: 3px;
-  .emoji-loading {
+  .yzp-emoji-loading {
     min-height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  .ew-main {
+  .yzp-ew-main {
     padding: 20px;
-    .ew-close {
+    .yzp-ew-close {
       font-size: 18px;
       font-weight: bold;
       color: #ccc;
@@ -153,7 +160,7 @@ onMounted(() => getFace())
       }
     }
   }
-  .ew-tab {
+  .yzp-ew-tab {
     display: flex;
     justify-content: flex-start;
     height: 40px;
@@ -175,7 +182,7 @@ onMounted(() => getFace())
       }
     }
   }
-  .ew-zoom {
+  .yzp-ew-zoom {
     position: absolute;
     width: 60px;
     height: auto;
@@ -185,9 +192,9 @@ onMounted(() => getFace())
     border: 1px solid #eeeeee;
     background: #ffffff;
   }
-  .ew-content {
+  .yzp-ew-content {
     margin-top: 20px;
-    .ew-list {
+    .yzp-ew-list {
       overflow: hidden;
       display: flex;
       justify-content: flex-start;
@@ -204,7 +211,7 @@ onMounted(() => getFace())
           background: #eee;
           cursor: pointer;
         }
-        .ew-item {
+        .yzp-ew-item {
           width: 30px;
           height: 30px;
           background: url("../static/images/icon/loading.gif");

@@ -108,7 +108,7 @@ export default defineComponent({
       router.push(path)
     }
 
-    const onOpenChange = (openKeys: string[]) => {
+    const onOpenChange = (openKeys: any[]) => {
       if (props.mode === 'horizontal') {
         return
       }
@@ -161,6 +161,7 @@ export default defineComponent({
     :deep(.ant-menu-horizontal) {
       background: none!important;
       border-bottom: 0;
+      box-shadow: none;
     }
   }
   .yzp-logo {
@@ -187,9 +188,6 @@ export default defineComponent({
     color: #999999;
     font-weight: normal;
     transform: rotate(90deg);
-  }
-  :deep(.ant-menu-submenu-selected .ant-menu-submenu-arrow) {
-    color: @primary-color;
   }
 }
 </style>

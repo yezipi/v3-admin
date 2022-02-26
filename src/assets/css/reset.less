@@ -1,217 +1,137 @@
-@import './theme.less';
-
-.halfWhite {
-  background: rgba(255,255,255,0.5)!important;
-}
-/*===============================================覆盖ant-design-vue的样式============================*/
-.ant-input,
-.ant-input-affix-wrapper,
-.ant-select:not(.ant-select-customize-input) .ant-select-selector,
-.ant-upload.ant-upload-select-picture-card,
-.ant-table-placeholder,
-.ant-pagination-item,
-.ant-pagination-item-link,
-.ant-pagination-options-quick-jumper input,
-.ant-input-number,
-.ant-tree
-{
-  .halfWhite;
-}
-.ant-input, .ant-btn {
-  padding-top: 8px!important;
-  padding-bottom: 8px!important;
-}
-.ant-input-number {
-  padding-top: 4px!important;
-  padding-bottom: 4px!important;
-}
-.ant-btn {
-  padding-left: 20px!important;
-  padding-right: 20px!important;
-}
-.ant-input-affix-wrapper, .ant-input, .ant-btn,
-.ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
-.ant-input-number,
-.ant-select-selector,
-.ant-picker
-{
-  border-radius: 4px!important;
-}
-.ant-btn,
-.ant-select-single:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input,
-.ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
-.ant-pagination-item,
-.ant-pagination-prev, .ant-pagination-next,
-.ant-pagination-options-quick-jumper,
-.ant-pagination-options-quick-jumper input,
-.ant-select-selector,
-.ant-picker
-{
-  height: 40px!important;
-}
-.ant-select-single .ant-select-selector .ant-select-selection-item,
-.ant-select-single .ant-select-selector .ant-select-selection-placeholder,
-.ant-pagination-item,
-.ant-pagination-prev, .ant-pagination-next,
-.ant-pagination-options-quick-jumper,
-.ant-pagination-options-quick-jumper input
-{
-  line-height: 40px!important;
-}
-.ant-picker {
-  line-height: 30px!important;
-}
-.ant-btn-lg {
-  height: 50px!important;
-}
-.ant-pagination-item, .ant-pagination-prev, .ant-pagination-next {
-  min-width: 40px!important;
-}
-.ant-input-affix-wrapper > input.ant-input, .ant-table,
-.ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body,
-.ant-table-fixed-header .ant-table-scroll .ant-table-header
-{
-  background: none!important;
-}
-.ant-table-fixed-header .ant-table-scroll .ant-table-header::-webkit-scrollbar {
-  border: none!important
-}
-.ant-input-search .ant-input {
-  border-top-right-radius: 0!important;
-  border-bottom-right-radius: 0!important;
-}
-.ant-input-search .ant-btn {
-  border-top-left-radius: 0!important;
-  border-bottom-left-radius: 0!important;
-}
-.ant-menu-sub.ant-menu-inline > .ant-menu-item,
-.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected,
-.ant-menu-inline.ant-menu-root .ant-menu-submenu-title,
-.ant-menu-dark.ant-menu-inline .ant-menu-item,
-.ant-menu-dark.ant-menu-vertical .ant-menu-item,
-.ant-menu-dark .ant-menu-item
-{
-  margin: 0!important;
-  height: 50px!important;
-  line-height: 50px!important;
-}
-.ant-menu-sub.ant-menu-inline > .ant-menu-item:hover,
-.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected,
-.ant-menu-inline.ant-menu-root .ant-menu-submenu-title:hover,
-.ant-menu-dark .ant-menu-item:hover,
-.ant-menu-dark .ant-menu-item-active
-{
-  background: rgba(0,0,0,0.25)!important;
-}
-.ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
-  background: rgba(0,0,0,0.5)!important;
-}
+@import './var.less';
 
 .maxwidth-100.ant-form-item .ant-form-item-control {
   max-width: 100%;
 }
-.ant-form .ant-form-item.btn-label {
-  padding-left: 100px;
+
+.ant-form-item .ant-form-item-control {
+  max-width: 750px;
 }
-.ant-drawer-content {
-  backdrop-filter: saturate(100%) blur(10px);
-  background: rgba(255,255,255,0.8)!important;
+
+.ant-form-item.btn-label {
+  margin-left: 100px;
 }
-.ant-image-img {
-  object-fit: cover;
-  height: 100%!important;
+
+body {
+  background: #000;
 }
-.ant-table-placeholder {
-  background: none!important;
-  border: 0!important;
-}
-.center-spin {
-  width: 80px;
-  height: 80px;
-  position: absolute!important;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto!important;
-  display: flex!important;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  .ant-spin-text {
-    margin-top: 10px;
+
+@dark-bg: #141414;
+@dark-bg-sub: #1d1d1d;
+
+.theme-dark {
+  .yzp-head,
+  .yzp-section
+  {
+    background: @dark-bg!important;
+  }
+  .yzp-table-main .ant-table-striped .table-striped td,
+  .tox .tox-menubar,
+  .tox .tox-toolbar__primary,
+  .tox .tox-statusbar,
+  .tox .tox-dialog,
+  .tox .tox-dialog__header,
+  .tox .tox-dialog__footer,
+  .tox .tox-selectfield select,
+  .yzp-aside,
+  .yzp-head-msg-wrap,
+  .yzp-head-user-message:hover,
+  .yzp-head-left-btn:hover,
+  .yzp-loading .yl-main,
+  .count-wrap .count-item,
+  .yzp-emoji-wrap
+  {
+    background: @dark-bg-sub!important;
+  }
+  .webbg {
+    display: none!important;
+  }
+  .tox .tox-mbtn,
+  .tox .tox-tbtn,
+  .tox .tox-statusbar__path-item,
+  .tox .tox-statusbar a,
+  .tox .tox-statusbar__wordcount,
+  .tox .tox-dialog__header,
+  .tox .tox-label, .tox .tox-toolbar-label,
+  .tox .tox-selectfield select,
+  .tox .tox-textfield,
+  .tox .tox-textarea
+  {
+    color: #ffffff;
+  }
+  .tox .tox-tbtn svg {
+    fill: #ffffff;
+  }
+  .tox .tox-edit-area__iframe,
+  .tox .tox-mbtn--active,
+  .tox .tox-textarea,
+  .tox .tox-textarea:focus,
+  .tox .tox-textfield,
+  .tox .tox-textfield:focus
+  {
+    background: #333333;
+  }
+  .tox-tinymce,
+  .tox .tox-statusbar,
+  .tox .tox-menubar+.tox-toolbar-overlord .tox-toolbar__primary,
+  .tox:not([dir=rtl]) .tox-toolbar__group:not(:last-of-type),
+  .yzp-head-msg-item,
+  .tox .tox-selectfield select,
+  .tox .tox-textfield
+  {
+    border-color: #333333!important;
+  }
+  .login-page .lp-bg,
+  .login-page .lp-main:after
+  {
+    filter: brightness(0.2)!important;
+  }
+  .ant-spin {
+    display: inline-block!important;
+  }
+  .ant-switch-checked {
+    background-color: @primary-color!important;
+  }
+  .ant-btn-primary {
+    background: @primary-color;
+    border-color: @primary-color;
+  }
+  .count-wrap .count-item {
+    border-right: 0!important;
+  }
+  .count-wrap .count-item .count-number {
+    color: #ffffff!important;
+  }
+  .yzp-emoji-wrap {
+    box-shadow: 0 0 10px @dark-bg!important;
+    .yzp-ew-zoom {
+      box-shadow: none!important;
+    }
+    .yzp-ew-tab span {
+      background-color: #333333!important;
+      &.active, &:hover {
+        background-color: @primary-color!important;
+        color: #ffffff;
+      }
+    }
   }
 }
-/*===============================================end结束=============================================*/
 
-/*========================================= editor样式 ==============================================*/
-
-.tox .tox-dialog__content-js {z-index: 1;}
-.tox .tox-textfield,
-.tox .tox-menubar,
-.tox .tox-toolbar-overlord,
-.tox .tox-statusbar,
-.tox .tox-dropzone,
-.tox-textarea, .tox .tox-selectfield select,
-.tox .tox-edit-area__iframe,
-.tox .tox-toolbar__primary
-{
-  .halfWhite;
+.theme-default {
+  .ant-spin {
+    display: inline-block!important;
+  }
+  body {
+    background: #f0f0f0;
+  }
+  .ant-btn, .ant-btn:hover {
+    color: #ffffff!important;
+  }
+  .ant-switch-checked {
+    background-color: @primary-color!important;
+  }
+  .ant-btn-primary {
+    background: @primary-color;
+    border-color: @primary-color;
+  }
 }
-.tox .tox-editor-header {
-  border-bottom: 1px solid #bbbbbb
-}
-.tox-tinymce {
-  border-radius: 4px!important;
-}
-/*========================================= editor样式结束 ==============================================*/
-
-
-/*主题样式覆盖*/
-.ant-form-item-control {
-  max-width: 750px!important;
-}
-.ant-table-thead > tr > th {
-  background: #eeeeee!important;
-}
-.ant-radio-checked .ant-radio-inner,
-.ant-checkbox-checked::after,
-.ant-checkbox-checked .ant-checkbox-inner,
-.ant-checkbox-wrapper:hover .ant-checkbox-inner,
-.ant-radio-wrapper:hover .ant-radio-inner,
-.ant-pagination-item-active,
-.ant-picker-focused,
-.ant-input:hover,
-.ant-select-selector:hover,
-.ant-picker:hover,
-.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector
-{
-  border-color: @primary-color!important;
-}
-.ant-radio-inner:after,
-.ant-checkbox-checked .ant-checkbox-inner,
-.ant-switch-checked,
-.ant-tabs-ink-bar,
-.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner
-{
-  background-color: @primary-color!important;
-}
-.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector,
-.ant-picker-focused
-{
-  box-shadow: @box-shadow-base!important;
-}
-.ant-input:focus {
-  border-color: @primary-color!important;
-  box-shadow: @box-shadow-base!important;
-}
-.ant-pagination-item-active a,
-.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
-.ant-picker-today-btn
-{
-  color: @primary-color!important;
-}
-.maxwidth-100 .ant-form-item-control {
-  max-width: none!important;
-}
-/*end*/

@@ -6,7 +6,8 @@ export interface StateConfig {
   user: { nickname: string, id: number, role: any, avatar: any }
   isLoading: boolean
   loading: any
-  style: any,
+  menuStyle: any,
+  theme: string,
   msgData: {
     count: number,
     data: {
@@ -22,7 +23,8 @@ const state: StateConfig = {
   user: db.get('user') || '',
   isLoading: false,
   loading: null,
-  style: db.get('style') || 1, // 1 菜单在左边，2 菜单在顶部
+  menuStyle: db.get('menuStyle') || 1, // 1 菜单在左边，2 菜单在顶部
+  theme: db.get('theme') || 'theme-default', // 主题配置
   msgData: db.get('msgData') || {},
 }
 

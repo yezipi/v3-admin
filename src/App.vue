@@ -62,7 +62,7 @@ export default defineComponent({
     const store = useStore()
     const routes = router.options.routes
     const menus = reactive(routes.filter((e: any) => !e.meta.noMenu))
-    const menuStyle = computed(() => Number(store.state.style))
+    const menuStyle = computed(() => Number(store.state.menuStyle))
 
     const setFullPageState = () => {
       isFullPage.value = route.name !== 'Login'
@@ -124,32 +124,7 @@ ul {
 }
 body {
   font-size: 14px;
-  &:before {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: -1;
-    .halfWhite;
-  }
-  &:after {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    background: #cccccc url('./assets/img/overlay.png') center no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    filter: blur(10px);
-    z-index: -2;
-    transform: scale(1.2);
-  }
+  background: #f0f0f0;
 }
 .ant-menu-dark .ant-menu-inline.ant-menu-sub {
   background: rgba(0,0,0,0.3)!important;
@@ -181,7 +156,7 @@ body {
   padding: 15px;
   position: relative;
   &.hasBreadcrumb {
-    min-height: calc(100vh - 130px);
+    min-height: calc(100vh - 150px);
   }
 }
 .yzp-breadcrumb {
