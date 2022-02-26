@@ -5,12 +5,12 @@
     </div>
     <div :style="{ height: tableHeight + 100 + 'px' }" class="yzp-table-main">
       <div v-if="loading && !total" class="yzp-table-spin">
-        <a-spin :spinning="loading" tip="加载中..."></a-spin>
+        <a-spin :spinning="loading" tip="奋力加载中..."></a-spin>
       </div>
       <template v-if="total">
         <a-table
           :dataSource="dataSource"
-          :loading="loading"
+          :loading="{ spinning: loading, tip: '奋力加载中...' }"
           :columns="newColumns"
           :pagination="false"
           :scroll="{ x: tableWidth, y: total < 10 ? null : tableHeight }"
