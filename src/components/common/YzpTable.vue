@@ -1,6 +1,6 @@
 <template>
-  <div class="yzp-page-list">
-    <div v-if="slots.filter" class="yzp-page-filter" :id="tableId">
+  <div class="yzp-page-list" :id="tableId">
+    <div v-if="slots.filter" class="yzp-page-filter">
       <slot name="filter"></slot>
     </div>
     <div :style="{ height: tableHeight + 100 + 'px' }" class="yzp-table-main">
@@ -53,7 +53,7 @@ export default defineComponent({
     },
     tableId: {
       type: String,
-      default: 'yzp-page-filter'
+      default: 'yzp-table'
     },
     bordered: {
       type: Boolean,
@@ -99,6 +99,10 @@ export default defineComponent({
     pagintion: {
       type: Boolean,
       default: true,
+    },
+    total: {
+      type: Number,
+      default: 0,
     }
   },
   setup(props, { emit, slots }) {
@@ -107,7 +111,7 @@ export default defineComponent({
 
     const tableConfig = reactive({
       dataSource: [] as any,
-      total: 0,
+      total: props.total,
       loading: true
     })
 
@@ -134,15 +138,16 @@ export default defineComponent({
     })
 
     watch(() => props.data, (data: any[]) => {
+      tableConfig.loading = true
       if (!props.url) {
         tableConfig.dataSource = data
-        tableConfig.total = data.length
+        tableConfig.total = props.total || data.length
         tableConfig.loading = false
       }
     })
 
     const setTableHeight = () => {
-      const filterEle: any = document.querySelector('#' + props.tableId) // 列表的筛选统一加这个id
+      const filterEle: any = document.querySelector(`#${props.tableId} .ky-page-filter`) // 列表的筛选统一加这个id
       const filterHeight = filterEle ? (filterEle.offsetHeight + 10) : 0
       tableHeight.value = screen.height - 340 - filterHeight
       bakcupHeight.value = tableHeight.value
@@ -225,7 +230,7 @@ export default defineComponent({
           throw { errMsg }
         }
       } finally {
-        const tableBody: any = document.querySelector('.ant-table-body')
+        const tableBody: any = document.querySelector(`#${props.tableId} .ant-table-body`)
         if (tableBody) {
           tableBody.scrollTo(0, 0)
         }
@@ -238,6 +243,9 @@ export default defineComponent({
       page.value = res.page
       pageSize.value = res.size
       tableConfig.loading = true
+      if (!props.url) {
+        emit('onPageChange', res)
+      }
       init(res)
     }
 

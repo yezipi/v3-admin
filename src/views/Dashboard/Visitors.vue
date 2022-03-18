@@ -52,11 +52,18 @@ const columns = reactive([
 
 const list = ref<any>([])
 const tableRef = ref()
+const count = ref(0)
+const condition = ref({
+  size: 1,
+  page: 20,
+})
 
 const getBaiduVisitors = async () => {
-  const { data } = await Api.baiduVisitors()
-  const field = data.items[1]
-  list.value = data.items[0].map((el: any, index: number) => {
+  const { data }: any = await Api.baiduVisitors(condition.value)
+  const { total, items } = data
+  const field = items[1]
+  count.value = total
+  list.value = items[0].map((el: any, index: number) => {
     const detail = el[0].detail
     return {
       visitedTime: field[index][0],
@@ -72,7 +79,20 @@ const getBaiduVisitors = async () => {
       isp: detail.isp
     }
   })
-  console.log(list.value)
+}
+
+const formatSec = (sec: number) => {
+  if (typeof sec !== 'number') {
+    return sec
+  }
+  const s = sec % 60
+  const m = parseInt(String(sec / 60))
+  return `${m}分${s}秒`
+}
+
+const onPageChange = (res: any) => {
+  condition.value = res
+  getBaiduVisitors()
 }
 
 onMounted(() => getBaiduVisitors())
@@ -81,7 +101,7 @@ onMounted(() => getBaiduVisitors())
 
 <template>
   <div class="baidu-visitors-wrap">
-    <yzp-table :columns="columns" :data="list" ref="tableRef">
+    <yzp-table :columns="columns" :data="list" :total="count" ref="tableRef" @onPageChange="onPageChange">
       <template #bodyCell="{ scope: { record, column } }">
 
         <div v-if="column.dataIndex === 'from'">
@@ -90,7 +110,7 @@ onMounted(() => getBaiduVisitors())
         </div>
 
         <div v-if="column.dataIndex === 'stay'">
-          {{ record.stay !== '未知' ? record.stay + '秒' : '-' }}
+          {{ formatSec(record.stay) }}
         </div>
 
       </template>
