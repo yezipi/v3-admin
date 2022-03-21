@@ -54,8 +54,8 @@ const list = ref<any>([])
 const tableRef = ref()
 const count = ref(0)
 const condition = ref({
-  size: 1,
-  page: 20,
+  size: 20,
+  page: 1,
 })
 
 const getBaiduVisitors = async () => {
@@ -76,7 +76,7 @@ const getBaiduVisitors = async () => {
       visitedCount: field[index][8],
       browser: detail.browser,
       os: detail.os,
-      isp: detail.isp
+      isp: detail.isp || '-'
     }
   })
 }
@@ -104,14 +104,18 @@ onMounted(() => getBaiduVisitors())
     <yzp-table :columns="columns" :data="list" :total="count" ref="tableRef" @onPageChange="onPageChange">
       <template #bodyCell="{ scope: { record, column } }">
 
-        <div v-if="column.dataIndex === 'from'">
+        <template v-if="column.dataIndex === 'from'">
           <a v-if="record.from.url" :href="record.from.url" target="_blank">{{ record.from.fromType }}</a>
           <span v-else>{{ record.from.fromType }}</span>
-        </div>
+        </template>
 
-        <div v-if="column.dataIndex === 'stay'">
+        <template v-if="column.dataIndex === 'visitedPage'">
+          <a :href="record.visitedPage" target="_blank">{{ record.visitedPage }}</a>
+        </template>
+
+        <template v-if="column.dataIndex === 'stay'">
           {{ formatSec(record.stay) }}
-        </div>
+        </template>
 
       </template>
     </yzp-table>

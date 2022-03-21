@@ -147,9 +147,10 @@ export default defineComponent({
     })
 
     const setTableHeight = () => {
-      const filterEle: any = document.querySelector(`#${props.tableId} .ky-page-filter`) // 列表的筛选统一加这个id
+      const filterEle: any = document.querySelector(`#${props.tableId} .yzp-page-filter`) // 列表的筛选统一加这个id
       const filterHeight = filterEle ? (filterEle.offsetHeight + 10) : 0
-      tableHeight.value = screen.height - 340 - filterHeight
+      console.log(`#${props.tableId} .ky-page-filter`)
+      tableHeight.value = screen.height - 360 - filterHeight
       bakcupHeight.value = tableHeight.value
       tableWidth.value = scrollWidth
       if (menuStyle.value === 2) {
@@ -231,9 +232,7 @@ export default defineComponent({
         }
       } finally {
         const tableBody: any = document.querySelector(`#${props.tableId} .ant-table-body`)
-        if (tableBody) {
-          tableBody.scrollTo(0, 0)
-        }
+        tableBody && tableBody.scrollTo(0, 0)
         tableConfig.loading = false
       }
     }
