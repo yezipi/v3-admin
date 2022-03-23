@@ -59,26 +59,31 @@ const condition = ref({
 })
 
 const getBaiduVisitors = async () => {
-  const { data }: any = await Api.baiduVisitors(condition.value)
-  const { total, items } = data
-  const field = items[1]
-  count.value = total
-  list.value = items[0].map((el: any, index: number) => {
-    const detail = el[0].detail
-    return {
-      visitedTime: field[index][0],
-      area: field[index][1],
-      from: field[index][2],
-      visitedPage: field[index][3],
-      keywords: field[index][4],
-      ip: field[index][5],
-      stay: field[index][7],
-      visitedCount: field[index][8],
-      browser: detail.browser,
-      os: detail.os,
-      isp: detail.isp || '-'
-    }
-  })
+  try {
+    const { data }: any = await Api.baiduVisitors(condition.value)
+    const { total, items } = data
+    const field = items[1]
+    count.value = total
+    list.value = items[0].map((el: any, index: number) => {
+      const detail = el[0].detail
+      return {
+        visitedTime: field[index][0],
+        area: field[index][1],
+        from: field[index][2],
+        visitedPage: field[index][3],
+        keywords: field[index][4],
+        ip: field[index][5],
+        stay: field[index][7],
+        visitedCount: field[index][8],
+        browser: detail.browser,
+        os: detail.os,
+        isp: detail.isp || '-'
+      }
+    })
+  } catch (e) {
+    list.value = []
+    console.log(e)
+  }
 }
 
 const formatSec = (sec: number) => {
