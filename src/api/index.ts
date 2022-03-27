@@ -14,6 +14,8 @@ import Comment from './comment'
 import ChangeLogs from './changeLogs'
 import Role from './role'
 import Report from './report'
+import Message from './message'
+import Mail from './mail'
 
 export interface ApiFn {
   create?: any,
@@ -40,6 +42,8 @@ export interface ApiConfig {
   ChangeLogs: ApiFn
   Role: ApiFn,
   Report: ApiFn,
+  Message: ApiFn,
+  Mail: ApiFn
 }
 
 export default {
@@ -58,5 +62,7 @@ export default {
   Comment,
   ChangeLogs,
   Role,
-  Report
+  Report,
+  Message,
+  Mail
 }

@@ -16,21 +16,11 @@ export interface BaseSettingsConfig {
   web_tongji: string,
   web_copyright: string,
   open_comment: boolean,
+  audit_comment: boolean,
+  audit_feedback: boolean,
   web_avatar: string,
   web_logo: string,
   web_like: number,
-}
-
-export interface MailSettingsConfig {
-  host: string,
-  port: string,
-  send_nickname: string,
-  send_mail: string,
-  send_pwd: string,
-  send_title: string,
-  receive_mail: string,
-  receive_title: string,
-  receive_notice: boolean,
 }
 
 export interface AdSettingsConfig {
@@ -43,8 +33,8 @@ export interface AdSettingsConfig {
 export interface PersonalizeSettingsConfig {
   style: string,
   font: string,
-  bg: string,
-  current: string,
+  background: string,
+  gray: boolean,
   auto: boolean,
 }
 
@@ -67,15 +57,6 @@ export default new class Settings extends Request {
    */
   public getBaseSettings() {
     const url = 'v1/settings/getBaseSettings'
-    return this.get(url, { loading: true })
-  }
-
-  /**
-   * 获取邮件设置
-   * @version 2021-10-21 zzc
-   */
-  public getMailSettings() {
-    const url = 'v1/settings/getMailSettings'
     return this.get(url, { loading: true })
   }
 
@@ -123,6 +104,8 @@ export default new class Settings extends Request {
    * @param { String } data.web_tongji 网站统计代码
    * @param { String } data.web_copyright 网站版权
    * @param { String } data.open_comment 评论总开关
+   * @param { String } data.audit_comment 评论审核
+   * @param { String } data.audit_feedback 留言审核
    * @param { String } data.web_avatar 网站头像
    * @param { String } data.web_logo 网站logo
    * @param { String } data.web_like 网站点赞
@@ -130,25 +113,6 @@ export default new class Settings extends Request {
    */
   public saveBaseSettings(data: BaseSettingsConfig) {
     const url = 'v1/settings/saveBaseSettings'
-    return this.put(url, { loading: true, ...data })
-  }
-
-  /**
-   * 保存邮件设置
-   * @param { Object } data 邮件设置参数
-   * @param { String } data.send_nickname 发送者昵称
-   * @param { String } data.host 邮件协议
-   * @param { String } data.port 邮件端口
-   * @param { String } data.send_mail 发送者邮箱账号
-   * @param { String } data.send_pwd 发送者邮箱密码
-   * @param { String } data.receive_mail 接受邮箱
-   * @param { String } data.send_title 发送标题
-   * @param { String } data.receive_title 接收者标题
-   * @param { String } data.receive_notice 是否发送
-   * @version 2021-10-29 zzc
-   */
-  public saveMailSettings(data: MailSettingsConfig) {
-    const url = 'v1/settings/saveMailSettings'
     return this.put(url, { loading: true, ...data })
   }
 
@@ -171,8 +135,8 @@ export default new class Settings extends Request {
    * @param { Object } data 邮件设置参数
    * @param { String } data.style banner风格样式
    * @param { String } data.font 字体
-   * @param { String } data.bg 背景图片数组
-   * @param { String } data.current 当前前背景
+   * @param { String } data.background 背景图片
+   * @param { String } data.gray 置灰
    * @param { Boolean } data.auto 自动切换
    * @version 2021-10-30 zzc
    */

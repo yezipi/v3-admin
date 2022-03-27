@@ -8,12 +8,12 @@ export interface StateConfig {
   loading: any
   menuStyle: any,
   theme: string,
-  msgData: {
+  msg: {
     count: number,
     data: {
-      comments: { count: number, rows: Array<any> }
-      feedbacks: { count: number, rows: Array<any> }
-      blogrolls: { count: number, rows: Array<any> }
+      comments: { count: number, rows: Array<any> },
+      feedbacks: { count: number, rows: Array<any> },
+      blogrolls: { count: number, rows: Array<any> },
     }
   }
 }
@@ -25,7 +25,14 @@ const state: StateConfig = {
   loading: null,
   menuStyle: db.get('menuStyle') || 1, // 1 菜单在左边，2 菜单在顶部
   theme: db.get('theme') || 'theme-default', // 主题配置
-  msgData: db.get('msgData') || {},
+  msg: {
+    count: 0,
+    data: {
+      comments: { count: 0, rows: [] as any },
+      feedbacks: { count: 0, rows: [] as any },
+      blogrolls: { count: 0, rows: [] as any },
+    }
+  },
 }
 
 export default state

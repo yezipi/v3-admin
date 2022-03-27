@@ -12,9 +12,9 @@ import {
 } from '@ant-design/icons-vue'
 import Store from '@/store/index'
 import { useRouter } from 'vue-router'
-import ReportApi from '@/api/report'
 import { timeAgao } from '@/utils/index'
 import { toggleTheme } from '@zougt/vite-plugin-theme-preprocessor/dist/browser-utils'
+import MessageApi from '@/api/message'
 
 const props = defineProps({
   breadcrumbs: {
@@ -25,13 +25,15 @@ const props = defineProps({
 const emit = defineEmits(['collapseMenu'])
 
 const collapsed = ref(false)
-// const Store = useStore(globalStoreKey)
 const Router = useRouter()
 const user = computed(() => Store.state.user)
-const msgCount = computed(() => Store.state.msgData.count)
-const unAuditComments = computed(() => Store.state.msgData.data.comments)
-const unAuditFeedbacks = computed(() => Store.state.msgData.data.feedbacks)
-const unAuditBlogrolls = computed(() => Store.state.msgData.data.blogrolls)
+const msgCount = ref(0)
+const unReadComments = ref<any>({ count: 0, rows: [] })
+const unReadFeedbacks = ref<any>({ count: 0, rows: [] })
+const unReadBlogrolls = ref<any>({ count: 0, rows: [] })
+
+const unReadMsg = computed(() => Store.state.msg)
+
 const activeMsgType = ref('comments')
 
 const menuStyle = computed(() => +Store.state.menuStyle)
@@ -62,7 +64,7 @@ const changeTheme = (theme: string) => {
 }
 
 // 获取未审核内容
-ReportApi.getUnAudit()
+MessageApi.getUnRead()
 
 onMounted(() => changeTheme(theme.value))
 
@@ -94,7 +96,7 @@ onMounted(() => changeTheme(theme.value))
       <!--消息菜单-->
       <a-dropdown placement="bottomRight">
         <div class="yzp-head-user-message">
-        <a-badge :count="msgCount">
+        <a-badge :count="unReadMsg.count">
           <bell-outlined style="font-size: 20px;" />
         </a-badge>
       </div>
@@ -102,36 +104,41 @@ onMounted(() => changeTheme(theme.value))
           <a-menu>
             <div class="yzp-head-msg-wrap">
               <a-tabs v-model:value="activeMsgType" class="yzp-head-msg-tab" centered>
-                <a-tab-pane key="comments" :tab="`评论(${unAuditComments.count})`">
-                  <div v-for="(item, index) in unAuditComments.rows" :key="index" class="yzp-head-msg-item">
+
+                <a-tab-pane key="comments" :tab="`评论(${unReadMsg.data.comments.count})`">
+                  <div v-for="(item, index) in unReadMsg.data.comments.rows" :key="index" class="yzp-head-msg-item">
                     <div class="yzp-head-msg-user">
-                      <span>{{ item.nickname }}</span>
-                      <span>{{ timeAgao(item.createdAt) }}</span>
+                      <span>{{ item.preffix }}</span>
+                      <span>《{{ item.title }}》</span>
                     </div>
-                    <span class="yzp-head-msg-content">{{ item.content }}</span>
+                    <div class="yzp-head-msg-content">{{ item.content }}</div>
+                    <div class="yzp-head-msg-date">{{ timeAgao(item.createdAt) }}</div>
                   </div>
-                  <a-empty v-if="!unAuditComments.rows.length" />
+                  <a-empty v-if="!unReadMsg.data.comments.rows.length" />
                 </a-tab-pane>
-                <a-tab-pane key="feedbacks" :tab="`留言(${unAuditFeedbacks.count})`">
-                  <div v-for="(item, index) in unAuditFeedbacks.rows" :key="index" class="yzp-head-msg-item">
+
+                <a-tab-pane key="feedbacks" :tab="`留言(${unReadMsg.data.feedbacks.count})`">
+                  <div v-for="(item, index) in unReadMsg.data.feedbacks.rows" :key="index" class="yzp-head-msg-item">
                     <div class="yzp-head-msg-user">
-                      <span>{{ item.nickname }}</span>
-                      <span>{{ timeAgao(item.createdAt) }}</span>
+                      <span>{{ item.preffix }}</span>
                     </div>
-                    <span class="yzp-head-msg-content">{{ item.content }}</span>
+                    <div class="yzp-head-msg-content">{{ item.content }}</div>
+                    <div class="yzp-head-msg-date">{{ timeAgao(item.createdAt) }}</div>
                   </div>
-                  <a-empty v-if="!unAuditFeedbacks.rows.length" />
+                  <a-empty v-if="!unReadMsg.data.feedbacks.rows.length" />
                 </a-tab-pane>
-                <a-tab-pane key="blogrolls" :tab="`友链(${unAuditBlogrolls.count})`">
-                  <div v-for="(item, index) in unAuditBlogrolls.rows" :key="index" class="yzp-head-msg-item">
+
+                <a-tab-pane key="blogrolls" :tab="`友链(${unReadMsg.data.blogrolls.count})`">
+                  <div v-for="(item, index) in unReadMsg.data.blogrolls.rows" :key="index" class="yzp-head-msg-item">
                     <div class="yzp-head-msg-user">
-                      <span>{{ item.nickname }}</span>
-                      <span>{{ timeAgao(item.createdAt) }}</span>
+                      <span>{{ item.preffix }}</span>
                     </div>
-                    <span class="yzp-head-msg-content">{{ item.content }}</span>
+                    <div class="yzp-head-msg-content">{{ item.content }}</div>
+                    <div class="yzp-head-msg-date">{{ timeAgao(item.createdAt) }}</div>
                   </div>
-                  <a-empty v-if="!unAuditBlogrolls.rows.length" />
+                  <a-empty v-if="!unReadMsg.data.blogrolls.rows.length" />
                 </a-tab-pane>
+
               </a-tabs>
             </div>
           </a-menu>
@@ -171,7 +178,7 @@ onMounted(() => changeTheme(theme.value))
   </div>
 </template>
 
-<style lang="less">
+<style lang="less" scoped>
 .yzp-head {
   position: sticky;
   z-index: 9;
@@ -266,25 +273,25 @@ onMounted(() => changeTheme(theme.value))
         border: 0;
       }
       &:hover {
-        opacity: 0.7;
+        background: #f5f5f5;
       }
       .yzp-head-msg-user {
-        display: flex;
-        align-items: center;
-        span:first-child {
-          display: inline-block;
-          color: #ff6666;
-          margin-right: 10px;
-          font-size: 12px;
+        font-size: 12px;
+        span:nth-child(1) {
+          color: #666666;
         }
         span:nth-child(2) {
-          color: #999999;
-          font-size: 12px;
+          color: #1890ff;
         }
       }
       .yzp-head-msg-content {
-        color: #666666;
+        color: #333333;
         font-size: 12px;
+        margin: 5px 0;
+      }
+      .yzp-head-msg-date {
+        font-size: 12px;
+        color: #999999;
       }
     }
   }

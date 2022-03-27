@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import { ref, toRaw, onMounted } from 'vue'
-import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { message } from 'ant-design-vue'
-import { CloseCircleOutlined } from '@ant-design/icons-vue'
 import SettingsApi, { PersonalizeSettingsConfig } from '@/api/settings'
-import CONFIG from '@/config';
+import AlbumApi from '@/api/album'
+import CONFIG from '@/config'
 
 const formRef = ref()
 const labelCol = { style: { width: '100px' } }
@@ -21,32 +20,31 @@ const fontOptions = ref([
   { label: '微软雅黑', value: 'Microsoft YaHei' },
 ])
 
-const bgOptions = ref([
-  { label: '从相册选择', value: 'album' },
-  { label: '本地上传', value: 'local' },
-])
+// const bgOptions = ref([
+//   { label: '从相册选择', value: 'album' },
+//   { label: '本地上传', value: 'local' },
+// ])
 
 const imgs = ref<any>([])
 
 const formState = ref<PersonalizeSettingsConfig>({
   style: 'simple',
   font: 'Microsoft YaHei',
-  bg: '',
-  current: '',
+  background: '',
   auto: false,
+  gray: false,
 })
+
+const bgType = ref(1)
 
 const uploadSuccess = (path: any) => {
   console.log(path)
   imgs.value.push(path)
 }
 
-const deleteImg = (item: any, index: number) => {
-  console.log(item, index)
-}
 
 const chooseImg = (item: any) => {
-  formState.value.current = item
+  formState.value.background = item
 }
 
 const rules = {}
@@ -60,16 +58,11 @@ const getDetail = async () => {
   }
 }
 
-const onSubmit = () => {
-  formRef.value.validate().then(async () => {
-    formState.value.bg = imgs.value.join()
-    const rawValue = toRaw(formState.value)
-    await SettingsApi.savePersonalizeSettings(rawValue)
-    message.success('保存成功')
-  })
-    .catch((error: ValidateErrorEntity<PersonalizeSettingsConfig>) => {
-      console.log('error', error)
-    })
+const onSubmit = async () => {
+  await formRef.value.validate()
+  const rawValue = toRaw(formState.value)
+  await SettingsApi.savePersonalizeSettings(rawValue)
+  message.success('保存成功')
 }
 
 
@@ -86,21 +79,12 @@ onMounted(() => {
       </a-form-item>
 
       <a-form-item v-if="formState.style === 'fresh'" label="背景选择">
-        <ul class="bglist">
-          <li
-            v-for="(item, index) in imgs"
-            :key="index"
-            :class="{ active: formState.current === item }"
-            @click="chooseImg(item)"
-          >
-            <img :src="CONFIG.REQ_URL + item" />
-            <CloseCircleOutlined
-              v-if="formState.current !== item"
-              class="icon"
-              @click.stop="deleteImg(item, index)"
-            />
-          </li>
-          <li v-if="imgs.length < 5">
+        <a-radio-group v-model:value="bgType">
+          <a-radio :value="1">选择图片</a-radio>
+          <a-radio :value="2">从相册选择</a-radio>
+        </a-radio-group>
+        <div style="margin-top: 10px;">
+          <div v-if="bgType === 1" style="width: 170px;height:90px">
             <yzp-upload
               class="list-upload-btn"
               :with-parent-with="true"
@@ -110,13 +94,28 @@ onMounted(() => {
               :filename="imgs.length"
               dir="webbg"
               @input="uploadSuccess"
-            ></yzp-upload>
-          </li>
-        </ul>
+            >
+            </yzp-upload>
+            <ul v-if="bgType === 1" class="bglist">
+              <li
+                v-for="(item, index) in imgs"
+                :key="index"
+                :class="{ active: formState.background === item }"
+                @click="chooseImg(item)"
+              >
+                <img :src="CONFIG.REQ_URL + item" />
+              </li>
+            </ul>
+          </div>
+        </div>
       </a-form-item>
 
       <a-form-item label="字体选择">
         <a-select v-model:value="formState.font" :options="fontOptions"></a-select>
+      </a-form-item>
+
+      <a-form-item label="网站置灰">
+        <a-switch v-model:checked="formState.gray"></a-switch>
       </a-form-item>
 
       <a-form-item style="margin-left: 100px;">

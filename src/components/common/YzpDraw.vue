@@ -17,17 +17,21 @@
     </div>
     <template v-if="!wrapLoading" #footer>
       <div class="yzp-draw-footer">
-        <a-button style="margin-right: 10px;flex: 1" @click="hide">取消</a-button>
-        <a-button style="flex: 1" type="primary" :loading="okLoading" @click="confirm">确定</a-button>
+        <a-button style="margin-right: 10px;flex: 1" size="large" @click="hide">取消</a-button>
+        <a-button style="flex: 1" type="primary" size="large" :loading="okLoading" @click="confirm">确定</a-button>
       </div>
     </template>
   </a-drawer>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 export default defineComponent({
 
   props: {
+    visible: {
+      type: Boolean,
+      default: false
+    },
     width: {
       type: [String, Number],
       default: '40%'
@@ -56,7 +60,7 @@ export default defineComponent({
 
   setup(props, ctx) {
 
-    const state = ref<boolean>(false);
+    const state = ref<boolean>(props.visible);
 
     const show = () => {
       ctx.emit('update:visible', true)
@@ -76,6 +80,10 @@ export default defineComponent({
       ctx.emit('cancel', true)
       hide()
     }
+
+    watch(() => props.visible, (res: boolean) => {
+      state.value = res
+    })
 
     return {
       state,

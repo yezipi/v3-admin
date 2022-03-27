@@ -11,6 +11,7 @@ import {
   UserOutlined,
   SettingOutlined,
   LineChartOutlined,
+  ToolOutlined
 } from '@ant-design/icons-vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -47,84 +48,72 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/content-publish',
-    name: 'ContentPublish',
+    path: '/publish',
+    name: 'Publish',
     meta: { title: '内容发布', noLink: true, icon: EditOutlined },
-    component: () => import('@/views/ContentPublish/Index.vue'),
+    component: () => import('@/views/Publish/Index.vue'),
     children: [
       {
         path: '/article/add',
         name: 'ArticleAdd',
         meta: { title: '发布文章' },
-        component: () => import('@/views/ContentPublish/ArticleEdit.vue'),
+        component: () => import('@/views/Publish/ArticleEdit.vue'),
       },
       {
         path: '/article/edit',
         name: 'ArticleEdit',
         meta: { title: '编辑文章', noMenu: true },
-        component: () => import('@/views/ContentPublish/ArticleEdit.vue'),
+        component: () => import('@/views/Publish/ArticleEdit.vue'),
       },
       {
         path: '/mood/edit',
         name: 'MoodEdit',
         meta: { title: '编辑微语', noMenu: true },
-        component: () => import('@/views/ContentPublish/MoodEdit.vue'),
+        component: () => import('@/views/Publish/MoodEdit.vue'),
       },
       {
         path: '/mood/add',
         name: 'MoodAdd',
         meta: { title: '微语发布' },
-        component: () => import('@/views/ContentPublish/MoodEdit.vue'),
+        component: () => import('@/views/Publish/MoodEdit.vue'),
       },
     ],
   },
   {
-    path: '/content-manage',
-    name: 'ContentManage',
+    path: '/content',
+    name: 'Content',
     meta: { title: '内容管理', noLink: true, icon: CopyOutlined },
-    component: () => import('@/views/ContentManage/Index.vue'),
+    component: () => import('@/views/Content/Index.vue'),
     children: [
       {
         path: '/article/list',
         name: 'ArticleList',
         meta: { title: '文章管理', icon: '' },
-        component: () => import('@/views/ContentManage/ArticleList.vue'),
+        component: () => import('@/views/Content/ArticleList.vue'),
       },
       {
         path: '/case/list',
         name: 'CaseList',
         meta: { title: '案例管理', icon: '' },
-        component: () => import('@/views/ContentManage/CaseList.vue'),
+        component: () => import('@/views/Content/CaseList.vue'),
       },
       {
         path: '/mood/list',
         name: 'MoodList',
         meta: { title: '微语管理', icon: '' },
-        component: () => import('@/views/ContentManage/MoodList.vue'),
-      },
-      {
-        path: '/log/change-logs',
-        name: 'ChangeLogs',
-        meta: { title: '版本管理', icon: '' },
-        component: () => import('@/views/ContentManage/ChangeLogs.vue'),
+        component: () => import('@/views/Content/MoodList.vue'),
       },
       {
         path: '/banner/list',
         name: 'BannerList',
         meta: { title: '轮播管理', icon: '' },
-        component: () => import('@/views/ContentManage/BannerList.vue'),
+        component: () => import('@/views/Content/BannerList.vue'),
       },
       {
         path: '/tag/list',
         name: 'TagList',
         meta: { title: '标签管理', icon: '' },
-        component: () => import('@/views/ContentManage/TagList.vue'),
-      },
-      {
-        path: '/operation/list',
-        name: 'OperationList',
-        meta: { title: '操作日志', icon: '' },
-        component: () => import('@/views/ContentManage/OperationList.vue'),
+        component: () => import('@/views/Content/TagList.vue'),
       },
     ],
   },
@@ -232,6 +221,50 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: '用户列表', noLink: true, icon: '' },
         component: () => import('@/views/User/UserList.vue'),
       },
+      {
+        path: '/users/permission',
+        name: 'PermissionSettings',
+        meta: { title: '权限设置', icon: '' },
+        component: () => import('@/views/User/Permission.vue'),
+      },
+    ],
+  },
+  {
+    path: '/mainten',
+    name: 'Mainten',
+    meta: { title: '运营维护', noLink: true, icon: ToolOutlined },
+    component: () => import('@/views/Mainten/Index.vue'),
+    children: [
+      {
+        path: '/change/logs',
+        name: 'ChangeLogs',
+        meta: { title: '版本管理', icon: '' },
+        component: () => import('@/views/Mainten/ChangeLogs.vue'),
+      },
+      {
+        path: '/operation/logs',
+        name: 'OperationLogs',
+        meta: { title: '操作日志', icon: '' },
+        component: () => import('@/views/Mainten/OperationList.vue'),
+      },
+      {
+        path: '/messages',
+        name: 'Messages',
+        meta: { title: '消息列表', icon: '' },
+        component: () => import('@/views/Mainten/Messages.vue'),
+      },
+      {
+        path: '/mial/logs',
+        name: 'MailLogs',
+        meta: { title: '邮件记录', icon: '' },
+        component: () => import('@/views/Mainten/MailLogs.vue'),
+      },
+      {
+        path: '/settings/ad',
+        name: 'AdSettings',
+        meta: { title: '广告设置', icon: '' },
+        component: () => import('@/views/Mainten/Ad.vue'),
+      },
     ],
   },
   {
@@ -247,12 +280,6 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Settings/Base.vue'),
       },
       {
-        path: '/settings/ad',
-        name: 'AdSettings',
-        meta: { title: '广告设置', icon: '' },
-        component: () => import('@/views/Settings/Ad.vue'),
-      },
-      {
         path: '/settings/mail',
         name: 'MailSettings',
         meta: { title: '邮件设置', icon: '' },
@@ -263,12 +290,6 @@ const routes: Array<RouteRecordRaw> = [
         name: 'SecuritySettings',
         meta: { title: '安全设置', icon: '' },
         component: () => import('@/views/Settings/Security.vue'),
-      },
-      {
-        path: '/settings/permission',
-        name: 'PermissionSettings',
-        meta: { title: '权限设置', icon: '' },
-        component: () => import('@/views/Settings/Permission.vue'),
       },
       {
         path: '/settings/baidu',

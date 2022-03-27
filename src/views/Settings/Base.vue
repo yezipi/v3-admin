@@ -23,6 +23,8 @@ const formState = ref<BaseSettingsConfig>({
   web_tongji: '',
   web_copyright: '',
   open_comment: true,
+  audit_comment: true,
+  audit_feedback: true,
   web_avatar: '',
   web_logo: '',
   web_like: 0,
@@ -121,28 +123,24 @@ onMounted(() => {
           <a-input v-model:value="formState.web_mail" placeholder="请输入邮箱" />
         </a-form-item>
 
-        <a-form-item label="版本">
-          <a-input v-model:value="formState.web_version" placeholder="请输入版本" />
-        </a-form-item>
-
         <a-form-item label="版权信息">
           <a-input v-model:value="formState.web_copyright" placeholder="请输入版权信息" />
         </a-form-item>
 
         <a-form-item label="关键字">
-          <a-textarea v-model:value="formState.web_keywords" rows="3" placeholder="请输入关键字" />
+          <a-textarea v-model:value="formState.web_keywords" :rows="3" placeholder="请输入关键字" />
         </a-form-item>
 
         <a-form-item label="网站描述">
-          <a-textarea v-model:value="formState.web_description" rows="3" placeholder="请输入网站描述" />
+          <a-textarea v-model:value="formState.web_description" :rows="3" placeholder="请输入网站描述" />
         </a-form-item>
 
         <a-form-item label="网站公告">
-          <a-textarea v-model:value="formState.web_notice" rows="3" placeholder="请输入网站公告，英文逗号隔开" />
+          <a-textarea v-model:value="formState.web_notice" :rows="3" placeholder="请输入网站公告，英文逗号隔开" />
         </a-form-item>
 
         <a-form-item label="统计代码">
-          <a-textarea v-model:value="formState.web_tongji" rows="3" placeholder="请输入统计代码" />
+          <a-textarea v-model:value="formState.web_tongji" :rows="3" placeholder="请输入统计代码" />
         </a-form-item>
 
         <a-form-item label="建站日期">
@@ -159,6 +157,12 @@ onMounted(() => {
 
         <a-form-item label="评论开关">
           <a-switch v-model:checked="formState.open_comment" />
+        </a-form-item>
+        <a-form-item label="评论审核">
+          <a-switch v-model:checked="formState.audit_comment" />
+        </a-form-item>
+        <a-form-item label="留言审核">
+          <a-switch v-model:checked="formState.audit_feedback" />
         </a-form-item>
       </div>
 

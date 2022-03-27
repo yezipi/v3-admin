@@ -22,5 +22,7 @@ document.title = config[state].title
 </script>
 
 <template>
-  <a-result :status="state as any" :title="config[state].title" :sub-title="config[state].desc" style="margin-top: 20vh"></a-result>
+  <div style="display: flex;align-items: center;justify-content: center;">
+    <a-result :status="state as any" :title="config[state].title" :sub-title="config[state].desc"></a-result>
+  </div>
 </template>
