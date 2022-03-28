@@ -150,7 +150,7 @@ export default defineComponent({
       const filterEle: any = document.querySelector(`#${props.tableId} .yzp-page-filter`) // 列表的筛选统一加这个id
       const filterHeight = filterEle ? (filterEle.offsetHeight + 10) : 0
       console.log(`#${props.tableId} .ky-page-filter`)
-      tableHeight.value = screen.height - 360 - filterHeight
+      tableHeight.value = screen.height - 370 - filterHeight
       bakcupHeight.value = tableHeight.value
       tableWidth.value = scrollWidth
       if (menuStyle.value === 2) {

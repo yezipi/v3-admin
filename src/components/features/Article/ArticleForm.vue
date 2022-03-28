@@ -156,7 +156,7 @@ export default defineComponent({
         .validate()
         .then(async () => {
           if (!formState.value.cover) {
-            formState.value.cover = `/public/randomImg/${parseInt(String(Math.random() * 50))}.jpg`
+            formState.value.cover = `/public/poster/${parseInt(String(Math.random() * 50))}.jpg`
           }
           const data = {
             ...toRaw(formState.value),

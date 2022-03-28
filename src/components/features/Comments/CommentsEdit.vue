@@ -78,7 +78,7 @@ watch(() => props.visible, (val: boolean) => {
     rules.value.site[0].required = true
   }
   if (props.id && val) {
-    getInfo(val)
+    getInfo(props.id)
   }
 })
 
@@ -184,7 +184,7 @@ const closeDraw = () => {
 
         <a-form-item label="设置">
           <a-checkbox v-model:checked="ruleForm.status">显示</a-checkbox>
-          <a-checkbox v-model:checked="ruleForm.notice" :disabled="!ruleForm.email && !ruleForm.reply_content">邮件通知TA</a-checkbox>
+          <a-checkbox v-model:checked="ruleForm.notice" :disabled="!ruleForm.email || !ruleForm.reply_content">邮件通知TA</a-checkbox>
         </a-form-item>
         
       </a-form>

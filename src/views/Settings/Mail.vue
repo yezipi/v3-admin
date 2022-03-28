@@ -2,7 +2,7 @@
 import { ref, toRaw, onMounted } from 'vue'
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { message } from 'ant-design-vue'
-import SettingsApi, { MailSettingsConfig } from '@/api/settings'
+import MailApi, { MailSettingsConfig } from '@/api/mail'
 
 const formRef = ref();
 
@@ -23,7 +23,7 @@ const labelCol = { style: { width: '100px' } }
 
 // 获取详情
 const getDetail = async () => {
-  const { data } = await SettingsApi.getMailSettings()
+  const { data } = await MailApi.getMailSettings()
   if (data) {
     formState.value = data
   }
@@ -32,7 +32,7 @@ const getDetail = async () => {
 const onSubmit = () => {
   formRef.value.validate().then(async () => {
     const rawValue = toRaw(formState.value)
-    await SettingsApi.saveMailSettings(rawValue)
+    await MailApi.saveMailSettings(rawValue)
     message.success('保存成功')
   })
   .catch((error: ValidateErrorEntity<MailSettingsConfig>) => {
@@ -79,15 +79,15 @@ onMounted(() => {
       </a-form-item>
 
       <h4 class="form-sub-title">通知设置</h4>
-      <a-form-item label="发件标题">
+      <a-form-item label="发件标题前缀">
         <a-input v-model:value="formState.send_title" placeholder="发件标题"></a-input>
       </a-form-item>
 
-      <a-form-item label="收件标题">
+      <a-form-item label="收件标题前缀">
         <a-input v-model:value="formState.receive_title" placeholder="收件标题"></a-input>
       </a-form-item>
 
-      <a-form-item label="邮件通知我">
+      <a-form-item label="开启通知">
         <a-switch v-model:checked="formState.receive_notice"></a-switch>
       </a-form-item>
 

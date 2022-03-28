@@ -2,53 +2,74 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import confirm from '@/utils/confirm'
-import ReportApi from '@/api/report'
 
 const columns = reactive([
   {
     title: '名称',
     dataIndex: 'nickname',
+    width: 100,
   },
   {
     title: '内容',
     dataIndex: 'content',
+    width: 300,
   },
   {
     title: '回复',
     dataIndex: 'reply_content',
+    width: 300,
+  },
+  {
+    title: '通知',
+    dataIndex: 'notice',
+    width: 100,
   },
   {
     title: '站点',
     dataIndex: 'site',
+    width: 150,
+    noTransform: true,
   },
   {
     title: 'ip',
     dataIndex: 'ip',
+    width: 100,
   },
   {
     title: '邮箱',
     dataIndex: 'email',
+    width: 150,
   },
   {
     title: '终端',
     dataIndex: 'ua',
+    width: 100,
+  },
+  {
+    title: '浏览器',
+    dataIndex: 'browser',
+    width: 100,
   },
   {
     title: '地址',
     dataIndex: 'address',
+    width: 150,
   },
   {
     title: '状态',
     dataIndex: 'status',
+    width: 100,
   },
   {
     title: '时间',
     dataIndex: 'createdAt',
-    format: 'YYYY-MM-DD'
+    format: 'YYYY-MM-DD hh:mm',
+    width: 150,
   },
   {
     title: '操作',
     dataIndex: 'action',
+    width: 150,
   },
 ])
 
@@ -77,6 +98,12 @@ switch (type) {
     columns.unshift({
       title: '排序',
       dataIndex: 'sort',
+      width: 100,
+    })
+    columns.splice(columns.length - 3, 0, {
+      title: '推荐',
+      dataIndex: 'recommend',
+      width: 100,
     })
     break;
   case 'comment':
@@ -103,7 +130,6 @@ const toCreate = () => {
 const toDelete = (item: any) => {
   confirm(`确定删除【${item.nickname}】的${title.value}吗？`, async () => {
     await api.destory(item.id)
-    ReportApi.getUnAudit()
     initList()
   })
 }
@@ -115,7 +141,6 @@ const toUpdate =async (item: any, checked: boolean, key: any) => {
   obj[key] = checked
   try {
     await api.update(id, obj)
-    ReportApi.getUnAudit()
     item[key] = checked
   } catch (e) {
     item[key] = !item[key]
@@ -144,24 +169,42 @@ const fnName = firstToUpper(type) + '.getList'
       </template>
 
       <template #bodyCell="{ scope: { column: { dataIndex }, record } }">
-        <div v-if="dataIndex === 'status'">
-          <a-switch :checked="record.status" @change="toUpdate(record, $event, 'status')" />
-        </div>
 
-        <div v-if="dataIndex === 'action'">
+        <template v-if="dataIndex === 'recommend'">
+          <a-switch :checked="record.recommend" @change="toUpdate(record, $event, 'recommend')" />
+        </template>
+
+        <template v-if="dataIndex === 'status'">
+          <a-switch :checked="record.status" @change="toUpdate(record, $event, 'status')" />
+        </template>
+
+        <template v-if="dataIndex === 'notice'">
+          <span v-if="record.notice" style="color: forestgreen;">已通知</span>
+          <span v-else style="color: #999999;">未通知</span>
+        </template>
+
+        <template v-if="dataIndex === 'site'">
+          <a v-if="record.site" rel="nofollow" :href="record.site" target="_blank">{{ record.site }}</a>
+          <span v-else>-</span>
+        </template>
+
+        <template v-if="dataIndex === 'address'">
+          <span>{{ record.province + record.city + record.address }}</span>
+        </template>
+
+        <template v-if="dataIndex === 'action'">
           <span>
             <a @click="toEdit(record.id)">编辑</a>
             <a-divider type="vertical" />
             <a @click="toDelete(record)">删除</a>
           </span>
-        </div>
+        </template>
 
       </template>
 
     </yzp-table>
 
     <comments-edit
-      v-if="type !== 'comment'"
       v-model:visible="drawVisible"
       :api="api"
       :id="currId"

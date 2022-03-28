@@ -33,9 +33,9 @@ const mutations: MutationTree<StateConfig> = {
     state.theme = data
     db.set('theme', data)
   },
-  updateMsgData(state, data) {
-    state.msgData = data
-    db.set('msgData', data)
+  updateMsg(state, data) {
+    state.msg = data
+    db.set('msg', data)
   },
 }
 
