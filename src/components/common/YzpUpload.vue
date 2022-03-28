@@ -258,7 +258,7 @@ export default defineComponent({
     }
 
     // 开始执行上传
-    const doUpload = async (file: File | Blob) => {
+    const doUpload = async (file: File) => {
       if (vals.value.length + 1 >= props.count && props.multiple) {
         const msg = `不能超过${props.count}张`
         throw { msg }
@@ -276,7 +276,10 @@ export default defineComponent({
         formData.append('dir', props.dir)
       }
 
-      formData.append('filename', `${props.filename || new Date().getTime()}.jpg`)
+      const fileSuffix = file.name.split('.')
+      const timestamp = new Date().getTime()
+
+      formData.append('filename', `${props.filename || timestamp}.${fileSuffix[fileSuffix.length - 1]}`)
       formData.append('files', file)
       formData.append('thumb', props.thumb ? '1' : '0')
       formData.append('watermark', props.watermark ? '1' : '0')

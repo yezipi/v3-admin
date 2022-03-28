@@ -75,11 +75,9 @@ onMounted(() => {
           <div style="height: 58px;width:158px">
             <yzp-upload
               v-model:value="formState.web_logo"
-              :clip="true"
-              :width="150"
-              :height="58"
+              :clip="false"
               :with-parent-with="true"
-              filename="author_avatar"
+              filename="logo"
             ></yzp-upload>
           </div>
         </a-form-item>
@@ -92,7 +90,7 @@ onMounted(() => {
               :width="100"
               :height="100"
               :with-parent-with="true"
-              filename="logo"
+              filename="author_avatar"
             ></yzp-upload>
           </div>
         </a-form-item>
@@ -123,9 +121,9 @@ onMounted(() => {
           <a-input v-model:value="formState.web_mail" placeholder="请输入邮箱" />
         </a-form-item>
 
-        <a-form-item label="版权信息">
+        <!-- <a-form-item label="版权信息">
           <a-input v-model:value="formState.web_copyright" placeholder="请输入版权信息" />
-        </a-form-item>
+        </a-form-item> -->
 
         <a-form-item label="关键字">
           <a-textarea v-model:value="formState.web_keywords" :rows="3" placeholder="请输入关键字" />
