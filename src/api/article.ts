@@ -3,7 +3,7 @@ import Request from '../utils/request'
 
 type ArticleFields =  {
   type?: string,
-  sub_column_id?: number | string,
+  subcolumn_id?: Array<any>,
   column_id?: number,
   cover?: string,
   keywords?: string,
@@ -16,7 +16,7 @@ type ArticleFields =  {
   top?: boolean
   recommend?: boolean
   download_link?: string
-  comment_open?: boolean
+  open_comment?: boolean
   tags?: Array<any>,
   sort?: number,
 }
@@ -42,7 +42,7 @@ export interface ArticleListConfig {
 export default new class Article extends Request {
 
   /**
-   * 更新文章
+   * 创建文章
    * @param { Obejct } data 参数
    * @param { String } data.title 文章标题，不少于5个字
    * @param { String } data.content 文章正文，不少于5个字符
@@ -59,7 +59,7 @@ export default new class Article extends Request {
    * @param { Boolean } data.status 状态
    * @param { Boolean } data.top 是否置顶
    * @param { Boolean } data.recommend 是否推荐
-   * @param { String } data.download_link 下载链劫
+   * @param { String } data.open_comment 评论开关
    * @param { String } data.tags 标签
    * @param { Number } data.sort 排序
    * @version 2021-10-20 zzc

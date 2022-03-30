@@ -218,11 +218,11 @@ export default defineComponent({
       if (!isInType) {
         message.error('不符合上传的文件类型')
       }
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
-        message.error('不能超过2m大小哦!')
+      const isLt5M = file.size / 1024 / 1024 < 5
+      if (!isLt5M) {
+        message.error('不能超过5m大小哦!')
       }
-      return isInType && isLt2M
+      return isInType && isLt5M
     }
 
     // 确定开始执行裁剪

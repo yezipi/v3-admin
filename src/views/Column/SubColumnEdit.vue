@@ -34,7 +34,7 @@
       </a-form-item>
 
       <a-form-item label="描述">
-        <a-textarea v-model:value="ruleForm.description" rows="3" placeholder="填写描述"></a-textarea>
+        <a-textarea v-model:value="ruleForm.description" :rows="3" placeholder="填写描述"></a-textarea>
       </a-form-item>
 
       <a-form-item class="btn-label">
