@@ -10,7 +10,10 @@
 
       <template #bodyCell="{ scope: { record, column: { dataIndex } } }">
         <template v-if="dataIndex === 'content'">
-          <div>{{ record.content }}</div>
+          <div style="white-space: pre-line;">{{ record.content }}</div>
+        </template>
+
+        <template v-if="dataIndex === 'images'">
           <div v-if="record.images.length" class="content-imgs">
             <img v-for="(item, index) in record.images" :key="index" :src="item"/>
           </div>
@@ -41,6 +44,12 @@ export default defineComponent({
       {
         title: '内容',
         dataIndex: 'content',
+        width: 300,
+      },
+      {
+        title: '图片',
+        dataIndex: 'images',
+        width: 300,
       },
       {
         title: '评论',
@@ -61,6 +70,7 @@ export default defineComponent({
           false: '隐藏',
           true: '显示'
         },
+        width: 100,
       },
       {
         title: '时间',
