@@ -18,10 +18,6 @@
       <a-form-item label="图片">
         <yzp-upload v-model:value="formState.images" dir="mood" thumb compress multiple watermark :count="9" />
       </a-form-item>
-
-      <a-form-item label="来源">
-        <a-input v-model:value="formState.from" placeholder="请输入来源" />
-      </a-form-item>
       
       <a-form-item label="浏览">
         <a-input-number v-model:value="formState.view" placeholder="请输入浏览数" style="width: 100%" />
@@ -56,7 +52,6 @@ export default defineComponent({
     let formState= ref({
       content: '',
       images: undefined,
-      from: '',
       view: 0,
       status: true,
       open_comment: true,
@@ -83,6 +78,15 @@ export default defineComponent({
       }
       const { data } = await MoodApi.getDetail(id)
       formState.value = data
+      formState.value.images = data.images.map((e: any, index: number) => {
+        const strs = e.split('/')
+        return {
+          uid: index,
+          url: e,
+          name: strs[strs.length - 1],
+          status: 'done'
+        }
+      })
     }
 
     const onSubmit = () => {

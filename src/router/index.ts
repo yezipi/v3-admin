@@ -265,6 +265,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: '广告设置', icon: '' },
         component: () => import('@/views/Mainten/Ad.vue'),
       },
+      {
+        path: '/settings/baidu',
+        name: 'BaiduSettings',
+        meta: { title: '百度统计', icon: '' },
+        component: () => import('@/views/Mainten/Baidu.vue'),
+      },
     ],
   },
   {
@@ -290,12 +296,6 @@ const routes: Array<RouteRecordRaw> = [
         name: 'SecuritySettings',
         meta: { title: '安全设置', icon: '' },
         component: () => import('@/views/Settings/Security.vue'),
-      },
-      {
-        path: '/settings/baidu',
-        name: 'BaiduSettings',
-        meta: { title: '百度统计', icon: '' },
-        component: () => import('@/views/Settings/Baidu.vue'),
       },
       {
         path: '/settings/custom',

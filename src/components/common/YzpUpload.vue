@@ -59,7 +59,7 @@
 import { defineComponent, ref, watch, reactive, computed } from 'vue'
 import { PlusOutlined, LoadingOutlined, CloseCircleOutlined } from '@ant-design/icons-vue'
 import { VueCropper }  from 'vue-cropper'
-import { message } from 'ant-design-vue'
+import { message, Upload } from 'ant-design-vue'
 import CommonApi from '@/api/common'
 import 'vue-cropper/dist/index.css'
 
@@ -200,12 +200,7 @@ export default defineComponent({
     watch(() => props.value, (val: string | Array<any>) => {
       imageUrl.value = val
       if (Array.isArray(val)) {
-        fileList.value = val.map((e: string, index: number) => {
-          return {
-            url: e,
-            uid: index
-          }
-        })
+        fileList.value = val
       }
     })
 
@@ -220,11 +215,9 @@ export default defineComponent({
       }
       const isLt5M = file.size / 1024 / 1024 < 5
       if (!isLt5M) {
-        console.log(fileList.value)
-        fileList.value = []
         message.error('不能超过5m大小哦!')
       }
-      return isInType && isLt5M
+      return (isInType && isLt5M) || Upload.LIST_IGNORE
     }
 
     // 确定开始执行裁剪
@@ -265,7 +258,6 @@ export default defineComponent({
         const msg = `不能超过${props.count}张`
         throw { msg }
       }
-      console.log(file)
       loading.value = true
       const formData = new FormData()
       const config = {
@@ -293,12 +285,11 @@ export default defineComponent({
       try {
         const { data } = await CommonApi.uploadImg(formData, config)
         const path = data.path || data.thumbPath
+        fileList.value  = fileList.value.map((e: FileItem) => {
+          e.status = 'done'
+          return e
+        })
         if (props.multiple) {
-          fileList.value = fileList.value.map((e: any) => {
-            e.status = 'done'
-            e.url = path
-            return e
-          })
           vals.value.push(path);
           emit('update:value', vals.value)
           emit('input', vals.value)
