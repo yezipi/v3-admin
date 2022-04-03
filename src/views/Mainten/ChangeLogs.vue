@@ -28,6 +28,20 @@ const tableRef = ref()
 const currId = ref()
 const drawVisible = ref(false)
 
+const logType = {
+  add: 'green',
+  fix: 'red',
+  update: 'cyan',
+  delete: 'orange'
+}
+
+const logLabel = {
+  add: '新增',
+  fix: '修复',
+  update: '优化',
+  delete: '删除'
+}
+
 const toEdit = (id: string) => {
   currId.value = id
   drawVisible.value = true
@@ -53,18 +67,24 @@ const initList = () => {
 
 <template>
   <div class="page-list">
-    <yzp-table :columns="columns" ref="tableRef" url="ChangeLogs.getList">
+    <yzp-table :columns="columns" ref="tableRef" url="ChangeLogs.getList" :center="false">
       <template #filter>
         <div></div>
         <a-button type="primary" @click="toCreate">+ 添加版本</a-button>
       </template>
 
       <template #bodyCell="{ scope: { record, column } }">
-        <span v-if="column.dataIndex === 'action'">
+        <template v-if="column.dataIndex === 'content'">
+          <div v-for="(item, index) in record.content" :index="index" class="yzp-logs-item">
+            <a-tag :color="logType[item.type as keyof typeof logType]">{{ logLabel[item.type as keyof typeof logType] }}</a-tag>
+            <span>{{ item.text }}</span>
+          </div>
+        </template>
+        <template v-if="column.dataIndex === 'action'">
           <a @click="toEdit(record.id)">编辑</a>
           <a-divider type="vertical" />
           <a @click="confirmDelete(record)">删除</a>
-        </span>
+        </template>
       </template>
     </yzp-table>
 
@@ -72,3 +92,11 @@ const initList = () => {
   </div>
 </template>
 
+<style scoped lang="less">
+.yzp-logs-item {
+  margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+</style>

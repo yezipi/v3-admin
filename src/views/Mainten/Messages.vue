@@ -58,11 +58,16 @@ const setRead = async (record: any) => {
     <yzp-table :columns="columns" ref="tableRef" url="Message.getList">
       <template #bodyCell="{ scope: { record, column } }">
         <template v-if="column.dataIndex === 'title'">
-          <span>{{ record.preffix + record.title }}</span>
+          <span>{{ record.nickname + record.preffix + record.title }}</span>
         </template>
         <template v-if="column.dataIndex === 'read'">
           <span v-if="record.read" style="color: #999999;">已读</span>
           <span v-else style="color: forestgreen">未读</span>
+        </template>
+        <template v-if="column.dataIndex === 'type'">
+          <a-tag v-if="record.type === 'comment'" color="red">评论</a-tag>
+          <a-tag v-if="record.type === 'feedback'" color="cyan">留言</a-tag>
+          <a-tag v-if="record.type === 'blogroll'" color="orange">友链</a-tag>
         </template>
         <div v-if="column.dataIndex === 'action'">
           <template v-if="!record.read">

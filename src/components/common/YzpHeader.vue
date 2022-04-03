@@ -108,8 +108,9 @@ onMounted(() => changeTheme(theme.value))
                 <a-tab-pane key="comments" :tab="`评论(${unReadMsg.data.comments.count})`">
                   <div v-for="(item, index) in unReadMsg.data.comments.rows" :key="index" class="yzp-head-msg-item">
                     <div class="yzp-head-msg-user">
-                      <span>{{ item.preffix }}</span>
-                      <span>《{{ item.title }}》</span>
+                      <span class="yzp-head-msg-user-nickname">{{ item.nickname }}</span>
+                      <span class="yzp-head-msg-user-preffix">{{ item.preffix }}</span>
+                      <span v-if="item.article_type !== 'mood'" class="yzp-head-msg-user-title">《{{ item.title }}》</span>
                     </div>
                     <div class="yzp-head-msg-content">{{ item.content }}</div>
                     <div class="yzp-head-msg-date">{{ timeAgao(item.createdAt) }}</div>
@@ -120,7 +121,8 @@ onMounted(() => changeTheme(theme.value))
                 <a-tab-pane key="feedbacks" :tab="`留言(${unReadMsg.data.feedbacks.count})`">
                   <div v-for="(item, index) in unReadMsg.data.feedbacks.rows" :key="index" class="yzp-head-msg-item">
                     <div class="yzp-head-msg-user">
-                      <span>{{ item.preffix }}</span>
+                      <span class="yzp-head-msg-user-nickname">{{ item.nickname }}</span>
+                      <span class="yzp-head-msg-user-preffix">{{ item.preffix }}</span>
                     </div>
                     <div class="yzp-head-msg-content">{{ item.content }}</div>
                     <div class="yzp-head-msg-date">{{ timeAgao(item.createdAt) }}</div>
@@ -131,7 +133,8 @@ onMounted(() => changeTheme(theme.value))
                 <a-tab-pane key="blogrolls" :tab="`友链(${unReadMsg.data.blogrolls.count})`">
                   <div v-for="(item, index) in unReadMsg.data.blogrolls.rows" :key="index" class="yzp-head-msg-item">
                     <div class="yzp-head-msg-user">
-                      <span>{{ item.preffix }}</span>
+                      <span class="yzp-head-msg-user-nickname">{{ item.nickname }}</span>
+                      <span class="yzp-head-msg-user-preffix">{{ item.preffix }}</span>
                     </div>
                     <div class="yzp-head-msg-content">{{ item.content }}</div>
                     <div class="yzp-head-msg-date">{{ timeAgao(item.createdAt) }}</div>
@@ -277,11 +280,16 @@ onMounted(() => changeTheme(theme.value))
       }
       .yzp-head-msg-user {
         font-size: 12px;
-        span:nth-child(1) {
-          color: #666666;
+        color: #666666;
+        .yzp-head-msg-user-title {
+          color: @primary-color;
         }
-        span:nth-child(2) {
-          color: #1890ff;
+        .yzp-head-msg-user-nickname {
+          font-weight: bold;
+        }
+        .yzp-head-msg-user-preffix {
+          display: inline-block;
+          margin: 0 5px;
         }
       }
       .yzp-head-msg-content {

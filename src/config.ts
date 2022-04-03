@@ -13,13 +13,13 @@ console.log('当前环境: ', env)
 
 const HOST = {
   dev: {
-    apiUrl: 'http://localhost:7002/'
+    apiUrl: 'http://localhost:7001/'
   },
   test: {
-    apiUrl: 'http://localhost:7002/'
+    apiUrl: 'http://localhost:7001/'
   },
   production: {
-    apiUrl: 'http://localhost:7002/'
+    apiUrl: 'http://localhost:7001/'
   }
 }
 

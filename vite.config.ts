@@ -64,12 +64,12 @@ export default ({ mode }) => {
       strictPort: false,
       proxy: {
         '^/api/.*': {
-          target: 'http://localhost:7002',
+          target: 'http://localhost:7001',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         },
         '^/public/.*': {
-          target: 'http://localhost:7002/public',
+          target: 'http://localhost:7001/public',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/public/, '')
         },

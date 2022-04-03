@@ -16,7 +16,7 @@ export default new class ChangeLogs extends Request {
    * @param { String } params.version 版本号
    * @version 2021-11-05 zzc
    */
-   public create(data: { content: string, version: string }) {
+   public create(data: { content: any[], version: string }) {
     const url = 'v1/changeLogs'
     return this.post(url, { ...data, showMsg: true })
   }
@@ -38,7 +38,7 @@ export default new class ChangeLogs extends Request {
    * @param { Obejct } data 同创建的参数
    * @version 2021-11-05 zzc
    */
-   public update(id: string, data: { content?: string, version?: string }) {
+   public update(id: string, data: { content?: any[], version?: string }) {
     const url = `v1/changeLogs/${id}`
     return this.put(url, { ...data, loading: true, showMsg: true })
   }
@@ -62,6 +62,6 @@ export default new class ChangeLogs extends Request {
    */
    public getList(params?: ChangeLogsListConfig) {
     const url = 'v1/changeLogs'
-    return this.get(url, { ...params, loading: true })
+    return this.get(url, params)
   }
 }
