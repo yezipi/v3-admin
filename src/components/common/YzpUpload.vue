@@ -200,7 +200,11 @@ export default defineComponent({
     watch(() => props.value, (val: string | Array<any>) => {
       imageUrl.value = val
       if (Array.isArray(val)) {
-        fileList.value = val
+        fileList.value = fileList.value.map((e: FileItem, index: number) => {
+          e.url = val[index]
+          return e
+        })
+        console.log(val)
       }
     })
 
@@ -271,9 +275,8 @@ export default defineComponent({
       }
 
       const fileSuffix = file.name.split('.')
-      const timestamp = new Date().getTime()
 
-      formData.append('filename', `${props.filename || timestamp}.${fileSuffix[fileSuffix.length - 1]}`)
+      formData.append('filename', `${props.filename}.${fileSuffix[fileSuffix.length - 1]}`)
       formData.append('files', file)
       formData.append('thumb', props.thumb ? '1' : '0')
       formData.append('watermark', props.watermark ? '1' : '0')

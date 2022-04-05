@@ -3,6 +3,7 @@ import { ref, toRaw, onMounted } from 'vue'
 import { message } from 'ant-design-vue'
 import SettingsApi, { PersonalizeSettingsConfig } from '@/api/settings'
 import AlbumApi from '@/api/album'
+import PictureApi from '@/api/picture'
 import CONFIG from '@/config'
 
 const formRef = ref()
@@ -36,15 +37,42 @@ const formState = ref<PersonalizeSettingsConfig>({
 })
 
 const bgType = ref(1)
+const albums = ref<any>([])
+const currAlbumId = ref()
+const pictures = ref<any>([])
+const currPictureId = ref()
 
 const uploadSuccess = (path: any) => {
-  console.log(path)
-  imgs.value.push(path)
+  formState.value.background = path
 }
 
+const getAlbums = async () => {
+  const { data: res1 } = await AlbumApi.getList()
+  const albumRows = res1.rows || []
+  currAlbumId.value = albumRows.length ? albumRows[0].id : undefined
+  albums.value = albumRows.map((e: any) => {
+    return {
+      ...e,
+      label: `${e.title}(${e.picture_count})张`,
+      value: e.id,
+    }
+  })
+  const { data: res2 } = await PictureApi.getList(currAlbumId.value)
+  const pictureRows = res2.rows || []
+  currPictureId.value = pictureRows.length ? pictureRows[0].id : undefined
+  pictures.value = pictureRows
+}
 
 const chooseImg = (item: any) => {
-  formState.value.background = item
+  const curr = pictures.value.find((e: any) => e.id === item.id)
+  currPictureId.value = item.id
+  formState.value.background = curr.origin_path
+}
+
+const onBgTypeChange = (res: any) => {
+  if (res.target.value === 2) {
+    getAlbums()
+  }
 }
 
 const rules = {}
@@ -52,9 +80,10 @@ const rules = {}
 // 获取详情
 const getDetail = async () => {
   const { data } = await SettingsApi.getPersonalizeSettings()
-  if (data) {
-    formState.value = data
-    imgs.value = data.bg.split(',')
+  formState.value = data
+  if (data.background) {
+    bgType.value = 2
+    onBgTypeChange({ target: { value: 2 } })
   }
 }
 
@@ -64,7 +93,6 @@ const onSubmit = async () => {
   await SettingsApi.savePersonalizeSettings(rawValue)
   message.success('保存成功')
 }
-
 
 onMounted(() => {
   getDetail()
@@ -79,31 +107,34 @@ onMounted(() => {
       </a-form-item>
 
       <a-form-item v-if="formState.style === 'fresh'" label="背景选择">
-        <a-radio-group v-model:value="bgType">
+        <a-radio-group v-model:value="bgType" @change="onBgTypeChange">
           <a-radio :value="1">选择图片</a-radio>
           <a-radio :value="2">从相册选择</a-radio>
         </a-radio-group>
         <div style="margin-top: 10px;">
-          <div v-if="bgType === 1" style="width: 170px;height:90px">
+          <div v-show="bgType === 1" style="width: 170px;height:90px">
             <yzp-upload
               class="list-upload-btn"
               :with-parent-with="true"
               :thumb="false"
               :clip="false"
               :width="1366"
-              :filename="imgs.length"
+              filename="webbg"
               dir="webbg"
               @input="uploadSuccess"
             >
             </yzp-upload>
-            <ul v-if="bgType === 1" class="bglist">
+          </div>
+          <div v-show="bgType === 2" >
+            <a-select v-model:value="currAlbumId" :options="albums"></a-select>
+            <ul class="bglist">
               <li
-                v-for="(item, index) in imgs"
+                v-for="(item, index) in pictures"
                 :key="index"
-                :class="{ active: formState.background === item }"
+                :class="{ active: currPictureId === item.id }"
                 @click="chooseImg(item)"
               >
-                <img :src="CONFIG.REQ_URL + item" />
+                <img :src="item.thumb_path" />
               </li>
             </ul>
           </div>
@@ -127,15 +158,12 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .bglist {
-  margin: 0;
+  margin-left: -10px;
+  margin-top: 10px;
   &:after {
     content: "";
     display: block;
     clear: both;
-  }
-  .list-upload-btn {
-    width: 150px;
-    height: 85px;
   }
   li {
     margin-bottom: 10px;
@@ -176,7 +204,7 @@ onMounted(() => {
         height: 40px;
         bottom: 0;
         right: 0;
-        background: url("~@/assets/img/success.png") no-repeat center;
+        background: url("@/assets/img/success.png") no-repeat center;
         background-size: 100%;
       }
     }
