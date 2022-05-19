@@ -4,7 +4,6 @@ import { message } from 'ant-design-vue'
 import SettingsApi, { PersonalizeSettingsConfig } from '@/api/settings'
 import AlbumApi from '@/api/album'
 import PictureApi from '@/api/picture'
-import CONFIG from '@/config'
 
 const formRef = ref()
 const labelCol = { style: { width: '100px' } }
@@ -21,10 +20,9 @@ const fontOptions = ref([
   { label: '微软雅黑', value: 'Microsoft YaHei' },
 ])
 
-// const bgOptions = ref([
-//   { label: '从相册选择', value: 'album' },
-//   { label: '本地上传', value: 'local' },
-// ])
+const modalVisible = ref(false)
+const picturePage = ref(1)
+const pictureTotal = ref(0)
 
 const imgs = ref<any>([])
 
@@ -40,7 +38,7 @@ const bgType = ref(1)
 const albums = ref<any>([])
 const currAlbumId = ref()
 const pictures = ref<any>([])
-const currPictureId = ref()
+const currPicture = ref<any>({})
 
 const uploadSuccess = (path: any) => {
   formState.value.background = path
@@ -57,16 +55,32 @@ const getAlbums = async () => {
       value: e.id,
     }
   })
-  const { data: res2 } = await PictureApi.getList(currAlbumId.value)
-  const pictureRows = res2.rows || []
-  currPictureId.value = pictureRows.length ? pictureRows[0].id : undefined
-  pictures.value = pictureRows
+  getPictures()
+}
+
+const getPictures = async () => {
+  const { data: res2 } = await PictureApi.getList({ page: picturePage.value, size: 10, album_id: currAlbumId.value })
+  pictureTotal.value = res2.count || 0
+  pictures.value = res2.rows || []
+}
+
+const onAlbumSelect = (album_id: any) => {
+  currAlbumId.value = album_id
+  getPictures()
+}
+
+const onPageChange = () => {
+  getPictures()
 }
 
 const chooseImg = (item: any) => {
-  const curr = pictures.value.find((e: any) => e.id === item.id)
-  currPictureId.value = item.id
-  formState.value.background = curr.origin_path
+  currPicture.value = item
+}
+
+const onModalOk = () => {
+  console.log(currPicture.value)
+  formState.value.background = currPicture.value.origin_path
+  modalVisible.value = false
 }
 
 const onBgTypeChange = (res: any) => {
@@ -107,13 +121,10 @@ onMounted(() => {
       </a-form-item>
 
       <a-form-item v-if="formState.style === 'fresh'" label="背景选择">
-        <a-radio-group v-model:value="bgType" @change="onBgTypeChange">
-          <a-radio :value="1">选择图片</a-radio>
-          <a-radio :value="2">从相册选择</a-radio>
-        </a-radio-group>
         <div style="margin-top: 10px;">
-          <div v-show="bgType === 1" style="width: 170px;height:90px">
+          <div style="width: 170px;height:90px;margin-bottom: 10px;">
             <yzp-upload
+              v-model:value="formState.background"
               class="list-upload-btn"
               :with-parent-with="true"
               :thumb="false"
@@ -125,19 +136,7 @@ onMounted(() => {
             >
             </yzp-upload>
           </div>
-          <div v-show="bgType === 2" >
-            <a-select v-model:value="currAlbumId" :options="albums"></a-select>
-            <ul class="bglist">
-              <li
-                v-for="(item, index) in pictures"
-                :key="index"
-                :class="{ active: currPictureId === item.id }"
-                @click="chooseImg(item)"
-              >
-                <img :src="item.thumb_path" />
-              </li>
-            </ul>
-          </div>
+          <a-button type="primary" plain @click="modalVisible = true" style="width: 170px">从相册选择</a-button>
         </div>
       </a-form-item>
 
@@ -153,6 +152,33 @@ onMounted(() => {
         <a-button type="primary" @click="onSubmit">立即保存</a-button>
       </a-form-item>
     </a-form>
+
+    <a-modal
+      v-model:visible="modalVisible"
+      :ok-button-props="{ disabled: !currPicture.id }"
+      @ok="onModalOk"
+      title="选择图片"
+    >
+      <div>
+        <a-select v-model:value="currAlbumId" :options="albums" style="width: 100%" @change="onAlbumSelect"></a-select>
+        
+        <ul v-if="pictures.length" class="bglist">
+          <li
+            v-for="(item, index) in pictures"
+            :key="index"
+            :class="{ active: currPicture.id === item.id }"
+            @click="chooseImg(item)"
+          >
+            <img :src="item.thumb_path" />
+          </li>
+        </ul>
+
+        <a-empty v-else />
+
+        <a-pagination v-if="pictures.length" v-model:current="picturePage" size="small" :total="pictureTotal" show-less-items @change="onPageChange" />
+      </div>
+    </a-modal>
+
   </div>
 </template>
 
@@ -160,6 +186,8 @@ onMounted(() => {
 .bglist {
   margin-left: -10px;
   margin-top: 10px;
+  max-height: 500px;
+  overflow-y: auto;
   &:after {
     content: "";
     display: block;
@@ -192,9 +220,13 @@ onMounted(() => {
       font-size: 24px;
       color: #ff0000;
     }
+    &:hover {
+      opacity: 0.7;
+    }
     &.active {
       img {
         border: 2px solid #ff6700;
+        opacity: 0.5;
       }
       &:after {
         content: "";
