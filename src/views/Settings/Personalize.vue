@@ -11,6 +11,7 @@ const labelCol = { style: { width: '100px' } }
 const styleOptions = ref([
   { label: '简约', value: 'simple' },
   { label: '小清新', value: 'fresh' },
+  { label: '暗黑', value: 'dark' },
   { label: '春季', value: 'spring' },
   { label: '夏季', value: 'summer' },
   { label: '秋季', value: 'autumn' },
