@@ -67,6 +67,7 @@ const getPictures = async () => {
 
 const onAlbumSelect = (album_id: any) => {
   currAlbumId.value = album_id
+  picturePage.value = 1
   getPictures()
 }
 
