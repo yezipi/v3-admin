@@ -140,9 +140,11 @@ export default defineComponent({
     watch(() => props.data, (data: any[]) => {
       tableConfig.loading = true
       if (!props.url) {
+        const tableBody: any = document.querySelector(`#${props.tableId} .ant-table-body`)
         tableConfig.dataSource = data
         tableConfig.total = props.total || data.length
         tableConfig.loading = false
+        tableBody && tableBody.scrollTo(0, 0)
       }
     })
 

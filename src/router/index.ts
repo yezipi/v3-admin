@@ -48,10 +48,10 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/publish',
-    name: 'Publish',
-    meta: { title: '内容发布', noLink: true, icon: EditOutlined },
-    component: () => import('@/views/Publish/Index.vue'),
+    path: '/content',
+    name: 'Content',
+    meta: { title: '内容管理', noLink: true, icon: CopyOutlined },
+    component: () => import('@/views/Content/Index.vue'),
     children: [
       {
         path: '/article/add',
@@ -77,14 +77,6 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: '微语发布' },
         component: () => import('@/views/Publish/MoodEdit.vue'),
       },
-    ],
-  },
-  {
-    path: '/content',
-    name: 'Content',
-    meta: { title: '内容管理', noLink: true, icon: CopyOutlined },
-    component: () => import('@/views/Content/Index.vue'),
-    children: [
       {
         path: '/article/list',
         name: 'ArticleList',

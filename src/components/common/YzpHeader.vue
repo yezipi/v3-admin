@@ -6,7 +6,7 @@ import {
   ReloadOutlined,
   UserOutlined,
   LogoutOutlined,
-  BgColorsOutlined,
+  SkinOutlined,
   CloudOutlined,
   BellOutlined
 } from '@ant-design/icons-vue'
@@ -66,7 +66,11 @@ const changeTheme = (theme: string) => {
 // 获取未审核内容
 MessageApi.getUnRead()
 
-onMounted(() => changeTheme(theme.value))
+if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  changeTheme('theme-dark')
+} else {
+  changeTheme('theme-default')
+}
 
 </script>
 
@@ -166,7 +170,7 @@ onMounted(() => changeTheme(theme.value))
               <a style="margin-left: 10px;">{{ menuStyle === 2 ? '垂直菜单' : '水平菜单' }}</a>
             </a-menu-item>
             <a-menu-item  @click="changeTheme(theme === 'theme-dark' ? 'theme-default' : 'theme-dark')">
-              <bg-colors-outlined />
+              <skin-outlined />
               <a style="margin-left: 10px;">{{ theme === 'theme-dark' ? '默认主题' : '暗黑主题' }}</a>
             </a-menu-item>
             <a-menu-item @click="logout">
