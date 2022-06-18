@@ -121,11 +121,11 @@ const closeDraw = () => {
       <a-form
         ref="formRef"
         :model="ruleForm"
-        :rules="rules"
+        :rules="(rules as any)"
         :label-col="labelCol"
       >
         <a-form-item label="图片" name="thumb_path">
-          <yzp-upload v-model:value="ruleForm.thumb_path" :width="1366" thumb dir="picture"></yzp-upload>
+          <yzp-upload v-model:value="ruleForm.thumb_path" :width="1366" thumb watermark dir="picture"></yzp-upload>
         </a-form-item>
 
         <a-form-item label="分类" name="album_id">
