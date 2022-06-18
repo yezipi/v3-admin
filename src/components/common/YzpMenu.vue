@@ -50,7 +50,7 @@ export default defineComponent({
       default: () => []
     },
     selectName: {
-      type: Array,
+      type: Array as any,
       default: () => []
     },
     menus: {

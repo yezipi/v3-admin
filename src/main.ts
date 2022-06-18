@@ -12,6 +12,8 @@ Router.beforeEach((to: any, from: any, next: any) => {
   const { meta, matched, name } = to
   document.title = meta.title || '未命名'
 
+  Store.commit('updateError', { status: 200, msg: '' })
+
   if (!Store.state.token && name !== 'Login') {
     Router.replace({
       name: 'Login',
@@ -19,16 +21,17 @@ Router.beforeEach((to: any, from: any, next: any) => {
         referrer: name
       }
     })
+    Store.commit('updateError', { status: 401, msg: '登录失效请重新登录' })
     return
   }
 
   if (!name || (meta.noLink && matched.length === 1)) {
-    next('/result?status=404')
+    Store.commit('updateError', { status: 404, msg: '页面不存在' })
     return
   }
 
   if (!Store.getters.permissions.includes(to.name) && !meta.noAuth && Store.state.token) {
-    next('/result?status=403')
+    Store.commit('updateError', { status: 403, msg: '无权限' })
     return
   }
 

@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 import store from '../store'
+import router from '@/router'
 import config from '../config'
-import router from '../router'
 import { message } from 'ant-design-vue';
 
 // interface resConfig extends AxiosResponse<any> {
@@ -50,10 +50,11 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   if (dataLoading || paramsLoading) {
     store.commit('hideLoading')
   }
-
-  if (code === 401) {
-    message.error('请重新登录')
+  if (code === 401 && store.state.error.status !== 401) {
+    const tokeninvalidMsg = '登录失效，请重新登录'
+    message.error(tokeninvalidMsg)
     store.dispatch('clearUser')
+    store.commit('updateError', { code: 401, msg: tokeninvalidMsg })
     router.replace({
       name: 'Login',
       query: {

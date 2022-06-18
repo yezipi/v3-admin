@@ -37,6 +37,9 @@ const mutations: MutationTree<StateConfig> = {
     state.msg = data
     db.set('msg', data)
   },
+  updateError(state, data) {
+    state.error = data
+  },
 }
 
 export default mutations

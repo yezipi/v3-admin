@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch, reactive, computed } from 'vue'
+import { ref, watch, reactive, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import 'dayjs/locale/zh-cn'
@@ -9,7 +9,7 @@ import zhCN from 'ant-design-vue/es/locale/zh_CN'
 dayjs.locale('zh-cn')
 
 const menuRef = ref()
-const isFullPage = ref(false)
+const isMainPage = ref(false)
 const menuState = reactive({
   openName: [] as any,
   selectName: ['Home'] as any
@@ -23,9 +23,11 @@ const store = useStore()
 const routes = router.options.routes
 const menus = reactive(routes.filter((e: any) => !e.meta.noMenu))
 const menuStyle = computed(() => Number(store.state.menuStyle))
+const error = computed(() => store.state.error)
+const token = computed(() => store.state.token)
 
-const setFullPageState = () => {
-  isFullPage.value = route.name !== 'Login'
+const setPageState = () => {
+  isMainPage.value = route.name !== 'Login'
 }
 
 watch(() => route.name, () => {
@@ -47,23 +49,32 @@ watch(() => route.name, () => {
       }
     }
   })
-  setFullPageState()
+  setPageState()
 })
 
 const collapseMenu = () => {
   menuRef.value.toggleCollapsed()
 }
 
+onMounted(() => {
+  setPageState()
+})
+
 </script>
 
 <template>
   <div class="yzp-app">
     <a-config-provider :locale="zhCN">
-      <yzp-menu v-if="isFullPage && menuStyle === 1" :menus="menus" :openName="menuState.openName"
-        :selectName="menuState.selectName" ref="menuRef">
+      <yzp-menu 
+        v-if="isMainPage && menuStyle === 1 && token"
+        :menus="menus"
+        :openName="menuState.openName"
+        :selectName="menuState.selectName"
+        ref="menuRef"
+      >
       </yzp-menu>
 
-      <div v-if="isFullPage" class="yzp-main">
+      <div v-if="isMainPage && token" class="yzp-main">
         <yzp-header :breadcrumbs="breadcrumbs" @collapseMenu="collapseMenu">
           <template v-if="menuStyle === 2" #menu>
             <yzp-menu :menus="menus" :openName="menuState.openName" :selectName="menuState.selectName" theme="light"
@@ -74,7 +85,11 @@ const collapseMenu = () => {
         <a-breadcrumb class="yzp-breadcrumb" v-if="menuStyle === 2">
           <a-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index">{{ item }}</a-breadcrumb-item>
         </a-breadcrumb>
-        <router-view :class="{ hasBreadcrumb: menuStyle === 2 }" class="yzp-section" />
+
+        <router-view v-if="error.status === 200" :class="{ hasBreadcrumb: menuStyle === 2 }" class="yzp-section" />
+        <div v-else class="yzp-section" style="display: flex; align-items: center; justify-content: center;">
+          <a-result :status="error.status" :title="error.msg"></a-result>
+        </div>
       </div>
 
       <!--未登录显示-->

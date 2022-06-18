@@ -15,6 +15,10 @@ export interface StateConfig {
       feedbacks: { count: number, rows: Array<any> },
       blogrolls: { count: number, rows: Array<any> },
     }
+  },
+  error: {
+    status: number,
+    msg: string
   }
 }
 
@@ -33,6 +37,10 @@ const state: StateConfig = {
       blogrolls: { count: 0, rows: [] as any },
     }
   },
+  error: {
+    status: 200,
+    msg: ''
+  }
 }
 
 export default state
