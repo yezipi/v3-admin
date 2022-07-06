@@ -12,8 +12,8 @@
           <a-switch :checked="record.status" @change="changeStatus(record, $event)" />
         </template>
 
-        <template v-if="dataIndex === 'createdAt'">
-          <span>{{ formatDate(record.createdAt, 'YYYY-MM-DD hh:mm') }}</span>
+        <template v-if="dataIndex === 'created_at'">
+          <span>{{ formatDate(record.created_at, 'YYYY-MM-DD hh:mm') }}</span>
         </template>
 
         <template v-if="dataIndex === 'type'">

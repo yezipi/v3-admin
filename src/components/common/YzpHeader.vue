@@ -28,9 +28,6 @@ const collapsed = ref(false)
 const Router = useRouter()
 const user = computed(() => Store.state.user)
 const msgCount = ref(0)
-const unReadComments = ref<any>({ count: 0, rows: [] })
-const unReadFeedbacks = ref<any>({ count: 0, rows: [] })
-const unReadBlogrolls = ref<any>({ count: 0, rows: [] })
 
 const unReadMsg = computed(() => Store.state.msg)
 
@@ -117,7 +114,7 @@ if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
                       <span v-if="item.article_type !== 'mood'" class="yzp-head-msg-user-title">《{{ item.title }}》</span>
                     </div>
                     <div class="yzp-head-msg-content">{{ item.content }}</div>
-                    <div class="yzp-head-msg-date">{{ timeAgao(item.createdAt) }}</div>
+                    <div class="yzp-head-msg-date">{{ timeAgao(item.created_at) }}</div>
                   </div>
                   <a-empty v-if="!unReadMsg.data.comments.rows.length" />
                 </a-tab-pane>
@@ -129,7 +126,7 @@ if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
                       <span class="yzp-head-msg-user-preffix">{{ item.preffix }}</span>
                     </div>
                     <div class="yzp-head-msg-content">{{ item.content }}</div>
-                    <div class="yzp-head-msg-date">{{ timeAgao(item.createdAt) }}</div>
+                    <div class="yzp-head-msg-date">{{ timeAgao(item.created_at) }}</div>
                   </div>
                   <a-empty v-if="!unReadMsg.data.feedbacks.rows.length" />
                 </a-tab-pane>
@@ -141,7 +138,7 @@ if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
                       <span class="yzp-head-msg-user-preffix">{{ item.preffix }}</span>
                     </div>
                     <div class="yzp-head-msg-content">{{ item.content }}</div>
-                    <div class="yzp-head-msg-date">{{ timeAgao(item.createdAt) }}</div>
+                    <div class="yzp-head-msg-date">{{ timeAgao(item.created_at) }}</div>
                   </div>
                   <a-empty v-if="!unReadMsg.data.blogrolls.rows.length" />
                 </a-tab-pane>
