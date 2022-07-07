@@ -122,7 +122,7 @@ onMounted(() => {
             </div>
             <div class="al-text" style="font-size: 12px;margin-top: 5px;">
               <span>浏览：{{ item.view }}</span>
-              <span>{{ formatDate(item.createdAt) }}</span>
+              <span>{{ formatDate(item.created_at) }}</span>
             </div>
           </div>
         </li>

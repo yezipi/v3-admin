@@ -74,7 +74,7 @@ export default defineComponent({
       },
       {
         title: '时间',
-        dataIndex: 'createdAt',
+        dataIndex: 'created_at',
         width: 200,
         format: 'YYYY-MM-DD'
       },
