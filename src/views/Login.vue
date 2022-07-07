@@ -31,6 +31,7 @@ import { ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
+import type { Rule } from 'ant-design-vue/es/form'
 import UserApi from '@/api/user'
 
 const formRef = ref();
@@ -47,15 +48,15 @@ const router = useRouter()
 const route = useRoute()
 const referrer: any = route.query.referrer
 
-const rules = {
-  name: {
+const rules: Record<string, Rule[]> = {
+  name: [{
     required: true,
     message: '请输入正确的账号',
-  },
-  password: {
+  }],
+  password: [{
     required: true,
     message: '请输入正确的密码',
-  },
+  }],
 };
 
 const onSubmit = () => {

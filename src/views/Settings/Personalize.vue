@@ -4,6 +4,7 @@ import { message } from 'ant-design-vue'
 import SettingsApi, { PersonalizeSettingsConfig } from '@/api/settings'
 import AlbumApi from '@/api/album'
 import PictureApi from '@/api/picture'
+import type { Rule } from 'ant-design-vue/es/form'
 
 const formRef = ref()
 const labelCol = { style: { width: '100px' } }
@@ -91,7 +92,7 @@ const onBgTypeChange = (res: any) => {
   }
 }
 
-const rules = {}
+const rules: Record<string, Rule[]> = {}
 
 // 获取详情
 const getDetail = async () => {

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
+import type { Rule } from 'ant-design-vue/es/form'
 import TagsApi from '@/api/tags'
 
 const props = defineProps({
@@ -24,7 +25,7 @@ const ruleForm = ref({
 })
 const labelCol = { style: { width: '100px' } }
 
-const rules = {
+const rules: Record<string, Rule[]> = {
   name: [{ message: '名称必须', required: true, trigger: 'blur' }],
   cover: [{ message: '封面必须', required: true, trigger: 'change' }],
 }

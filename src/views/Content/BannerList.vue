@@ -124,7 +124,7 @@ export default defineComponent({
     const defaultPic = '/src/assets/img/nopic.jpg'
 
     // 隐藏显示
-    const changeStatus = async (item: any, checked: boolean) => {
+    const changeStatus = async (item: any, checked: any) => {
       const { status, id } = item
       try {
         await BannerApi.update(id, { status: checked })

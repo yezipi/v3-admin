@@ -4,6 +4,7 @@ import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { message } from 'ant-design-vue'
 import SettingsApi, { BaiduConfig } from '@/api/settings'
 import ReportApi from '@/api/report'
+import type { Rule } from 'ant-design-vue/es/form'
 
 const formRef = ref();
 
@@ -14,7 +15,7 @@ const ruleForm = ref<BaiduConfig>({
   site_id: '',
 })
 
-const rules = {
+const rules: Record<string, Rule[]> = {
   appid: [{ required: true, message: '请填写百度统计的API Key', trigger: 'blur' }],
   secret:[ { required: true, message: '百度统计的Secret Key', trigger: 'blur' } ],
   code:[ { required: true, message: '请填写百度统计获取的code', trigger: 'blur' } ],

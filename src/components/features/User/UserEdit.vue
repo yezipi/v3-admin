@@ -2,7 +2,8 @@
 import { computed, ref, watch, reactive, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { Modal } from 'ant-design-vue';
+import { Modal } from 'ant-design-vue'
+import type { Rule } from 'ant-design-vue/es/form'
 import UserApi from '@/api/user'
 import RoleApi from '@/api/role'
 const props = defineProps({
@@ -34,7 +35,7 @@ const Store = useStore()
 const user = computed(() => Store.state.user)
 const roles = ref<Array<any>>([])
 
-const rules = reactive({
+const rules: Record<string, Rule[]> = reactive({
   nickname: [{ message: '昵称必须', required: true, trigger: 'blur' }],
   name: [{ message: '账号必须', required: true, trigger: 'blur' }],
   password: [{ message: '密码必须', required: true, trigger: 'blur' }],

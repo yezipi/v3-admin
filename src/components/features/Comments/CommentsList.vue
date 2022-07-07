@@ -135,7 +135,7 @@ const toDelete = (item: any) => {
 }
 
 // 更新
-const toUpdate =async (item: any, checked: boolean, key: any) => {
+const toUpdate =async (item: any, checked: any, key: any) => {
   const { id } = item
   const obj: any = {}
   obj[key] = checked

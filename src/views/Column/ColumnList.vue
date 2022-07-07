@@ -113,7 +113,7 @@ export default defineComponent({
     const router = useRouter()
 
     // 隐藏显示
-    const changeStatus = async (item: any, checked: boolean) => {
+    const changeStatus = async (item: any, checked: any) => {
       const { status, id } = item
       try {
         await ColumnApi.updateColumn(id, { status: checked })

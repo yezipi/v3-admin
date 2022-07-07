@@ -5,6 +5,7 @@ import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import SettingsApi, { BaseSettingsConfig } from '@/api/settings'
+import type { Rule } from 'ant-design-vue/es/form'
 
 const formRef = ref();
 
@@ -30,7 +31,7 @@ const formState = ref<BaseSettingsConfig>({
   web_like: 0,
 })
 
-const rules = {}
+const rules: Record<string, Rule[]> = {}
 const labelCol = { style: { width: '100px' } }
 
 // 获取详情

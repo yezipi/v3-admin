@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, toRaw, onMounted } from 'vue'
 import { message } from 'ant-design-vue'
+import type { Rule } from 'ant-design-vue/es/form'
 import SettingsApi, { SecuritySettingsConfig } from '@/api/settings'
 
 const formRef = ref();
@@ -9,7 +10,7 @@ const formState = ref<SecuritySettingsConfig>({
   black_ip: '',
 })
 
-const rules = {}
+const rules: Record<string, Rule[]> = {}
 
 // 获取详情
 const getDetail = async () => {
@@ -37,7 +38,7 @@ onMounted(() => {
   <div class="mail-settings">
     <a-form ref="formRef" :model="formState" :rules="rules" :label-col="labelCol">
       <a-form-item label="黑名单ip">
-        <a-textarea v-model:value="formState.black_ip" rows="3" placeholder="请输入要拦截的ip，英文逗号隔开"></a-textarea>
+        <a-textarea v-model:value="formState.black_ip" :rows="3" placeholder="请输入要拦截的ip，英文逗号隔开"></a-textarea>
       </a-form-item>
 
       <a-form-item style="margin-left: 100px;">

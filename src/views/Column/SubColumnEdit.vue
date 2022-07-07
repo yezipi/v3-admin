@@ -49,6 +49,7 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { useRoute, useRouter } from 'vue-router'
+import type { Rule } from 'ant-design-vue/es/form'
 import ColumnApi from '@/api/column'
 import DICT, { ColumnType } from '@/dict/index'
 
@@ -70,7 +71,7 @@ export default defineComponent({
       can_delete: true
     })
 
-    const rules = {
+    const rules: Record<string, Rule[]> = {
       name: [{ message: '标题必须', required: true, trigger: 'blur' }],
       url: [{ message: '路径必须', required: true, trigger: 'blur' }],
     }

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
+import type { Rule } from 'ant-design-vue/es/form'
 import ReportApi from '@/api/report'
 
 const props = defineProps({
@@ -63,7 +64,7 @@ const ruleForm = ref({ ...initForm })
 const labelCol = { style: { width: '100px' } }
 const drawTitle = ref('')
 
-const rules = ref<any>({
+const rules: Record<string, Rule[]> = reactive<any>({
   nickname: [{ message: '名称必须', required: true, trigger: 'blur' }],
   content: [{ message: '内容必须', required: true, trigger: 'blur' }],
   site: [{ message: '站点必须', required: false, trigger: 'blur' }]
@@ -75,7 +76,7 @@ watch(() => props.visible, (val: boolean) => {
     ruleForm.value = { ...initForm }
   }
   if (props.type === 'blogroll') {
-    rules.value.site[0].required = true
+    rules.site[0].required = true
   }
   if (props.id && val) {
     getInfo(props.id)

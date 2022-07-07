@@ -2,6 +2,7 @@
 <script lang="ts" setup>
 import { ref, watch, reactive } from 'vue'
 import BannerApi from '@/api/banner'
+import type { Rule } from 'ant-design-vue/es/form'
 
 const props = defineProps({
   visible: {
@@ -43,7 +44,7 @@ const checkTarget = async (rule: any) => {
   }
 }
 
-const rules = reactive({
+const rules: Record<string, Rule[]> = reactive({
   name: [{ message: '名称必须', required: true, trigger: 'blur' }],
   cover: [{ message: '封面必须', required: true, trigger: 'blur' }],
   url: [{ message: '链接必须', required: true, trigger: 'blur', validator: checkUrl }],

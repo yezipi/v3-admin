@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
+import type { Rule } from 'ant-design-vue/es/form'
 import ChangeLogsApi from '@/api/changeLogs'
 
 type LogTypeConfig = 'add' | 'fix' | 'update' | 'delete'
@@ -52,7 +53,7 @@ const checkVersion = async (rule: any, val: any) => {
   }
 }
 
-const rules = {
+const rules: Record<string, Rule[]> = {
   content: [{ message: '内容必须', required: true, trigger: 'blur' }],
   version: [{ trigger: 'blur', required: true, validator: checkVersion }],
 }

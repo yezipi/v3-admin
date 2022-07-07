@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue'
 import RoleApi from '@/api/role'
+import type { Rule } from 'ant-design-vue/es/form'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import state from '@/store/state'
@@ -31,7 +32,7 @@ const labelCol = { style: { width: '100px' } }
 const fieldNames = { children: 'children', title: 'meta', key: 'name' }
 const treeData = ref<Array<any>>([])
 
-const rules = {
+const rules: Record<string, Rule[]> = {
   name: [{ message: '名称必须', required: true, trigger: 'blur' }],
   cover: [{ message: '封面必须', required: true, trigger: 'change' }],
 }

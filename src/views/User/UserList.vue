@@ -90,7 +90,7 @@ export default defineComponent({
     const user = computed(() => Store.state.user)
 
     // 隐藏显示
-    const changeStatus = async (item: any, checked: boolean) => {
+    const changeStatus = async (item: any, checked: any) => {
       const { status, id } = item
       try {
         await UserApi.update(id, { status: checked })

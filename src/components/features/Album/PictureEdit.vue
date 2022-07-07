@@ -2,6 +2,7 @@
 import { ref, watch, reactive, toRaw, computed } from 'vue'
 import PictureApi from '@/api/picture'
 import { useStore } from 'vuex'
+import type { Rule } from 'ant-design-vue/es/form'
 
 const props = defineProps({
   visible: {
@@ -38,7 +39,7 @@ const initForm = {
 }
 const ruleForm = ref({ ...initForm })
 
-const rules = reactive({
+const rules: Record<string, Rule[]> = reactive({
   title: [{ message: '标题必须', required: true, trigger: 'blur' }],
   thumb_path: [{ message: '图片必须', required: true, trigger: 'blur' }],
   album_id: [{ message: '分类必须', required: true, trigger: 'change' }],

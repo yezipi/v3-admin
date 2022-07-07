@@ -2,6 +2,7 @@
 import { ref, toRaw, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
+import type { Rule } from 'ant-design-vue/es/form'
 import ColumnApi from '@/api/column'
 import ArticleApi, { ArticleSaveConfig } from '@/api/article'
 import TagsApi from '@/api/tags'
@@ -35,7 +36,7 @@ const formState = ref<ArticleSaveConfig>({
   tags: [],
 })
 
-const rules = {
+const rules: Record<string, Rule[]> = {
   title: [
     { required: true, message: '请输入标题', trigger: 'blur' },
     { min: 5, max: 50, message: '至少5个字哦， 最多50个字', trigger: 'blur' },

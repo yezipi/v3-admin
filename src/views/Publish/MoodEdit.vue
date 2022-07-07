@@ -41,6 +41,7 @@
 import { defineComponent, ref, toRaw, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
+import type { Rule } from 'ant-design-vue/es/form'
 import MoodApi from '@/api/mood'
 
 export default defineComponent({
@@ -57,7 +58,7 @@ export default defineComponent({
       open_comment: true,
     })
 
-    const rules = {
+    const rules: Record<string, Rule[]> = {
       content: [
         { required: true, message: '请输入正文内容', trigger: 'change' },
         { min: 5, message: '正文至少5个字哦', trigger: 'change' },

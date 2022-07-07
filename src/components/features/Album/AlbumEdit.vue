@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch, reactive, toRaw, computed } from 'vue'
 import AlbumApi from '@/api/album'
+import type { Rule } from 'ant-design-vue/es/form'
 import { useStore } from 'vuex'
 
 const props = defineProps({
@@ -39,7 +40,7 @@ const checkPassword = async (rule: any, val: string) => {
   }
 }
 
-const rules = reactive({
+const rules: Record<string, Rule[]> = reactive({
   title: [{ message: '标题必须', required: true, trigger: 'blur' }],
   cover: [{ message: '封面必须', required: true, trigger: 'change' }],
   password: [{ trigger: 'blur', validator: checkPassword }],

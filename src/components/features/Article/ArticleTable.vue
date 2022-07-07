@@ -150,7 +150,7 @@ export default defineComponent({
     const tagsColors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
 
     // 隐藏显示
-    const updateArticle = async (item: any, checked: boolean, key: any) => {
+    const updateArticle = async (item: any, checked: any, key: any) => {
       const { id } = item
       const obj: any = {}
       obj[key] = checked

@@ -3,6 +3,7 @@ import { ref, toRaw, onMounted } from 'vue'
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { message } from 'ant-design-vue'
 import SettingsApi, { AdSettingsConfig } from '@/api/settings'
+import type { Rule } from 'ant-design-vue/es/form'
 
 const formRef = ref()
 
@@ -13,7 +14,7 @@ const formState = ref<AdSettingsConfig>({
   status: false,
 });
 
-const rules = {}
+const rules: Record<string, Rule[]> = {}
 const labelCol = { style: { width: '100px' } }
 
 // 获取详情

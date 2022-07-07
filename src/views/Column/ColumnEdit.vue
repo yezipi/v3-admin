@@ -34,7 +34,7 @@
       </a-form-item>
 
       <a-form-item label="栏目描述">
-        <a-textarea v-model:value="ruleForm.description" rows="3" placeholder="填写栏目描述"></a-textarea>
+        <a-textarea v-model:value="ruleForm.description" :rows="3" placeholder="填写栏目描述"></a-textarea>
       </a-form-item>
 
       <a-form-item label="栏目内容" name="content" class="maxwidth-100">
@@ -53,6 +53,7 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ColumnApi from '@/api/column'
+import type { Rule } from 'ant-design-vue/es/form'
 import DICT, { ColumnType } from '@/dict/index'
 
 export default defineComponent({
@@ -74,7 +75,7 @@ export default defineComponent({
       can_delete: true
     })
 
-    const rules = {
+    const rules: Record<string, Rule[]> = {
       name: [{ message: '标题必须', required: true, trigger: 'blur' }],
       url: [{ message: '路径必须', required: true, trigger: 'blur' }],
       content: [{ message: '内容必须', required: true, trigger: 'blur' }],
