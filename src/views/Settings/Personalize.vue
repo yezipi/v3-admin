@@ -97,6 +97,9 @@ const rules: Record<string, Rule[]> = {}
 // 获取详情
 const getDetail = async () => {
   const { data } = await SettingsApi.getPersonalizeSettings()
+  if (!data) {
+    return
+  }
   formState.value = data
   if (data.background) {
     bgType.value = 2
