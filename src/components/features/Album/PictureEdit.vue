@@ -134,7 +134,7 @@ const closeDraw = () => {
         </a-form-item>
 
         <a-form-item label="标题" name="title">
-          <a-input v-model:value="ruleForm.title" placeholder="填写相册标题" :maxlength="30" />
+          <a-input v-model:value="ruleForm.title" autocomplete="off" placeholder="填写相册标题" :maxlength="30" />
         </a-form-item>
 
         <a-form-item label="描述" name="description">

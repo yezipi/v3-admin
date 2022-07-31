@@ -43,7 +43,6 @@ const checkPassword = async (rule: any, val: string) => {
 const rules: Record<string, Rule[]> = reactive({
   title: [{ message: '标题必须', required: true, trigger: 'blur' }],
   cover: [{ message: '封面必须', required: true, trigger: 'change' }],
-  password: [{ trigger: 'blur', validator: checkPassword }],
 })
 
 const store = useStore()
@@ -128,7 +127,7 @@ const closeDraw = () => {
         </a-form-item>
 
         <a-form-item label="标题" name="title">
-          <a-input v-model:value="ruleForm.title" placeholder="填写相册标题" :maxlength="30"></a-input>
+          <a-input v-model:value="ruleForm.title" autocomplete="off" placeholder="填写相册标题" :maxlength="30"></a-input>
         </a-form-item>
 
         <a-form-item label="描述" name="description">

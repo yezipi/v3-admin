@@ -48,6 +48,11 @@
           <a-switch :checked="record.recommend" @change="updateArticle(record, $event, 'recommend')" />
         </template>
 
+         <template v-if="dataIndex === 'lock'">
+          <a-switch :checked="record.lock" @change="updateArticle(record, $event, 'lock')" />
+        </template>
+
+
         <template v-if="dataIndex === 'status'">
           <a-switch :checked="record.status" @change="updateArticle(record, $event, 'status')" />
         </template>
@@ -127,6 +132,12 @@ export default defineComponent({
         width: 100,
       },
       {
+        title: '是否私密',
+        dataIndex: 'lock',
+        width: 100,
+        noTransform: true,
+      },
+      {
         title: '时间',
         dataIndex: 'created_at',
         format: 'YYYY-MM-DD hh:mm',
@@ -158,7 +169,7 @@ export default defineComponent({
         await ArticleApi.update(id, obj)
         item[key] = checked
       } catch (e) {
-        item[key] = !item[key]
+        item[key] = !checked
       }
     }
 

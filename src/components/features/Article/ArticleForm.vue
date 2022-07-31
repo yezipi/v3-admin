@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, toRaw, onMounted, computed } from 'vue'
+import { ref, toRaw, onMounted, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import type { Rule } from 'ant-design-vue/es/form'
@@ -38,7 +38,7 @@ const formState = ref<ArticleSaveConfig>({
   password: ''
 })
 
-const rules: Record<string, Rule[]> = {
+const rules: Record<string, Rule[]> = reactive({
   title: [
     { required: true, message: '请输入标题', trigger: 'blur' },
     { min: 5, max: 50, message: '至少5个字哦， 最多50个字', trigger: 'blur' },
@@ -47,8 +47,9 @@ const rules: Record<string, Rule[]> = {
     { required: true, message: '请输入正文内容', trigger: 'change' },
     { min: 5, message: '正文至少5个字哦', trigger: 'change' },
   ],
-  subcolumn_id: [{ required: true, message: '请选择分类', trigger: 'blur' }]
-}
+  subcolumn_id: [{ required: true, message: '请选择分类', trigger: 'blur' }],
+  password: [{ required: formState.value.lock, message: '请输入密码', trigger: 'blur' }]
+})
 
 const labelCol = { style: { width: '100px' } }
 const columnsFieldNames = { label: 'name', value: 'id', children: 'subcolumns' }
@@ -187,8 +188,8 @@ onMounted(() => {
         <a-switch v-model:checked="formState.lock"  />
       </a-form-item>
 
-      <a-form-item v-if="formState.lock" label="密码">
-        <a-input v-model:value="formState.password" placeholder="请输入密码" />
+      <a-form-item v-if="formState.lock" label="密码" name="password">
+        <a-input v-model:value="formState.password" placeholder="请输入密码，为空则不改变密码" />
       </a-form-item>
 
       <a-form-item label="设置">
