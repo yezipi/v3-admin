@@ -102,11 +102,13 @@ const closeDraw = () => {
   emit('update:visible', false)
 }
 
-const onTypeChange = (res: any) => {
+const onTypeChange = () => {
   ruleForm.value.target = undefined
-  if (res.target.value !== 3) {
-    ruleForm.value.target = undefined
-  }
+  ruleForm.value.name = ''
+}
+
+const onArticleSelect = (res: any) => {
+  ruleForm.value.name = res.title
 }
 
 </script>
@@ -136,10 +138,6 @@ const onTypeChange = (res: any) => {
           </div>
         </a-form-item>
 
-        <a-form-item label="名称" name="name">
-          <a-input v-model:value="ruleForm.name" autocomplete="off" placeholder="请填写名称"></a-input>
-        </a-form-item>
-
         <a-form-item label="排序" name="sort">
           <a-input-number v-model:value="ruleForm.sort" autocomplete="off" placeholder="请填写序号" style="width: 100%"></a-input-number>
         </a-form-item>
@@ -158,11 +156,15 @@ const onTypeChange = (res: any) => {
         </a-form-item>
 
         <a-form-item v-if="ruleForm.type === 1" label="文章" name="target">
-          <article-search v-model:value="ruleForm.target" autoLoad type="article"></article-search>
+          <article-search v-model:value="ruleForm.target" autoLoad type="article" @select="onArticleSelect"></article-search>
         </a-form-item>
 
         <a-form-item v-if="ruleForm.type === 2" label="案例" name="target">
-          <article-search v-model:value="ruleForm.target" autoLoad type="case"></article-search>
+          <article-search v-model:value="ruleForm.target" autoLoad type="case" @select="onArticleSelect"></article-search>
+        </a-form-item>
+
+        <a-form-item label="名称" name="name">
+          <a-input v-model:value="ruleForm.name" :disabled="ruleForm.type === 1 || ruleForm.type === 2" autocomplete="off" placeholder="请填写名称"></a-input>
         </a-form-item>
 
         <a-form-item label="状态" name="status">

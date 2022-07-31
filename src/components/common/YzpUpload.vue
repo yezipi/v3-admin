@@ -276,7 +276,7 @@ export default defineComponent({
 
       const fileSuffix = file.name.split('.')
 
-      formData.append('filename', `${props.filename}.${fileSuffix[fileSuffix.length - 1]}`)
+      formData.append('filename', `${props.filename || fileSuffix[0]}.${fileSuffix[fileSuffix.length - 1]}`)
       formData.append('files', file)
       formData.append('thumb', props.thumb ? '1' : '0')
       formData.append('watermark', props.watermark ? '1' : '0')

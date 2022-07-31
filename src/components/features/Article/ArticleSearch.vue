@@ -13,7 +13,13 @@
     :not-found-content="fetching ? undefined : null"
     @search="handleSearch"
   >
-    <a-select-option v-for="(item, index) in options" :value="item.id" :key="index" class="aso-cell">
+    <a-select-option
+      v-for="(item, index) in options"
+      :value="item.id"
+      :key="index" 
+      class="aso-cell"
+      @click="handleChange(item)"
+    >
       <div class="aso-item">
         <span v-if="item.recommend" class="aso-label">【推荐】</span>
         <span class="aso-value">{{ item.title }}</span>
@@ -78,7 +84,6 @@ export default defineComponent({
     }, 1000)
 
     const handleChange = (val: any) => {
-      conf.value = val
       emit('select', val)
     }
 
