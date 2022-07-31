@@ -34,6 +34,8 @@ const formState = ref<ArticleSaveConfig>({
   top: false,
   type: 'article',
   tags: [],
+  lock: false,
+  password: ''
 })
 
 const rules: Record<string, Rule[]> = {
@@ -179,6 +181,14 @@ onMounted(() => {
       
       <a-form-item label="浏览">
         <a-input-number v-model:value="formState.view" placeholder="请输入浏览数" style="width: 100%" />
+      </a-form-item>
+
+      <a-form-item label="私密">
+        <a-switch v-model:checked="formState.lock"  />
+      </a-form-item>
+
+      <a-form-item v-if="formState.lock" label="密码">
+        <a-input v-model:value="formState.password" placeholder="请输入密码" />
       </a-form-item>
 
       <a-form-item label="设置">

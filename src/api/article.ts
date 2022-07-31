@@ -2,23 +2,25 @@
 import Request from '../utils/request'
 
 type ArticleFields =  {
-  type?: string,
-  subcolumn_id?: Array<any>,
-  column_id?: number,
-  cover?: string,
-  keywords?: string,
-  description?: string,
-  from?: string,
-  user_id?: number,
-  view?: number,
-  like?: number,
-  status?: boolean,
+  type?: string
+  subcolumn_id?: Array<any>
+  column_id?: number
+  cover?: string
+  keywords?: string
+  description?: string
+  from?: string
+  user_id?: number
+  view?: number
+  like?: number
+  status?: boolean
   top?: boolean
   recommend?: boolean
   download_link?: string
   open_comment?: boolean
-  tags?: Array<any>,
-  sort?: number,
+  tags?: Array<any>
+  sort?: number
+  lock?: boolean
+  password?: string
 }
 
 export interface ArticleSaveConfig extends ArticleFields {
