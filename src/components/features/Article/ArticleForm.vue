@@ -96,6 +96,7 @@ const onSubmit = async () => {
   if (!formState.value.cover) {
     formState.value.cover = `/public/poster/${parseInt(String(Math.random() * 50))}.jpg`
   }
+  formState.value.content = formState.value.content.replace(/..\/public/g, '/public')
   const data = {
     ...toRaw(formState.value),
     user_id: user.value.id,
