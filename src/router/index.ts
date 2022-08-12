@@ -246,7 +246,13 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Mainten/Messages.vue'),
       },
       {
-        path: '/mial/logs',
+        path: '/mail/send',
+        name: 'SendMail',
+        meta: { title: '发送邮件', icon: '' },
+        component: () => import('@/views/Mainten/SendMail.vue'),
+      },
+      {
+        path: '/mail/logs',
         name: 'MailLogs',
         meta: { title: '邮件记录', icon: '' },
         component: () => import('@/views/Mainten/MailLogs.vue'),

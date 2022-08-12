@@ -88,7 +88,7 @@ onMounted(() => {
         <a-input v-model:value="formState.receive_title" placeholder="收件标题"></a-input>
       </a-form-item>
 
-      <a-form-item label="开启通知">
+      <a-form-item label="启用邮件通知">
         <a-switch v-model:checked="formState.receive_notice"></a-switch>
       </a-form-item>
 

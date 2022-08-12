@@ -15,6 +15,18 @@ export default new class Common extends Request {
   }
 
   /**
+   * 发送邮件
+   * @param { String } subject 标题
+   * @param { String } html 内容
+   * @param { String } recipient 收件人
+   * @version 2022-08-12 zzc
+   */
+  public sendMail(params: { subject: string, html: string, recipient: string }) {
+    const url = 'v1/common/sendMail'
+    return this.post(url, { ...params, loading: true, })
+  }
+
+  /**
    * 获取表情
    * @version 2021-12-16 zzc
    * @param { String } dir 目录

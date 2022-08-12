@@ -65,9 +65,9 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   }
 
   if (code !== 1) {
-    if (method !== 'get') {
-      message.error(msg)
-    }
+    // if (method !== 'get') {
+    //   message.error(msg)
+    // }
     return Promise.reject(res)
   }
 
@@ -77,7 +77,7 @@ axios.interceptors.response.use((response: AxiosResponse) => {
 
   return res
 }, (error: AxiosError) => {
-  const str = error.toString()
+  const str = (error as any).msg || error.toString()
   const errMsg = str.indexOf('timeout') > 0 ? '请求超时，请刷新后重试！' : str
   message.error(errMsg)
   store.commit('hideLoading')
