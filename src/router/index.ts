@@ -294,6 +294,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Settings/Mail.vue'),
       },
       {
+        path: '/settings/aliyun',
+        name: 'AliyunSettings',
+        meta: { title: '阿里云设置', icon: '' },
+        component: () => import('@/views/Settings/Aliyun.vue'),
+      },
+      {
         path: '/settings/custom',
         name: 'CustomSettings',
         meta: { title: '个性化设置', icon: '' },

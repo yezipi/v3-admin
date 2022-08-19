@@ -50,6 +50,15 @@ export type MaintenanceSettingsConfig = {
   open: boolean;
 }
 
+export type AliyunSettingsConfig = {
+  region: string;
+  accessKeyId: string;
+  accessKeySecret: string;
+  bucket: string;
+  dir: string;
+  open: boolean,
+};
+
 export interface BaiduConfig {
   appid: string,
   secret: string,
@@ -162,6 +171,31 @@ export default new class Settings extends Request {
    */
   public getMaintenanceSettings() {
     const url = 'v1/settings/getMaintenanceSettings'
+    return this.get(url, { loading: true })
+  }
+
+  /**
+   * 保存阿里云oss设置
+   * @param { Object } data 邮件设置参数
+   * @param { String } data.region 区域
+   * @param { String } data.accessKeyId 黑名单ip,逗号分隔
+   * @param { String } data.accessKeySecret 黑名单ip,逗号分隔
+   * @param { String } data.bucket bucket名称
+   * @param { String } data.dir 目录
+   * @param { Boolean } data.open 是否启用
+   * @version 2022-08-19 zzc
+   */
+  public saveAliyunettings(data: AliyunSettingsConfig) {
+    const url = 'v1/settings/saveAliyunettings'
+    return this.put(url, { loading: true, ...data })
+  }
+
+  /**
+   * 获取存阿里云oss设置
+   * @version 2022-08-19 zzc
+   */
+  public getAliyunSettings() {
+    const url = 'v1/settings/getAliyunSettings'
     return this.get(url, { loading: true })
   }
 
