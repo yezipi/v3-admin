@@ -305,8 +305,9 @@ export default defineComponent({
         if (props.clip) {
           cropperState.visible = false
         }
-      } catch (e) {
+      } catch (e: any) {
         console.log(e)
+        message.error(e.msg || '上传失败！')
       } finally {
         loading.value = false
       }

@@ -21,6 +21,9 @@ export interface BaseSettingsConfig {
   web_avatar: string,
   web_logo: string,
   web_like: number,
+  alipay_code: string,
+  wxpay_code: string,
+  gzh_code: string,
 }
 
 export interface AdSettingsConfig {

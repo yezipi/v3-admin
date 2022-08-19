@@ -29,6 +29,9 @@ const formState = ref<BaseSettingsConfig>({
   web_avatar: '',
   web_logo: '',
   web_like: 0,
+  alipay_code: '',
+  wxpay_code: '',
+  gzh_code: '',
 })
 
 const rules: Record<string, Rule[]> = {}
@@ -98,6 +101,45 @@ onMounted(() => {
       </div>
 
       <div class="formitem-wrap">
+
+        <a-form-item label="支付宝收款码">
+          <div style="height: 58px;width:58px">
+            <yzp-upload
+              v-model:value="formState.alipay_code"
+              :width="150"
+              :height="150"
+              :with-parent-with="true"
+              filename="alipay_code"
+            ></yzp-upload>
+          </div>
+        </a-form-item>
+
+        <a-form-item label="微信收款码">
+          <div style="height: 58px;width:58px">
+            <yzp-upload
+              v-model:value="formState.wxpay_code"
+              :width="150"
+              :height="150"
+              :with-parent-with="true"
+              filename="wxpay_code"
+            ></yzp-upload>
+          </div>
+        </a-form-item>
+
+        <a-form-item label="公众号二维码">
+          <div style="height: 58px;width:58px">
+            <yzp-upload
+              v-model:value="formState.gzh_code"
+              :width="150"
+              :height="150"
+              :with-parent-with="true"
+              filename="gzh_code"
+            ></yzp-upload>
+          </div>
+        </a-form-item>
+      </div>
+
+      <div class="formitem-wrap">
         <a-form-item label="网站名称">
           <a-input v-model:value="formState.web_name" placeholder="请输入网站名称" />
         </a-form-item>
@@ -138,10 +180,6 @@ onMounted(() => {
           <a-textarea v-model:value="formState.web_notice" :rows="3" placeholder="请输入网站公告，英文逗号隔开" />
         </a-form-item>
 
-        <a-form-item label="统计代码">
-          <a-textarea v-model:value="formState.web_tongji" :rows="3" placeholder="请输入统计代码" />
-        </a-form-item>
-
         <a-form-item label="建站日期">
           <a-date-picker
             v-model:value="formState.web_date"
@@ -154,7 +192,10 @@ onMounted(() => {
           <a-input v-model:value="formState.web_like" type="number" placeholder="请输入点赞量" />
         </a-form-item>
 
-        <a-form-item label="评论开关">
+      </div>
+
+      <div class="formitem-wrap">
+        <a-form-item label="开启评论">
           <a-switch v-model:checked="formState.open_comment" />
         </a-form-item>
         <a-form-item label="评论审核">
