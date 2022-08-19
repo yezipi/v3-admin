@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, toRaw, onMounted } from 'vue'
+import { ref, toRaw } from 'vue'
 import { message } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import SettingsApi, { SecuritySettingsConfig } from '@/api/settings'
@@ -28,10 +28,7 @@ const onSubmit = () => {
   })
 }
 
-
-onMounted(() => {
-  getDetail()
-})
+getDetail()
 </script>
 
 <template>

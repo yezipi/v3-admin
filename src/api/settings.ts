@@ -45,6 +45,11 @@ export interface SecuritySettingsConfig {
   black_ip: string,
 }
 
+export type MaintenanceSettingsConfig = {
+  content: string;
+  open: boolean;
+}
+
 export interface BaiduConfig {
   appid: string,
   secret: string,
@@ -78,15 +83,6 @@ export default new class Settings extends Request {
    */
   public getPersonalizeSettings() {
     const url = 'v1/settings/getPersonalizeSettings'
-    return this.get(url, { loading: true })
-  }
-
-  /**
-   * 获取安全设置
-   * @version 2021-10-30 zzc
-   */
-  public getSecuritySettings() {
-    const url = 'v1/settings/getSecuritySettings'
     return this.get(url, { loading: true })
   }
 
@@ -149,14 +145,44 @@ export default new class Settings extends Request {
   }
 
   /**
+   * 网站维护设置保存
+   * @param { Object } data 参数
+   * @param { String } data.content 维护内容
+   * @param { Boolean } data.open 维护状态
+   * @version 2022-08-19 zzc
+   */
+  public saveMaintenanceSettings(data: MaintenanceSettingsConfig) {
+    const url = 'v1/settings/saveMaintenanceSettings'
+    return this.put(url, { loading: true, ...data })
+  }
+
+  /**
+   * 获取网站维护设置
+   * @version 2022-08-19 zzc
+   */
+  public getMaintenanceSettings() {
+    const url = 'v1/settings/getMaintenanceSettings'
+    return this.get(url, { loading: true })
+  }
+
+  /**
    * 保存安全设置
    * @param { Object } data 邮件设置参数
    * @param { String } data.black_ip 黑名单ip,逗号分隔
    * @version 2021-10-30 zzc
    */
-  public saveSecuritySettings(data: SecuritySettingsConfig) {
+   public saveSecuritySettings(data: SecuritySettingsConfig) {
     const url = 'v1/settings/saveSecuritySettings'
     return this.put(url, { loading: true, ...data })
+  }
+
+  /**
+   * 获取安全设置
+   * @version 2021-10-30 zzc
+   */
+  public getSecuritySettings() {
+    const url = 'v1/settings/getSecuritySettings'
+    return this.get(url, { loading: true })
   }
 
   /**

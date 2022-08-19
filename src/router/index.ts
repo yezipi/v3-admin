@@ -269,6 +269,19 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: '百度统计', icon: '' },
         component: () => import('@/views/Mainten/Baidu.vue'),
       },
+      {
+        path: '/settings/security',
+        name: 'SecuritySettings',
+        meta: { title: '安全设置', icon: '' },
+        component: () => import('@/views/Mainten/Security.vue'),
+      },
+
+      {
+        path: '/settings/maintenance',
+        name: 'MaintenanceSettings',
+        meta: { title: '网站维护', icon: '' },
+        component: () => import('@/views/Mainten/Maintenance.vue'),
+      },
     ],
   },
   {
@@ -288,12 +301,6 @@ const routes: Array<RouteRecordRaw> = [
         name: 'MailSettings',
         meta: { title: '邮件设置', icon: '' },
         component: () => import('@/views/Settings/Mail.vue'),
-      },
-      {
-        path: '/settings/security',
-        name: 'SecuritySettings',
-        meta: { title: '安全设置', icon: '' },
-        component: () => import('@/views/Settings/Security.vue'),
       },
       {
         path: '/settings/custom',
