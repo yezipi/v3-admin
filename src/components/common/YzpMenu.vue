@@ -27,7 +27,12 @@
             <template #title>{{ item.meta.title }}</template>
             <template v-if="item.children.length">
               <template v-for="(sub) in item.children">
-                <a-menu-item v-if="!sub.meta.noMenu &&  showMenu(sub.name)" :key="sub.name" @click="onMenuClick(sub)">{{ sub.meta.title }}</a-menu-item>
+                <a-menu-item v-if="!sub.meta.noMenu &&  showMenu(sub.name)" :key="sub.name" @click="onMenuClick(sub)">
+                  <template #icon>
+                    <component :is="sub.meta.icon"></component>
+                  </template>
+                  {{ sub.meta.title }}
+                </a-menu-item>
               </template>
             </template>
           </a-sub-menu>

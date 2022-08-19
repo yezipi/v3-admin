@@ -96,6 +96,18 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Content/MoodList.vue'),
       },
       {
+        path: '/albums/list',
+        name: 'AlbumList',
+        meta: { title: '相册管理', icon: PictureOutlined },
+        component: () => import('@/views/Content/AlbumList.vue'),
+      },
+      {
+        path: '/picture/list',
+        name: 'PictureList',
+        meta: { title: '图片列表', icon: '', noMenu: true },
+        component: () => import('@/views/Content/PictureList.vue'),
+      },
+      {
         path: '/banner/list',
         name: 'BannerList',
         meta: { title: '轮播管理', icon: '' },
@@ -140,26 +152,6 @@ const routes: Array<RouteRecordRaw> = [
         name: 'BlogrollList',
         meta: { title: '友链列表', icon: '' },
         component: () => import('@/views/Blogroll/BlogrollList.vue'),
-      },
-    ],
-  },
-  {
-    path: '/albums',
-    name: 'Albums',
-    meta: { title: '相册管理', noLink: true, icon: PictureOutlined },
-    component: () => import('@/views/Album/Index.vue'),
-    children: [
-      {
-        path: '/albums/list',
-        name: 'AlbumList',
-        meta: { title: '相册列表', icon: '' },
-        component: () => import('@/views/Album/AlbumList.vue'),
-      },
-      {
-        path: '/picture/list',
-        name: 'PictureList',
-        meta: { title: '图片列表', icon: '' },
-        component: () => import('@/views/Album/PictureList.vue'),
       },
     ],
   },
@@ -264,18 +256,17 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Mainten/Ad.vue'),
       },
       {
-        path: '/settings/baidu',
-        name: 'BaiduSettings',
-        meta: { title: '百度统计', icon: '' },
-        component: () => import('@/views/Mainten/Baidu.vue'),
-      },
-      {
         path: '/settings/security',
         name: 'SecuritySettings',
         meta: { title: '安全设置', icon: '' },
         component: () => import('@/views/Mainten/Security.vue'),
       },
-
+      {
+        path: '/settings/baidu',
+        name: 'BaiduSettings',
+        meta: { title: '百度统计', icon: '' },
+        component: () => import('@/views/Mainten/Baidu.vue'),
+      },
       {
         path: '/settings/maintenance',
         name: 'MaintenanceSettings',
