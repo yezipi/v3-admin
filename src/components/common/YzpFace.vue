@@ -12,6 +12,7 @@ interface FaceItem {
   path: string,
   index: number,
   dir: string,
+  alias: string,
   data?: any,
 }
 
@@ -26,7 +27,8 @@ const props = defineProps({
 const faces = ref<Array<FaceItem>>([])
 const curr = ref({
   path: '',
-  alias: ''
+  alias: '',
+  dir: '',
 })
 const loadEnd = ref(false)
 const state = ref(props.value)
@@ -98,7 +100,7 @@ onMounted(() => getFace())
           :class="{ active: item.index === dirIndex }"
           @click.stop="selectType(item.index)"
         >
-          {{ item.dir }}
+          {{ item.alias }}
         </span>
       </div>
       <img v-if="curr.path" class="yzp-ew-zoom" :src="setStyle(curr.path, 1)" />
@@ -135,7 +137,8 @@ onMounted(() => getFace())
   z-index: 1;
   background: #ffffff;
   box-shadow: 0 0 10px #cccccc;
-  border-radius: 3px;
+  border-radius: 6px;
+  animation: toTop 0.3s;
   .yzp-emoji-loading {
     min-height: 200px;
     display: flex;
@@ -161,13 +164,12 @@ onMounted(() => getFace())
     }
   }
   .yzp-ew-tab {
-    display: flex;
-    justify-content: flex-start;
+    display: inline-block;
     height: 40px;
-    border-radius: 3px;
+    border-radius: 6px;
     overflow: hidden;
     span {
-      display: block;
+      display: inline-block;
       height: 100%;
       width: 60px;
       line-height: 40px;
@@ -176,6 +178,10 @@ onMounted(() => getFace())
       text-align: center;
       background: #eeeeee;
       cursor: pointer;
+      border-left: 1px solid #dddddd;
+      &:first-child {
+        border: 0;
+      }
       &.active {
         background: #20a8fe;
         color: #ffffff;
@@ -222,18 +228,12 @@ onMounted(() => getFace())
     }
   }
 }
-.zoomIn {
-  animation: zoomIn 0.3s linear;
-}
-@keyframes zoomIn {
-  0%,
-  30% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+@keyframes toTop {
+	0% {
+		transform: translateY(30px);
+	}
+	100% {
+		transform: translateY(0);
+	}
 }
 </style>
