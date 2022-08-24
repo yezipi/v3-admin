@@ -12,7 +12,7 @@ export interface BannerCreateConfig {
   type: number,
   target: any,
   sort: number,
-  status: boolean,
+  status: number,
   url: any
 }
 
@@ -22,7 +22,7 @@ export interface BannerUpdateConfig {
   type?: number,
   target?: any,
   sort?: number,
-  status?: boolean,
+  status?: number,
   url?: any
 }
 
@@ -30,8 +30,7 @@ export default new class Banner extends Request {
 
   /**
    * 创建标签
-   * @param { Object } params 参数
-   * @param { String } params.name 内容
+   * @param { Object } data 参数
    * @version 2021-11-05 zzc
    */
    public create(data: BannerCreateConfig) {

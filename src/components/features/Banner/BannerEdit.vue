@@ -20,7 +20,7 @@ const initForm = {
   name: '',
   cover: '',
   type: 1,
-  status: true,
+  status: 1,
   target: undefined as any, // 1文章，2案例，3外部url, 0不跳转
   sort: 100,
   url: undefined,
@@ -168,7 +168,7 @@ const onArticleSelect = (res: any) => {
         </a-form-item>
 
         <a-form-item label="状态" name="status">
-          <a-switch v-model:checked="ruleForm.status"></a-switch>
+          <a-switch v-model:checked="ruleForm.status" :checkedValue="1" :unCheckedValue="0">显示</a-switch>
         </a-form-item>
       </a-form>
     </template>

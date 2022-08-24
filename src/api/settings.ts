@@ -30,7 +30,7 @@ export interface AdSettingsConfig {
   banner: string,
   aside: string,
   float: string,
-  status: boolean,
+  open: boolean,
 }
 
 export interface PersonalizeSettingsConfig {

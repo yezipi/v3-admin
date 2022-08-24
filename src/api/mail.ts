@@ -16,7 +16,7 @@ export interface MailSettingsConfig {
   send_title: string,
   receive_mail: string,
   receive_title: string,
-  receive_notice: boolean,
+  open: boolean,
 }
 
 export default new class Mail extends Request {

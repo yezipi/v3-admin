@@ -52,9 +52,8 @@
           <a-switch :checked="record.lock" @change="updateArticle(record, $event, 'lock')" />
         </template>
 
-
         <template v-if="dataIndex === 'status'">
-          <a-switch :checked="record.status" @change="updateArticle(record, $event, 'status')" />
+          <a-switch :checked="record.status" :checkedValue="1" :unCheckedValue="0" @change="updateArticle(record, $event, 'status')" />
         </template>
 
         <template v-if="dataIndex === 'action'">

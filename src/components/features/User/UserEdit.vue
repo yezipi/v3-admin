@@ -21,7 +21,7 @@ const initForm = {
   name: '',
   nickname: '',
   password: undefined,
-  status: true,
+  status: 1,
   role_id: undefined,
   avatar: ''
 }
@@ -179,6 +179,8 @@ onMounted(() => {
           <a-switch
             v-model:checked="ruleForm.status"
             :disabled="isSuper"
+            :checked-value="1"
+            :un-checked-value="0"
             checked-children="正常"
             un-checked-children="禁用"
           ></a-switch>

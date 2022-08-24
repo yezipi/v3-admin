@@ -51,7 +51,7 @@ const initForm = {
   article_id: undefined,
   type,
   nofollow: true,
-  status: false,
+  status: 0,
   notice: false,
   sort: 100,
 }
@@ -184,7 +184,7 @@ const closeDraw = () => {
         </a-form-item>
 
         <a-form-item label="设置">
-          <a-checkbox v-model:checked="ruleForm.status">显示</a-checkbox>
+          <a-switch v-model:checked="ruleForm.status" :checked-value="1" :un-checked-value="0">显示</a-switch>
           <a-checkbox v-model:checked="ruleForm.notice" :disabled="!ruleForm.email || !ruleForm.reply_content">邮件通知TA</a-checkbox>
         </a-form-item>
         

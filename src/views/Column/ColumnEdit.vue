@@ -22,7 +22,7 @@
       </a-form-item>
 
       <a-form-item label="是否显示">
-        <a-switch v-model:checked="ruleForm.status"></a-switch>
+        <a-switch v-model:checked="ruleForm.status" :checked-value="1" :un-checked-value="0"></a-switch>
       </a-form-item>
 
       <a-form-item label="栏目排序" name="sort">
@@ -66,7 +66,7 @@ export default defineComponent({
       url: '',
       type: 'single',
       new_window: false,
-      status: true,
+      status: 1,
       sort: 100,
       keywords: '',
       description: '',

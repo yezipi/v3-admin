@@ -16,7 +16,7 @@ const formState = ref<MailSettingsConfig>({
   send_title: '',
   receive_mail: '',
   receive_title: '',
-  receive_notice: false,
+  open: false,
 })
 
 const rules: Record<string, Rule[]> = {}
@@ -89,7 +89,7 @@ onMounted(() => {
       </a-form-item>
 
       <a-form-item label="启用邮件通知">
-        <a-switch v-model:checked="formState.receive_notice"></a-switch>
+        <a-switch v-model:checked="formState.open"></a-switch>
       </a-form-item>
 
       <a-form-item style="margin-left: 100px;">

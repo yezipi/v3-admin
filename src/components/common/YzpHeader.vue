@@ -60,6 +60,11 @@ const changeTheme = (theme: string) => {
   Store.commit('changeTheme', theme )
 }
 
+const readMsg = async (record: any) => {
+  await MessageApi.setRead(record.id)
+  MessageApi.getUnRead()
+}
+
 // 获取未审核内容
 MessageApi.getUnRead()
 
@@ -107,7 +112,7 @@ if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
               <a-tabs v-model:value="activeMsgType" class="yzp-head-msg-tab" centered>
 
                 <a-tab-pane key="comments" :tab="`评论(${unReadMsg.data.comments.count})`">
-                  <div v-for="(item, index) in unReadMsg.data.comments.rows" :key="index" class="yzp-head-msg-item">
+                  <div v-for="(item, index) in unReadMsg.data.comments.rows" :key="index" class="yzp-head-msg-item" @click="readMsg(item)">
                     <div class="yzp-head-msg-user">
                       <span class="yzp-head-msg-user-nickname">{{ item.nickname }}</span>
                       <span class="yzp-head-msg-user-preffix">{{ item.preffix }}</span>
@@ -120,7 +125,7 @@ if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 </a-tab-pane>
 
                 <a-tab-pane key="feedbacks" :tab="`留言(${unReadMsg.data.feedbacks.count})`">
-                  <div v-for="(item, index) in unReadMsg.data.feedbacks.rows" :key="index" class="yzp-head-msg-item">
+                  <div v-for="(item, index) in unReadMsg.data.feedbacks.rows" :key="index" class="yzp-head-msg-item" @click="readMsg(item)">
                     <div class="yzp-head-msg-user">
                       <span class="yzp-head-msg-user-nickname">{{ item.nickname }}</span>
                       <span class="yzp-head-msg-user-preffix">{{ item.preffix }}</span>
@@ -132,7 +137,7 @@ if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 </a-tab-pane>
 
                 <a-tab-pane key="blogrolls" :tab="`友链(${unReadMsg.data.blogrolls.count})`">
-                  <div v-for="(item, index) in unReadMsg.data.blogrolls.rows" :key="index" class="yzp-head-msg-item">
+                  <div v-for="(item, index) in unReadMsg.data.blogrolls.rows" :key="index" class="yzp-head-msg-item" @click="readMsg(item)">
                     <div class="yzp-head-msg-user">
                       <span class="yzp-head-msg-user-nickname">{{ item.nickname }}</span>
                       <span class="yzp-head-msg-user-preffix">{{ item.preffix }}</span>

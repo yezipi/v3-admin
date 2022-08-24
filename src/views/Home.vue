@@ -22,6 +22,11 @@ const districtRef = ref()
 const keywordsRef = ref()
 const pageRef = ref()
 const logs = ref<any[]>([])
+const unAudit = ref<{ feedback: number, comment: number, blogroll: number }>({
+  feedback: 0,
+  comment: 0,
+  blogroll: 0,
+})
 
 // 获取内容统计
 const getTotalCount = async () => {
@@ -32,12 +37,19 @@ const getTotalCount = async () => {
   })
 }
 
+// 获取未审核内容
+const getUnAudit = async () => {
+  const { data } = await ReportApi.getUnAudit()
+  unAudit.value = data
+}
+
 // 获取操作日志
 const getOperationLogs = async () => {
-  const { data } = await ReportApi.getOperationLogs({ size: 10, page: 1 })
+  const { data } = await ReportApi.getOperationLogs({ size: 5, page: 1 })
   logs.value = data.rows
 }
 
+getUnAudit()
 getTotalCount()
 getOperationLogs()
 
@@ -70,6 +82,27 @@ getOperationLogs()
     </div>
 
     <div class="yzp-home-right">
+      <div class="yzp-home-opt">
+        <h4>我的待办</h4>
+        <div class="yzp-home-todo">
+          <div class="yzp-home-todo-item">
+            <span>待审核评论：</span>
+            <strong>{{ unAudit.comment }}</strong>
+            <a-button v-if="unAudit.comment" type="link" @click="$router.push('/comment/list')">去处理</a-button>
+          </div>
+          <div class="yzp-home-todo-item">
+            <span>待审核留言：</span>
+            <strong>{{ unAudit.feedback }}</strong>
+            <a-button v-if="unAudit.feedback" type="link" @click="$router.push('/feedback/list')">去处理</a-button>
+          </div>
+          <div class="yzp-home-todo-item">
+            <span>待审核友链：</span>
+            <strong>{{ unAudit.blogroll }}</strong>
+            <a-button v-if="unAudit.blogroll" type="link" @click="$router.push('/blogroll/list')">去处理</a-button>
+          </div>
+        </div>
+      </div>
+
       <div class="yzp-home-opt">
         <h4>快捷操作</h4>
         <div class="yzp-home-opt-wrap" style="margin-top: 0">
@@ -257,6 +290,17 @@ getOperationLogs()
   }
   :deep(.ant-table.ant-table-small) {
     font-size: 12px;
+  }
+}
+
+.yzp-home-todo {
+  .yzp-home-todo-item {
+    span {
+      color: #999999;
+    }
+    strong {
+      color: red;
+    }
   }
 }
 

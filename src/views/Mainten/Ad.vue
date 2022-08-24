@@ -11,7 +11,7 @@ const formState = ref<AdSettingsConfig>({
   banner: '',
   aside: '',
   float: '',
-  status: false,
+  open: false,
 });
 
 const rules: Record<string, Rule[]> = {}
@@ -61,7 +61,7 @@ onMounted(() => {
       </a-form-item>
 
       <a-form-item label="显示">
-        <a-switch v-model:checked="formState.status"></a-switch>
+        <a-switch v-model:checked="formState.open"></a-switch>
       </a-form-item>
 
       <a-form-item style="margin-left: 100px;">

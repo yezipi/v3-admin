@@ -14,7 +14,7 @@
         </template>
 
         <template v-if="dataIndex === 'status'">
-          <a-switch v-if="record.role === 'admin'" :checked="record.status" @change="changeStatus(record, $event)" />
+          <a-switch v-if="record.role === 'admin'" :checked="record.status" :checkedValue="1" :unCheckedValue="0" @change="changeStatus(record, $event)" />
           <span v-else>正常</span>
         </template>
 

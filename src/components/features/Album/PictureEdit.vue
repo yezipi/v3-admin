@@ -35,7 +35,7 @@ const initForm = {
   description: '',
   album_id: undefined,
   recommend: false,
-  status: true,
+  status: 1,
 }
 const ruleForm = ref({ ...initForm })
 
@@ -147,7 +147,7 @@ const closeDraw = () => {
         </a-form-item>
 
         <a-form-item label="设置">
-          <a-checkbox v-model:checked="ruleForm.status">显示</a-checkbox>
+          <a-switch v-model:checked="ruleForm.status" :checkedValue="1" :unCheckedValue="0">显示</a-switch>
           <a-checkbox v-model:checked="ruleForm.recommend">设为推荐</a-checkbox>
         </a-form-item>
       </a-form>

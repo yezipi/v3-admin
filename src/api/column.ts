@@ -6,7 +6,7 @@ export interface ColumnSaveConfig {
   url: string;
   type: string;
   new_window: boolean;
-  status: boolean;
+  status: number;
   sort: number;
   keywords: string;
   description: string;
@@ -24,7 +24,7 @@ export interface ColumnUpdateConfig {
   keywords?: string,
   description?: string,
   content?: string,
-  status?: boolean,
+  status?: number,
   type?: string;
   can_delete?: boolean
 }

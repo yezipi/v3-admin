@@ -12,7 +12,7 @@ type ArticleFields =  {
   user_id?: number
   view?: number
   like?: number
-  status?: boolean
+  status?: number
   top?: boolean
   recommend?: boolean
   download_link?: string
@@ -58,7 +58,7 @@ export default new class Article extends Request {
    * @param { String } data.from 作者姓名
    * @param { Number } data.view 浏览次数
    * @param { Number } data.like 点赞数
-   * @param { Boolean } data.status 状态
+   * @param { Number } data.status 状态
    * @param { Boolean } data.top 是否置顶
    * @param { Boolean } data.recommend 是否推荐
    * @param { String } data.open_comment 评论开关

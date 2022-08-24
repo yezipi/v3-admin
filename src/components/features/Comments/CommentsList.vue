@@ -175,7 +175,7 @@ const fnName = firstToUpper(type) + '.getList'
         </template>
 
         <template v-if="dataIndex === 'status'">
-          <a-switch :checked="record.status" @change="toUpdate(record, $event, 'status')" />
+          <a-switch :checked="record.status" :checkedValue="1" :unCheckedValue="0" @change="toUpdate(record, $event, 'status')" />
         </template>
 
         <template v-if="dataIndex === 'notice'">

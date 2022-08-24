@@ -14,7 +14,7 @@ export interface AlbumSaveConfig {
   description: string,
   open_comment: boolean,
   recommend: boolean,
-  status: boolean,
+  status: number,
   password: string,
   lock: boolean,
   user_id?: any

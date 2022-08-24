@@ -27,7 +27,7 @@ const initForm = {
   description: '',
   open_comment: true,
   recommend: false,
-  status: true,
+  status: 1,
   lock: false,
   password: '',
 }
@@ -152,7 +152,7 @@ const closeDraw = () => {
         </a-form-item>
 
         <a-form-item label="设置">
-          <a-checkbox v-model:checked="ruleForm.status">显示</a-checkbox>
+          <a-switch v-model:checked="ruleForm.status" :checkedValue="1" :unCheckedValue="0">显示</a-switch>
           <a-checkbox v-model:checked="ruleForm.open_comment">开启评论</a-checkbox>
           <a-checkbox v-model:checked="ruleForm.recommend">设为推荐</a-checkbox>
         </a-form-item>

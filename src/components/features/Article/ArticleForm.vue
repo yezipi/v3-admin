@@ -28,7 +28,7 @@ const formState = ref<ArticleSaveConfig>({
   from: '',
   like: 0,
   view: 0,
-  status: true,
+  status: 1,
   open_comment: true,
   recommend: false,
   top: false,
@@ -194,7 +194,7 @@ onMounted(() => {
       </a-form-item>
 
       <a-form-item label="设置">
-        <a-checkbox v-model:checked="formState.status">显示</a-checkbox>
+        <a-switch v-model:checked="formState.status" :checkedValue="1" :unCheckedValue="0">显示</a-switch>
         <a-checkbox v-model:checked="formState.open_comment">开启评论</a-checkbox>
         <a-checkbox v-model:checked="formState.recommend">设为推荐</a-checkbox>
         <a-checkbox v-model:checked="formState.top">置顶</a-checkbox>

@@ -61,7 +61,7 @@ const confirmDelete = (item: any) => {
         <template v-if="column.dataIndex === 'content'">
           <a-popover placement="top">
             <template #content>
-              <div v-html="record.content.replace('box-shadow', '').replace('border: 1px solid #eeeeee', '')" style="max-width: 500px;"></div>
+              <div v-html="record.content.replace('box-shadow', '').replace('border: 1px solid #eeeeee', '')" style="max-width: 500px;max-height: 70vh;overflow-y: auto;"></div>
             </template>
             <template #title>
               <span>发送内容</span>

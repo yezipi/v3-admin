@@ -25,7 +25,7 @@ export interface CommentSaveConfig {
   article_id?: any,
   type: string,
   nofollow: boolean,
-  status: boolean,
+  status: number,
   notice: boolean,
   sort: number,
 }

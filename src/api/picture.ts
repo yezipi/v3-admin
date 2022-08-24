@@ -14,7 +14,7 @@ export interface PictureSaveConfig {
   origin_path: string,
   description?: string,
   recommend?: boolean,
-  status?: boolean,
+  status?: number,
   album_id: any,
   user_id?: any,
   showMsg?: boolean,

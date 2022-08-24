@@ -5,7 +5,7 @@ export interface UserBaseConfig {
   name: string,
   nickname: string,
   password?: string,
-  status: boolean,
+  status: number,
   role_id: any,
   avatar?: string
 }
