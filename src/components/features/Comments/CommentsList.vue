@@ -7,7 +7,7 @@ const columns = reactive([
   {
     title: '名称',
     dataIndex: 'nickname',
-    width: 100,
+    width: 150,
   },
   {
     title: '内容',
@@ -105,6 +105,11 @@ switch (type) {
       dataIndex: 'recommend',
       width: 100,
     })
+    columns.splice(columns.length - 4, 0, {
+      title: '申请原因',
+      dataIndex: 'reason',
+      width: 100,
+    })
     break;
   case 'comment':
     title.value = '评论'
@@ -169,6 +174,13 @@ const fnName = firstToUpper(type) + '.getList'
       </template>
 
       <template #bodyCell="{ scope: { column: { dataIndex }, record } }">
+
+        <template v-if="dataIndex === 'nickname'">
+          <div style="display: flex;align-items: center;">
+            <img v-if="record.site" :src="`${record.site}/favicon.ico`" style="width: 25px;margin-right: 5px;" />
+            <span>{{ record.nickname }}</span>
+          </div>
+        </template>
 
         <template v-if="dataIndex === 'recommend'">
           <a-switch :checked="record.recommend" @change="toUpdate(record, $event, 'recommend')" />

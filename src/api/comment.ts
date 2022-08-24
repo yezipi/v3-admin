@@ -28,6 +28,8 @@ export interface CommentSaveConfig {
   status: number,
   notice: boolean,
   sort: number,
+  reason?: string,
+  recommend?: string
 }
 
 export interface CommentUpdateConfig {
@@ -52,6 +54,8 @@ export interface CommentUpdateConfig {
   status?: boolean,
   notice?: boolean,
   sort?: number,
+  reason?: string,
+  recommend?: string
 }
 
 export default new class Comment extends Request {
@@ -67,7 +71,7 @@ export default new class Comment extends Request {
    */
    public create(data: CommentSaveConfig) {
     const url = 'v1/client/comment'
-    return this.post(url, data)
+    return this.post(url, { ...data, loading: true, })
   }
 
   /**
@@ -88,7 +92,7 @@ export default new class Comment extends Request {
    */
    public update(id: string, data: CommentUpdateConfig) {
     const url = `v1/comment/${id}`
-    return this.put(url, { ...data, showMsg: true })
+    return this.put(url, { ...data, loading: true, showMsg: true })
   }
 
   /**

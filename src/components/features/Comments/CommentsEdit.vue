@@ -51,9 +51,11 @@ const initForm = {
   article_id: undefined,
   type,
   nofollow: true,
-  status: 0,
+  status: 1,
   notice: false,
   sort: 100,
+  reason: '',
+  recommend: false,
 }
 
 const drawState = ref(false)
@@ -66,7 +68,6 @@ const drawTitle = ref('')
 
 const rules: Record<string, Rule[]> = reactive<any>({
   nickname: [{ message: '名称必须', required: true, trigger: 'blur' }],
-  content: [{ message: '内容必须', required: true, trigger: 'blur' }],
   site: [{ message: '站点必须', required: false, trigger: 'blur' }]
 })
 
@@ -98,6 +99,9 @@ const getInfo = async (id: any) => {
 }
 
 const onSubmit = () => {
+  if (ruleForm.value.site && props.type === 'blogroll') {
+    ruleForm.value.avatar = `${ruleForm.value.site}/favicon.ico`
+  }
   formRef.value.validate().then(async () => {
     btnLoading.value = true
     try {
@@ -140,9 +144,10 @@ const closeDraw = () => {
         :label-col="labelCol"
       >
 
-        <a-form-item label="头像">
-          <div style="width: 100px;height: 100px;">
-            <yzp-upload v-model:value="ruleForm.avatar" :width="100" :height="100" clip withParentWith dir="blogroll"></yzp-upload>
+        <a-form-item v-if="type !== 'blogroll' || id" label="头像">
+          <div class="comments-avatar">
+            <yzp-upload v-if="type !== 'blogroll'" v-model:value="ruleForm.avatar" :width="100" :height="100" clip withParentWith dir="blogroll"></yzp-upload>
+            <img v-if="ruleForm.site" :src="`${ruleForm.site}/favicon.ico`" />
           </div>
         </a-form-item>
 
@@ -170,12 +175,16 @@ const closeDraw = () => {
           <span>{{ ruleForm.ua }}</span>
         </a-form-item>
 
-        <a-form-item label="地址">
+        <a-form-item v-if="ruleForm.address" label="地址">
           <a-input v-model:value="ruleForm.address" :disabled="!!id" autocomplete="off" placeholder="请填写地址"></a-input>
         </a-form-item>
 
-        <a-form-item label="内容" name="content">
-          <a-textarea v-model:value="ruleForm.content" :rows="3" placeholder="请填写内容"></a-textarea>
+        <a-form-item v-if="ruleForm.reason" label="申请理由" name="content">
+          <a-textarea v-model:value="ruleForm.reason" :rows="3" placeholder="请填写申请理由"></a-textarea>
+        </a-form-item>
+
+        <a-form-item label="站点描述" name="content">
+          <a-textarea v-model:value="ruleForm.content" :rows="3" placeholder="请填写站点描述，不填写则自动抓取"></a-textarea>
         </a-form-item>
 
         <a-form-item label="回复">
@@ -183,8 +192,15 @@ const closeDraw = () => {
           <div style="margin-top: 10px;color: #e79519">填写了回复和邮箱内容才可以发送邮件</div>
         </a-form-item>
 
+        <a-form-item label="显示">
+          <a-switch v-model:checked="ruleForm.status" :checked-value="1" :un-checked-value="0" ></a-switch>
+        </a-form-item>
+        
+        <a-form-item label="推荐">
+          <a-switch v-model:checked="ruleForm.recommend"></a-switch>
+        </a-form-item>
+
         <a-form-item label="设置">
-          <a-switch v-model:checked="ruleForm.status" :checked-value="1" :un-checked-value="0" checked-children="显示" un-checked-children="隐藏" style="margin-right:10px"></a-switch>
           <a-checkbox v-model:checked="ruleForm.notice" :disabled="!ruleForm.email || !ruleForm.reply_content">邮件通知TA</a-checkbox>
         </a-form-item>
         
@@ -192,3 +208,14 @@ const closeDraw = () => {
     </template>
   </yzp-draw>
 </template>
+
+<style scoped>
+.comments-avatar {
+  width: 100px;height: 100px;background: #999999;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+</style>
