@@ -194,7 +194,7 @@ onMounted(() => {
       </a-form-item>
 
       <a-form-item label="设置">
-        <a-switch v-model:checked="formState.status" :checkedValue="1" :unCheckedValue="0">显示</a-switch>
+        <a-switch v-model:checked="formState.status" :checkedValue="1" :unCheckedValue="0" checked-children="显示" un-checked-children="隐藏" style="margin-right:10px"></a-switch>
         <a-checkbox v-model:checked="formState.open_comment">开启评论</a-checkbox>
         <a-checkbox v-model:checked="formState.recommend">设为推荐</a-checkbox>
         <a-checkbox v-model:checked="formState.top">置顶</a-checkbox>

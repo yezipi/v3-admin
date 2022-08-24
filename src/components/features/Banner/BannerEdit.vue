@@ -168,7 +168,7 @@ const onArticleSelect = (res: any) => {
         </a-form-item>
 
         <a-form-item label="状态" name="status">
-          <a-switch v-model:checked="ruleForm.status" :checkedValue="1" :unCheckedValue="0">显示</a-switch>
+          <a-switch v-model:checked="ruleForm.status" :checkedValue="1" :unCheckedValue="0" checked-children="显示" un-checked-children="隐藏" style="margin-right:10px"></a-switch>
         </a-form-item>
       </a-form>
     </template>

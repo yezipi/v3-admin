@@ -53,7 +53,7 @@
         </template>
 
         <template v-if="dataIndex === 'status'">
-          <a-switch :checked="record.status" :checkedValue="1" :unCheckedValue="0" @change="updateArticle(record, $event, 'status')" />
+          <a-switch :checked="record.status" :checkedValue="1" :unCheckedValue="0" checked-children="显示" un-checked-children="隐藏" @change="updateArticle(record, $event, 'status')" />
         </template>
 
         <template v-if="dataIndex === 'action'">

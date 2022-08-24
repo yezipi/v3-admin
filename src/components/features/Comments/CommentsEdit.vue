@@ -184,7 +184,7 @@ const closeDraw = () => {
         </a-form-item>
 
         <a-form-item label="设置">
-          <a-switch v-model:checked="ruleForm.status" :checked-value="1" :un-checked-value="0">显示</a-switch>
+          <a-switch v-model:checked="ruleForm.status" :checked-value="1" :un-checked-value="0" checked-children="显示" un-checked-children="隐藏" style="margin-right:10px"></a-switch>
           <a-checkbox v-model:checked="ruleForm.notice" :disabled="!ruleForm.email || !ruleForm.reply_content">邮件通知TA</a-checkbox>
         </a-form-item>
         

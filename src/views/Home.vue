@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { FormOutlined, EditOutlined, BookOutlined, SettingOutlined, SkinOutlined, TeamOutlined } from '@ant-design/icons-vue'
+import { Empty } from 'ant-design-vue';
 import { ref } from 'vue'
 import dayjs from 'dayjs'
 import ReportApi from '@/api/report'
@@ -85,21 +86,22 @@ getOperationLogs()
       <div class="yzp-home-opt">
         <h4>我的待办</h4>
         <div class="yzp-home-todo">
-          <div class="yzp-home-todo-item">
+          <div v-if="unAudit.comment" class="yzp-home-todo-item">
             <span>待审核评论：</span>
             <strong>{{ unAudit.comment }}</strong>
-            <a-button v-if="unAudit.comment" type="link" @click="$router.push('/comment/list')">去处理</a-button>
+            <a-button type="link" @click="$router.push('/comment/list')">去处理</a-button>
           </div>
-          <div class="yzp-home-todo-item">
+          <div v-if="unAudit.feedback" class="yzp-home-todo-item">
             <span>待审核留言：</span>
             <strong>{{ unAudit.feedback }}</strong>
-            <a-button v-if="unAudit.feedback" type="link" @click="$router.push('/feedback/list')">去处理</a-button>
+            <a-button type="link" @click="$router.push('/feedback/list')">去处理</a-button>
           </div>
-          <div class="yzp-home-todo-item">
+          <div v-if="unAudit.blogroll" class="yzp-home-todo-item">
             <span>待审核友链：</span>
             <strong>{{ unAudit.blogroll }}</strong>
-            <a-button v-if="unAudit.blogroll" type="link" @click="$router.push('/blogroll/list')">去处理</a-button>
+            <a-button type="link" @click="$router.push('/blogroll/list')">去处理</a-button>
           </div>
+          <a-empty v-if="!unAudit.comment && !unAudit.feedback && !unAudit.blogroll" :image="Empty.PRESENTED_IMAGE_SIMPLE" description="暂无待办" />
         </div>
       </div>
 
