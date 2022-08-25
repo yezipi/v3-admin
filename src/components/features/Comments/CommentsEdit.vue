@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, ref, watch } from 'vue'
+import { reactive, ref, watch, computed } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import ReportApi from '@/api/report'
 
@@ -65,6 +65,7 @@ const formRef = ref()
 const ruleForm = ref({ ...initForm })
 const labelCol = { style: { width: '100px' } }
 const drawTitle = ref('')
+const isEdit = computed(() => !!props.id)
 
 const rules: Record<string, Rule[]> = reactive<any>({
   nickname: [{ message: '名称必须', required: true, trigger: 'blur' }],
@@ -83,8 +84,6 @@ watch(() => props.visible, (val: boolean) => {
     getInfo(props.id)
   }
 })
-
-drawTitle.value = props.id ? `编辑${title}` : `添加${title}`
 
 const getInfo = async (id: any) => {
   try {
@@ -130,7 +129,7 @@ const closeDraw = () => {
 <template>
   <yzp-draw
     v-model:visible="drawState"
-    :title="drawTitle"
+    :title="isEdit ? `编辑${title}` : `添加${title}`"
     :ok-loading="btnLoading"
     :wrap-loading="wrapLoading"
     @hide="closeDraw"
@@ -144,10 +143,9 @@ const closeDraw = () => {
         :label-col="labelCol"
       >
 
-        <a-form-item v-if="type !== 'blogroll' || id" label="头像">
+        <a-form-item v-if="isEdit || type !== 'blogroll'" label="头像">
           <div class="comments-avatar">
-            <yzp-upload v-if="type !== 'blogroll'" v-model:value="ruleForm.avatar" :width="100" :height="100" clip withParentWith dir="blogroll"></yzp-upload>
-            <img v-if="ruleForm.site" :src="`${ruleForm.site}/favicon.ico`" />
+            <yzp-upload v-model:value="ruleForm.avatar" :width="100" :height="100" clip withParentWith dir="blogroll"></yzp-upload>
           </div>
         </a-form-item>
 
@@ -189,7 +187,6 @@ const closeDraw = () => {
 
         <a-form-item label="回复">
           <a-textarea v-model:value="ruleForm.reply_content" :rows="3" placeholder="请填写内容"></a-textarea>
-          <div style="margin-top: 10px;color: #e79519">填写了回复和邮箱内容才可以发送邮件</div>
         </a-form-item>
 
         <a-form-item label="显示">
@@ -201,7 +198,7 @@ const closeDraw = () => {
         </a-form-item>
 
         <a-form-item label="设置">
-          <a-checkbox v-model:checked="ruleForm.notice" :disabled="!ruleForm.email || !ruleForm.reply_content">邮件通知TA</a-checkbox>
+          <a-checkbox v-model:checked="ruleForm.notice">邮件通知TA</a-checkbox>
         </a-form-item>
         
       </a-form>
@@ -211,11 +208,7 @@ const closeDraw = () => {
 
 <style scoped>
 .comments-avatar {
-  width: 100px;height: 100px;background: #999999;
+  width: 100px;height: 100px;
   border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
 }
 </style>
