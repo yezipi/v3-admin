@@ -16,9 +16,9 @@ export default new class Common extends Request {
 
   /**
    * 发送邮件
-   * @param { String } subject 标题
-   * @param { String } html 内容
-   * @param { String } recipient 收件人
+   * @param { String } params.subject 标题
+   * @param { String } params.html 内容
+   * @param { String } params.recipient 收件人
    * @version 2022-08-12 zzc
    */
   public sendMail(params: { subject: string, html: string, recipient: string }) {
@@ -36,7 +36,12 @@ export default new class Common extends Request {
     return this.get(url, { dir })
   }
 
-  public ossUpload(url: any, formData: any) {
+  /**
+   * 阿里云文件上传
+   * @param { FormData } formData 文件
+   */
+  public aliyunOssUpload(formData: any) {
+    const url = '/admin/v1/aliyun/upload'
     return this.post(url, formData)
   }
 
