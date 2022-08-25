@@ -65,9 +65,9 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   }
 
   if (code !== 1) {
-    // if (method !== 'get') {
-    //   message.error(msg)
-    // }
+    if (method !== 'get') {
+      message.error(msg)
+    }
     return Promise.reject(res)
   }
 

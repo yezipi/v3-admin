@@ -60,7 +60,7 @@ const condition = ref({
 
 const getBaiduVisitors = async () => {
   try {
-    const { data }: any = await Api.baiduVisitors(condition.value)
+    const { data }: any = await Api.getBaiduVisitors(condition.value)
     const { total, items } = data
     const field = items[1]
     count.value = total

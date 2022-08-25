@@ -180,6 +180,10 @@ onMounted(() => {
           <a-textarea v-model:value="formState.web_notice" :rows="3" placeholder="请输入网站公告，英文逗号隔开" />
         </a-form-item>
 
+        <a-form-item label="百度统计代码">
+          <a-textarea v-model:value="formState.web_tongji" :rows="3" placeholder="请输入百度的统计代码" />
+        </a-form-item>
+
         <a-form-item label="建站日期">
           <a-date-picker
             v-model:value="formState.web_date"

@@ -69,9 +69,20 @@ export default new class Tags extends Request {
    * @param { String } params.endDate 结束时间
    * @version 2022-02-21 zzc
    */
-   public baiduVisitors(params: { startDate?: string, endDate?: string, page?: number, size?: number }) {
+   public getBaiduVisitors(params: { startDate?: string, endDate?: string, page?: number, size?: number }) {
     const url = 'v1/report/baiduVisitors'
     return this.get(url, params)
+  }
+
+  /**
+   * 获取百度区域
+   * @param { String } startDate 开始时间
+   * @param { String } endDate 结束时间
+   * @version 2022-02-21 zzc
+   */
+  public getBaiduArea(startDate: string, endDate: string) {
+    const url = 'v1/report/baiduArea'
+    return this.get(url, { startDate, endDate })
   }
 
   /**

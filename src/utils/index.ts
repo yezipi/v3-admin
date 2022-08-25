@@ -154,11 +154,28 @@ const timeAgao = (time: any) => {
   return result
 }
 
+/**
+ * 全屏
+ * @param { String } ele 元素属性
+ */
+ const setFullEle = (ele: any) => {
+  return new Promise(async (resolve) => {
+    const mapEle = (document as any).querySelector(ele)
+    if (document.fullscreenElement) {
+      await (document as any).exitFullscreen()
+    } else {
+      await mapEle.requestFullscreen()
+    }
+    resolve('')
+  })
+}
+
 export {
   db,
   dataURItoBlob,
   formatDate,
   timeAgao,
   copyText,
-  debounce
+  debounce,
+  setFullEle
 }

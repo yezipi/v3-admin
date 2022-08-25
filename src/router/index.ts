@@ -40,6 +40,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/Comments/Index.vue'),
     children: [
       {
+        path: '/dashboard/overview',
+        name: 'DashboardOverview',
+        meta: { title: '概览', icon: '' },
+        component: () => import('@/views/Dashboard/Overview.vue'),
+      },
+      {
         path: '/dashboard/visitors',
         name: 'DashboardVisitors',
         meta: { title: '实时访客', icon: '' },

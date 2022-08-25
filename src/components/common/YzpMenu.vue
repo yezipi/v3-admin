@@ -28,7 +28,7 @@
             <template v-if="item.children.length">
               <template v-for="(sub) in item.children">
                 <a-menu-item v-if="!sub.meta.noMenu &&  showMenu(sub.name)" :key="sub.name" @click="onMenuClick(sub)">
-                  <template #icon>
+                  <template v-if="sub.meta.icon" #icon>
                     <component :is="sub.meta.icon"></component>
                   </template>
                   {{ sub.meta.title }}
