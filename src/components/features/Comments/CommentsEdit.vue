@@ -187,6 +187,7 @@ const closeDraw = () => {
 
         <a-form-item label="回复">
           <a-textarea v-model:value="ruleForm.reply_content" :rows="3" placeholder="请填写内容"></a-textarea>
+          <div v-if="type !== 'blogroll'" style="color: red;font-size: 12px;margin-top: 5px;">未填写内容不会通知</div>
         </a-form-item>
 
         <a-form-item label="显示">
