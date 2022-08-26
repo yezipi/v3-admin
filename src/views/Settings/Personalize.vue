@@ -26,8 +26,6 @@ const modalVisible = ref(false)
 const picturePage = ref(1)
 const pictureTotal = ref(0)
 
-const imgs = ref<any>([])
-
 const formState = ref<PersonalizeSettingsConfig>({
   style: 'simple',
   font: 'Microsoft YaHei',
@@ -152,6 +150,11 @@ onMounted(() => {
 
       <a-form-item label="网站置灰">
         <a-switch v-model:checked="formState.gray"></a-switch>
+      </a-form-item>
+
+      <a-form-item label="定时切换">
+        <a-switch v-model:checked="formState.auto"></a-switch>
+        <div style="color:orange;margin-top: 5px;">根据每个季度切换一次，国家公祭日变成灰色</div>
       </a-form-item>
 
       <a-form-item style="margin-left: 100px;">

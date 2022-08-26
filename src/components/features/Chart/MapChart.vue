@@ -104,6 +104,10 @@ const init = async () => {
     echarts.registerMap('china', mapData as any);
 
     option.value = {
+      title: {
+        text: '地图分布',
+        left: 'center'
+      },
       tooltip: {
         z: 6,
         trigger: 'item',
@@ -119,11 +123,10 @@ const init = async () => {
         inRange: {
           color: ['#488FF7', '#fed0d0', '#ffa1a1','#ff6666', '#ff0000']
         },
-        textStyle: {
-          color: '#ffffff'
-        },
         left: 10,
+        bottom: 20,
         itemWidth: 10,
+        show: false,
       },
       // geo: {
       //   type: 'map',
@@ -160,10 +163,13 @@ const init = async () => {
           type: 'map',
           map: 'china',
           geoIndex: 0,
+          layoutCenter: ['50%', '50%'], //地图位置
+          layoutSize: '120%',
           z: 0,
           roam: false,
           data: provinceData.value,
           label: {
+            color: '#ffffff',
             show: true,
             formatter: '{b}\n{c}'
           }
@@ -173,7 +179,7 @@ const init = async () => {
     myChart.setOption(option.value)
   } catch (e: any) {
     console.log(e)
-    errMsg.value = e.message || e.errMsg
+    errMsg.value = e.message || e.msg
   } finally {
     loading.value = false
   }
@@ -195,7 +201,7 @@ const resize = () => {
 }
 
 onMounted(() => {
-  chartDom = document.getElementById('map')!;
+  chartDom = document.getElementById('mapChart')!;
   myChart = echarts.init(chartDom);
   init();
 })
@@ -209,8 +215,8 @@ defineExpose({
 </script>
 
 <template>
-  <div class="baidu-area">
-    <div class="chart-main" id="map"></div>
+  <div class="chart-area">
+    <div class="chart-main" id="mapChart"></div>
     <div class="chart-spin">
       <a-spin v-if="loading" :spinning="loading" />
     </div>
@@ -219,15 +225,14 @@ defineExpose({
 </template>
 
 <style scoped lang="less">
-.baidu-area {
-  width: 100%;
+.chart-area {
+  flex: 1;
   height: 100%;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 1;
-  position: absolute;
   .chart-spin {
     position: absolute;
   }

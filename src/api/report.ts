@@ -78,10 +78,32 @@ export default new class Tags extends Request {
    * 获取百度区域
    * @param { String } startDate 开始时间
    * @param { String } endDate 结束时间
-   * @version 2022-02-21 zzc
+   * @version 2022-08-26 zzc
    */
   public getBaiduArea(startDate: string, endDate: string) {
     const url = 'v1/report/baiduArea'
+    return this.get(url, { startDate, endDate })
+  }
+
+  /**
+   * 获取百度统计趋势
+   * @param { String } startDate 开始时间
+   * @param { String } endDate 结束时间
+   * @version 2022-08-26 zzc
+   */
+  public getBaiduOverview(startDate: string, endDate: string) {
+    const url = 'v1/report/baiduOverview'
+    return this.get(url, { startDate, endDate })
+  }
+
+  /**
+   * 获取百度搜索引擎
+   * @param { String } startDate 开始时间
+   * @param { String } endDate 结束时间
+   * @version 2022-08-26 zzc
+   */
+  public getBaiduEngine(startDate: string, endDate: string) {
+    const url = 'v1/report/baiduEngine'
     return this.get(url, { startDate, endDate })
   }
 
