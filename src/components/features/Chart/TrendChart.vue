@@ -66,12 +66,14 @@ const init = async () => {
     loading.value = true
     errMsg.value = ''
 
-    const { data } = await ReportApi.getBaiduDayReport(props.startDate, props.endDate)
+    const { data } = await ReportApi.getBaiduTrend(props.startDate, props.endDate)
+    
     // 组合成适用于图表的数据
-    const date = data.items[0].map((e: any) => e[0].substring(5, 13))
+    const date = data.items[0].map((e: any) => e[0])
     const val = data.items[1]
     const val1: any = []
     const val2: any = []
+    const val3: any = []
 
     val.forEach((e: any) => {
       if (e[0] !== '--' ) {
@@ -84,16 +86,19 @@ const init = async () => {
       } else {
         val2.push(0)
       }
+      if (e[2] !== '--' ) {
+        val3.push(e[2])
+      } else {
+        val3.push(0)
+      }
     })
-
     if (!myChart) {
       chartDom = document.getElementById('dayCharts')!
       myChart = echarts.init(chartDom)
     }
-    
     option.value = {
       title: {
-        text: '7天日用户访问数'
+        text: '趋势分析'
       },
       tooltip: {
         trigger: 'axis',
@@ -105,7 +110,7 @@ const init = async () => {
         }
       },
       legend: {
-        data: ['日用户数', '日访问数']
+        data: ['访问数', '用户数', 'ip数']
       },
       toolbox: {
         feature: {
@@ -113,16 +118,16 @@ const init = async () => {
         }
       },
       grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
+        left: '1%',
+        right: '1%',
+        bottom: '1%',
         containLabel: true
       },
       xAxis: [
         {
           type: 'category',
           boundaryGap: false,
-          data: date,
+          data: date.reverse(),
         }
       ],
       yAxis: [
@@ -132,7 +137,7 @@ const init = async () => {
       ],
       series: [
         {
-          name: '日用户数',
+          name: '访问数',
           type: 'line',
           stack: 'Total',
           itemStyle: {
@@ -161,10 +166,11 @@ const init = async () => {
           emphasis: {
             focus: 'series'
           },
-          data: val2
+          smooth: true,
+          data: val1.reverse()
         },
         {
-          name: '日访问数',
+          name: '用户数',
           type: 'line',
           stack: 'Total',
           itemStyle: {
@@ -193,7 +199,41 @@ const init = async () => {
           emphasis: {
             focus: 'series'
           },
-          data: val1
+          smooth: true,
+          data: val2.reverse()
+        },
+        {
+          name: 'ip数',
+          type: 'line',
+          stack: 'Total',
+          itemStyle: {
+            color: '#8bd5ec'
+          },
+          areaStyle: {
+            opacity: 0.8,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: '#1ba3ec'
+              },
+              {
+                offset: 1,
+                color: '#1bd5ec'
+              }
+            ])
+          },
+          lineStyle: {
+            color: '#1b69c7'
+          },
+          label: {
+            show: true,
+            position: 'top'
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          smooth: true,
+          data: val3.reverse()
         },
       ]
     }
@@ -232,3 +272,7 @@ onMounted(() => {
     <a-empty v-if="errMsg" :description="errMsg" />
   </div>
 </template>
+
+<style scoped lang="less">
+
+</style>

@@ -42,7 +42,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/dashboard/overview',
         name: 'DashboardOverview',
-        meta: { title: '概览', icon: '' },
+        meta: { title: '网站概况', icon: '' },
         component: () => import('@/views/Dashboard/Overview.vue'),
       },
       {

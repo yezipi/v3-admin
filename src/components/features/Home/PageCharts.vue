@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import ReportApi from '@/api/report'
+import { formatSec } from '@/utils'
 
 const props = defineProps({
   startDate: {
@@ -16,12 +17,16 @@ const props = defineProps({
 const loading = ref(true)
 const columns = ref([
   {
-    title: '页面',
+    title: '访问页面',
     dataIndex: 'page',
   },
   {
     title: '浏览量',
     dataIndex: 'pv',
+  },
+  {
+    title: '用户数',
+    dataIndex: 'visitors',
   },
   {
     title: '停留时长',
@@ -39,7 +44,8 @@ const init = async () => {
       dataSource.value.push({
         page: e[0].name,
         pv: items[1][index][0],
-        stay: items[1][index][2]
+        visitors: items[1][index][1],
+        stay: formatSec(items[1][index][2])
       })
     })
     console.log(dataSource.value)
@@ -56,12 +62,6 @@ init()
 
 <template>
   <div class="keywords-charts">
-    <a-table :data-source="dataSource" :loading="loading" :columns="columns" :pagination="false" size="small">
-      <template #bodyCell="{ column: { dataIndex }, record }">
-        <template v-if="dataIndex === 'stay'">
-          {{ record.stay }}秒
-        </template>
-      </template>
-    </a-table>
+    <a-table :data-source="dataSource" :loading="loading" :columns="columns" :pagination="false" bordered size="middle"></a-table>
   </div>
 </template>

@@ -54,6 +54,8 @@ const props = defineProps({
   },
 });
 
+const chartEl = ref()
+const height = ref(0)
 const option = ref<EChartsOption>({})
 const provinceData = ref<any[]>([]); // 省市区数据匹配
 const loading = ref(false)
@@ -101,12 +103,16 @@ const init = async () => {
 
     console.log(provinceData.value)
 
+    if (!myChart) {
+      chartDom = document.getElementById('mapChart')!
+      myChart = echarts.init(chartDom)
+    }
+
     echarts.registerMap('china', mapData as any);
 
     option.value = {
       title: {
         text: '地图分布',
-        left: 'center'
       },
       tooltip: {
         z: 6,
@@ -128,43 +134,52 @@ const init = async () => {
         itemWidth: 10,
         show: false,
       },
-      // geo: {
-      //   type: 'map',
-      //   map: 'china',
-      //   layoutCenter: ['50%', '50%'], //地图位置
-      //   layoutSize: '120%',
-      //   roam: true,
-      //   label: {
-      //     show: true,
-      //     color: '#ffffff',
-      //   },
-      //   // 高亮显示的样式
-      //   emphasis: {
-      //     disabled: false,
-      //     itemStyle: {
-      //       areaColor: '#010256',
-      //     },
-      //     label: {
-      //       color: '#52B7FA',
-      //     }
-      //   },
-      //   itemStyle: {
-      //     areaColor: '#6296f9',
-      //     borderColor: '#52B7FA',
-      //     borderWidth: 1,
-      //     shadowColor: 'rgba(0, 0, 0, 0.3)',
-      //     shadowBlur: 2,
-      //     shadowOffsetX: 2,
-      //     shadowOffsetY: 2,
-      //   },
-      // },
+      geo: {
+        type: 'map',
+        map: 'china',
+        layoutCenter: ['50%', '50%'], //地图位置
+        layoutSize: '100%',
+        roam: false,
+        label: {
+          show: true,
+          color: '#ffffff',
+        },
+        // 高亮显示的样式
+        emphasis: {
+          disabled: false,
+          itemStyle: {
+            areaColor: '#010256',
+          },
+          label: {
+            color: '#52B7FA',
+          }
+        },
+        regions: [
+          {
+            name: '南海诸岛',
+            itemStyle: {
+              opacity: 0,
+            },
+            label: {
+              show: false // 隐藏文字
+            }
+          }
+        ],
+        itemStyle: {
+          areaColor: '#6296f9',
+          borderColor: '#52B7FA',
+          borderWidth: 1,
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
+          shadowBlur: 2,
+          shadowOffsetX: 2,
+          shadowOffsetY: 2,
+        },
+      },
       series: [
         {
           type: 'map',
           map: 'china',
           geoIndex: 0,
-          layoutCenter: ['50%', '50%'], //地图位置
-          layoutSize: '120%',
           z: 0,
           roam: false,
           data: provinceData.value,
@@ -186,23 +201,17 @@ const init = async () => {
 
 }
 
-// 轮询刷新
-const refresh = async () => {
-}
-
 const fullMap = async () => {
   await setFullEle('#map')
   myChart.resize()
 }
 
-const resize = () => {
-  myChart.resize()
-  myChart.setOption(option.value)
-}
+const resize = () => myChart.resize()
+
+const refresh = () => init()
 
 onMounted(() => {
-  chartDom = document.getElementById('mapChart')!;
-  myChart = echarts.init(chartDom);
+  height.value = chartEl.value.clientWidth
   init();
 })
 
@@ -215,30 +224,11 @@ defineExpose({
 </script>
 
 <template>
-  <div class="chart-area">
+  <div ref="chartEl" :style="{ height: height + 'px' }" class="chart-area">
     <div class="chart-main" id="mapChart"></div>
-    <div class="chart-spin">
-      <a-spin v-if="loading" :spinning="loading" />
+    <div v-if="loading" class="chart-spin">
+      <a-spin :spinning="loading" />
     </div>
     <a-empty v-if="errMsg" :description="errMsg" />
   </div>
 </template>
-
-<style scoped lang="less">
-.chart-area {
-  flex: 1;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  .chart-spin {
-    position: absolute;
-  }
-  .chart-main {
-    width: 100%;
-    height: 100%;
-  }
-}
-</style>

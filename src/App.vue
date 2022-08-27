@@ -172,7 +172,7 @@ body {
   .halfWhite;
   margin: 15px;
   border-radius: 5px;
-  min-height: calc(100vh - 90px);
+  min-height: calc(100vh - 110px);
   padding: 15px;
   position: relative;
 

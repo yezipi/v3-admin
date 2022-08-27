@@ -24,6 +24,10 @@ const columns = ref([
     dataIndex: 'pv',
   },
   {
+    title: '用户数',
+    dataIndex: 'visitors',
+  },
+  {
     title: '占比',
     dataIndex: 'ratio',
   },
@@ -39,7 +43,8 @@ const init = async () => {
       dataSource.value.push({
         keywords: e[0].name,
         pv: items[1][index][0],
-        ratio: items[1][index][1]
+        visitors: items[1][index][1],
+        ratio: `${items[1][index][2]}%`
       })
     })
     console.log(dataSource.value)
@@ -56,12 +61,6 @@ init()
 
 <template>
   <div class="keywords-charts">
-    <a-table :data-source="dataSource" :loading="loading" :columns="columns" :pagination="false" size="small">
-      <template #bodyCell="{ column: { dataIndex }, record }">
-        <template v-if="dataIndex === 'ratio'">
-          {{ record.ratio }}%
-        </template>
-      </template>
-    </a-table>
+    <a-table :data-source="dataSource" :loading="loading" :columns="columns" :pagination="false" bordered size="middle"></a-table>
   </div>
 </template>

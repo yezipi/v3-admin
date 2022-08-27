@@ -16,8 +16,6 @@ const totalEles = ref<any>([
 
 const startDate = ref(dayjs().subtract(1, 'week').format('YYYYMMDD'))
 const endDate = ref(dayjs().subtract(1, 'day').format('YYYYMMDD'))
-const day1 = ref(dayjs().format('YYYYMMDD'))
-const day2 = ref(dayjs().add(1, 'day').format('YYYYMMDD'))
 const dayRef = ref()
 const districtRef = ref()
 const keywordsRef = ref()
@@ -50,6 +48,11 @@ const getOperationLogs = async () => {
   logs.value = data.rows
 }
 
+window.onresize = function() {
+  dayRef.value.resize()
+  districtRef.value.resize()
+}
+
 getUnAudit()
 getTotalCount()
 getOperationLogs()
@@ -76,9 +79,15 @@ getOperationLogs()
         <district-charts class="yzp-charts-item" ref="districtRef" :start-date="startDate" :end-date="endDate"></district-charts>
       </div>
 
-      <div class="yzp-charts-part">
-        <keywords-charts class="yzp-charts-item" ref="keywordsRef" :start-date="day1" :end-date="day2" style="margin-right: 10px;"></keywords-charts>
-        <page-charts class="yzp-charts-item" ref="pageRef" :start-date="day1" :end-date="day2"></page-charts>
+      <div class="yzp-charts-part" style="margin-top: 20px">
+        <div style="flex: 1">
+          <h2 style="font-weight:bold">top 10搜索词</h2>
+          <keywords-charts class="yzp-charts-item" ref="keywordsRef" :start-date="startDate" :end-date="endDate" style="margin-right: 20px;"></keywords-charts>
+        </div>
+        <div style="flex: 1">
+          <h2 style="font-weight:bold">top 10受访页</h2>
+          <page-charts class="yzp-charts-item" ref="pageRef" :start-date="startDate" :end-date="endDate"></page-charts>
+        </div>
       </div>
     </div>
 
@@ -233,9 +242,13 @@ getOperationLogs()
         display: flex;
         justify-content: space-between;
       }
+      .yzp-home-log-name {
+        margin-right: 10px;
+      }
       .yzp-home-log-location, .yzp-home-log-date {
         font-size: 12px;
         color: #999999;
+        flex-shrink: 0;
       }
     }
   }

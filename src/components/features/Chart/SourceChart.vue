@@ -13,7 +13,7 @@ import {
   LegendComponent,
   LegendComponentOption
 } from 'echarts/components'
-import { PieChart, PieSeriesOption } from 'echarts/charts'
+import { BarChart, BarSeriesOption } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
 
 echarts.use([
@@ -21,7 +21,7 @@ echarts.use([
   TooltipComponent,
   GridComponent,
   LegendComponent,
-  PieChart,
+  BarChart,
   CanvasRenderer
 ])
 
@@ -30,7 +30,7 @@ type EChartsOption = echarts.ComposeOption<
   | TooltipComponentOption
   | GridComponentOption
   | LegendComponentOption
-  | PieSeriesOption
+  | BarSeriesOption
 >
 
 const props = defineProps({
@@ -64,41 +64,64 @@ const init = async () => {
     errMsg.value = ''
     seriesData.value = []
 
-    const { data } = await ReportApi.getBaiduEngine(props.startDate, props.endDate)
+    const { data } = await ReportApi.getBaiduAllSource(props.startDate, props.endDate)
 
     // 组合成适用于图表的数据
     data.items[0].forEach((e: any, index: number) => {
       seriesData.value.push({
         name: e[0].name,
-        value: data.items[1][index][0]
+        value: data.items[1][index][0],
+        value1: data.items[1][index][1]
       })
     })
     if (!myChart) {
-      chartDom = document.getElementById('engineChart')!
+      chartDom = document.getElementById('sourceChart')!
       myChart = echarts.init(chartDom)
     }
     option.value = {
       title: {
-        text: '搜索引擎',
+        text: '搜索来源',
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c}'
       },
       legend: {
         left: 'center'
       },
-      tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-      },
+      xAxis: [
+        {
+          type: 'category',
+          data: seriesData.value.map((e: any) => e.name),
+          axisTick: {
+            alignWithLabel: true
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
       series: [
         {
-          radius: ['40%', '70%'],
-          name: '访问数',
-          type: 'pie',
-          data: seriesData.value,
+          name: '访客数',
+          type: 'bar',
           label: {
             show: true,
-            formatter: '{b}\n{c}'
+            position: 'top'
           },
+          data: seriesData.value.map((e: any) => e.value)
         },
+        {
+          name: '访问数',
+          type: 'bar',
+          label: {
+            show: true,
+            position: 'top'
+          },
+          data: seriesData.value.map((e: any) => e.value1)
+        }
       ]
     }
     myChart.setOption(option.value)
@@ -129,7 +152,7 @@ onMounted(() => {
 
 <template>
   <div ref="chartEl" :style="{ height: height + 'px' }" class="chart-area">
-    <div class="chart-main" id="engineChart"></div>
+    <div class="chart-main" id="sourceChart"></div>
     <div v-if="loading" class="chart-spin">
       <a-spin :spinning="loading" />
     </div>

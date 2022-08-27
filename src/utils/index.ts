@@ -170,6 +170,19 @@ const timeAgao = (time: any) => {
   })
 }
 
+/**
+ * 转换成中文秒
+ * @param { Number } sec 秒数
+ */
+const formatSec = (sec: number) => {
+  if (typeof sec !== 'number') {
+    return sec
+  }
+  const s = sec % 60
+  const m = parseInt(String(sec / 60))
+  return `${m}分${s}秒`
+}
+
 export {
   db,
   dataURItoBlob,
@@ -177,5 +190,6 @@ export {
   timeAgao,
   copyText,
   debounce,
-  setFullEle
+  setFullEle,
+  formatSec
 }

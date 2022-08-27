@@ -45,13 +45,23 @@ const props = defineProps({
   },
 })
 
+const chartEl = ref()
+const height = ref(0)
 const loading = ref(true)
-const isErr = ref(false)
+const errMsg = ref('')
+const option = ref<EChartsOption>({})
+
+let chartDom: any = undefined
+let myChart: any = undefined
 
 // 获取百度每日浏览统计
 const init = async () => {
   try {
+    loading.value = true
+    errMsg.value = ''
+
     const { data } = await ReportApi.getBaiduDistrictReport(props.startDate, props.endDate)
+
     // 组合成适用于图表的数据
     const yData = data.items[0].map((e: any) => e[0].name)
     const val = data.items[1]
@@ -69,9 +79,11 @@ const init = async () => {
         val2.push(0)
       }
     })
-    const chartDom = document.getElementById('district-charts')!
-    const myChart = echarts.init(chartDom)
-    const option: EChartsOption = {
+    if (!myChart) {
+      chartDom = document.getElementById('districtCharts')!
+      myChart = echarts.init(chartDom)
+    }
+    option.value = {
       title: {
         text: '7天省份统计'
       },
@@ -128,51 +140,38 @@ const init = async () => {
         }
       ]
     }
-    option && myChart.setOption(option)
-    // window.addEventListener('resize', () => {
-    //   myChart.resize()
-    // })
-  } catch (e) {
+    myChart.setOption(option.value)
+  } catch (e: any) {
     console.log(e)
-    isErr.value = true
+    errMsg.value = e.message || e.errMsg
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
-onMounted(() => init())
+const resize = () => myChart.resize()
+
+const refresh = () => init()
+
+defineExpose({
+  resize,
+  refresh
+})
+
+onMounted(() => {
+  height.value = chartEl.value.clientWidth
+  init()
+})
+
 
 </script>
 
 <template>
-  <div class="charts-wrap">
-    <div v-if="loading" class="charts-loading">
-      <a-spin></a-spin>
+  <div ref="chartEl" class="chart-area" style="height: 300px">
+    <div class="chart-main" id="districtCharts"></div>
+    <div v-if="loading" class="chart-spin">
+      <a-spin :spinning="loading" />
     </div>
-    <div class="charts-main" id="district-charts">
-      <a-empty v-if="isErr" :image="Empty.PRESENTED_IMAGE_SIMPLE" />
-    </div>
+    <a-empty v-if="errMsg" :description="errMsg" />
   </div>
 </template>
-
-<style scoped lang="less">
-.h300 {
-  height: 300px;
-}
-.charts-wrap {
-  .h300;
-  .charts-loading {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .charts-main {
-    height: 100%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-</style>

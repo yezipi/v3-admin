@@ -16,10 +16,37 @@ body {
   background: #000;
 }
 
+.chart-area {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  .chart-spin {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.7);
+  }
+  .chart-main {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 @dark-bg: #141414;
 @dark-bg-sub: #1d1d1d;
 
 .theme-dark {
+  .chart-area .chart-spin {
+    background: rgba(0,0,0,0.7);
+  }
   .yzp-head,
   .yzp-section
   {
@@ -131,6 +158,9 @@ body {
   }
   .yzp-home-page .yzp-home-opt .yzp-home-opt-icon {
     background: #333333!important;
+  }
+  .yzp-home-page .yzp-home-logs .yzp-home-log-item {
+    border-color: #333333!important;
   }
 }
 

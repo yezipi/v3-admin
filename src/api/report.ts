@@ -49,7 +49,7 @@ export default new class Tags extends Request {
    */
   public getBaiduKeywordReport(startDate: string, endDate: string) {
     const url = 'v1/report/baiduKeywordReport'
-    return this.get(url, { startDate, endDate })
+    return this.get(url, { startDate, endDate, page: 1, size: 10 })
   }
 
   /**
@@ -60,7 +60,7 @@ export default new class Tags extends Request {
    */
   public getBaiduPageReport(startDate: string, endDate: string) {
     const url = 'v1/report/baiduPageReport'
-    return this.get(url, { startDate, endDate })
+    return this.get(url, { startDate, endDate, page: 1, size: 10 })
   }
 
   /**
@@ -93,7 +93,7 @@ export default new class Tags extends Request {
    */
   public getBaiduOverview(startDate: string, endDate: string) {
     const url = 'v1/report/baiduOverview'
-    return this.get(url, { startDate, endDate })
+    return this.get(url, { startDate, endDate, page: 1, size: 999 })
   }
 
   /**
@@ -104,7 +104,29 @@ export default new class Tags extends Request {
    */
   public getBaiduEngine(startDate: string, endDate: string) {
     const url = 'v1/report/baiduEngine'
-    return this.get(url, { startDate, endDate })
+    return this.get(url, { startDate, endDate, page: 1, size: 999 })
+  }
+
+  /**
+   * 获取百度搜索来源
+   * @param { String } startDate 开始时间
+   * @param { String } endDate 结束时间
+   * @version 2022-08-26 zzc
+   */
+  public getBaiduAllSource(startDate: string, endDate: string) {
+    const url = 'v1/report/baiduAllSource'
+    return this.get(url, { startDate, endDate, page: 1, size: 999 })
+  }
+
+  /**
+   * 获取百度搜索趋势
+   * @param { String } startDate 开始时间
+   * @param { String } endDate 结束时间
+   * @version 2022-08-26 zzc
+   */
+  public getBaiduTrend(startDate: string, endDate: string) {
+    const url = 'v1/report/baiduTrend'
+    return this.get(url, { startDate, endDate, page: 1, size: 999 })
   }
 
   /**
