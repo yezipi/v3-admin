@@ -15,7 +15,11 @@
 
         <template v-if="dataIndex === 'images'">
           <div v-if="record.images.length" class="content-imgs">
-            <img v-for="(item, index) in record.images" :key="index" :src="item"/>
+            <img
+              v-for="(img, index) in record.images"
+              :key="index"
+             :src="img.indexOf('aliyuncs') > -1 ? `${img}?x-oss-process=image/resize,w_375` : img"
+            />
           </div>
         </template>
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined, 
@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons-vue'
 import Store from '@/store/index'
 import { useRouter } from 'vue-router'
-import { timeAgao } from '@/utils/index'
+import { timeAgao, replaceFace } from '@/utils/index'
 import { toggleTheme } from '@zougt/vite-plugin-theme-preprocessor/dist/browser-utils'
 import MessageApi from '@/api/message'
 
@@ -118,7 +118,7 @@ if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
                       <span class="yzp-head-msg-user-preffix">{{ item.preffix }}</span>
                       <span v-if="item.article_type !== 'mood'" class="yzp-head-msg-user-title">《{{ item.title }}》</span>
                     </div>
-                    <div class="yzp-head-msg-content">{{ item.content }}</div>
+                    <div v-html="replaceFace(item.content)" class="yzp-head-msg-content"></div>
                     <div class="yzp-head-msg-date">{{ timeAgao(item.created_at) }}</div>
                   </div>
                   <a-empty v-if="!unReadMsg.data.comments.rows.length" />
@@ -130,7 +130,7 @@ if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
                       <span class="yzp-head-msg-user-nickname">{{ item.nickname }}</span>
                       <span class="yzp-head-msg-user-preffix">{{ item.preffix }}</span>
                     </div>
-                    <div class="yzp-head-msg-content">{{ item.content }}</div>
+                    <div v-html="replaceFace(item.content)" class="yzp-head-msg-content"></div>
                     <div class="yzp-head-msg-date">{{ timeAgao(item.created_at) }}</div>
                   </div>
                   <a-empty v-if="!unReadMsg.data.feedbacks.rows.length" />
@@ -142,7 +142,7 @@ if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
                       <span class="yzp-head-msg-user-nickname">{{ item.nickname }}</span>
                       <span class="yzp-head-msg-user-preffix">{{ item.preffix }}</span>
                     </div>
-                    <div class="yzp-head-msg-content">{{ item.content }}</div>
+                    <div v-html="replaceFace(item.content)" class="yzp-head-msg-content"></div>
                     <div class="yzp-head-msg-date">{{ timeAgao(item.created_at) }}</div>
                   </div>
                   <a-empty v-if="!unReadMsg.data.blogrolls.rows.length" />

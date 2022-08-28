@@ -2,6 +2,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import confirm from '@/utils/confirm'
+import { replaceFace } from '@/utils'
 
 const columns = reactive([
   {
@@ -180,6 +181,10 @@ const fnName = firstToUpper(type) + '.getList'
             <img v-if="record.site" :src="`${record.site}/favicon.ico`" style="width: 25px;margin-right: 5px;" />
             <span>{{ record.nickname }}</span>
           </div>
+        </template>
+
+        <template v-if="dataIndex === 'content'">
+         <div v-html="replaceFace(record.content)"></div>
         </template>
 
         <template v-if="dataIndex === 'recommend'">

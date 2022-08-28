@@ -50,7 +50,7 @@ const initForm = {
   reply_time: new Date().getTime(),
   article_id: undefined,
   type,
-  nofollow: true,
+  nofollow: false,
   status: 1,
   notice: false,
   sort: 100,
@@ -64,7 +64,6 @@ const wrapLoading = ref(!!props.id)
 const formRef = ref()
 const ruleForm = ref({ ...initForm })
 const labelCol = { style: { width: '100px' } }
-const drawTitle = ref('')
 const isEdit = computed(() => !!props.id)
 
 const rules: Record<string, Rule[]> = reactive<any>({
@@ -200,6 +199,7 @@ const closeDraw = () => {
 
         <a-form-item label="设置">
           <a-checkbox v-model:checked="ruleForm.notice">邮件通知TA</a-checkbox>
+          <a-checkbox v-model:checked="ruleForm.nofollow">nofollow</a-checkbox>
         </a-form-item>
         
       </a-form>

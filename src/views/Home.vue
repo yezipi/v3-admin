@@ -167,7 +167,7 @@ getOperationLogs()
             <span class="yzp-home-log-date">{{ dayjs(item.created_at).format('YYYY-MM-DD hh:mm') }}</span>
           </div>
         </div>
-        <a-empty v-else />
+        <a-empty v-else :image="Empty.PRESENTED_IMAGE_SIMPLE" />
       </div>
 
     </div>

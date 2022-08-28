@@ -183,6 +183,18 @@ const formatSec = (sec: number) => {
   return `${m}分${s}秒`
 }
 
+/**
+ * 替换表情符号
+ * @param { String } str 内容
+ */
+ const replaceFace = (str: string) => {
+  let constent = str
+  constent = constent.replace(/\[tieba_([0-9]*)\]/g, `<img class="yzp-face-replace" src="/public/face/tieba/$1.png"/>`)
+  constent = constent.replace(/\[sina_([0-9]*)\]/g, `<img class="yzp-face-replace" src="/public/face/sina/$1.png"/>`)
+  constent = constent.replace(/\[qq_([0-9]*)\]/g, `<img class="yzp-face-replace" src="/public/face/qq/$1.gif"/>`)
+  return constent
+}
+
 export {
   db,
   dataURItoBlob,
@@ -191,5 +203,6 @@ export {
   copyText,
   debounce,
   setFullEle,
-  formatSec
+  formatSec,
+  replaceFace
 }

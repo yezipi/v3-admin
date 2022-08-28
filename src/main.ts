@@ -10,7 +10,7 @@ const app = createApp(App)
 
 Router.beforeEach((to: any, from: any, next: any) => {
   const { meta, matched, name } = to
-  document.title = meta.title || '未命名'
+  document.title = meta.title + '-椰子皮博客后台管理系统'
 
   Store.commit('updateError', { status: 200, msg: '' })
 

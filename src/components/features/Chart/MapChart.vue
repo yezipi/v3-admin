@@ -78,7 +78,6 @@ const init = async () => {
 
     const baiduProvince = data.items[0].map((e: any) => e[0])
     const baiduVisitCount = data.items[1].map((e: any) => e[0])
-    console.log(baiduVisitCount)
     
     mapData.features.forEach((a: any) => {
        let obj: any = {

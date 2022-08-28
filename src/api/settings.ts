@@ -43,6 +43,7 @@ export interface PersonalizeSettingsConfig {
 
 export interface SecuritySettingsConfig {
   black_ip: string,
+  open: boolean,
 }
 
 export type MaintenanceSettingsConfig = {
@@ -202,7 +203,8 @@ export default new class Settings extends Request {
   /**
    * 保存安全设置
    * @param { Object } data 邮件设置参数
-   * @param { String } data.black_ip 黑名单ip,逗号分隔
+   * @param { String } data.black_ip 黑名单ip,换行
+   * @param { String } data.open 搜房启用
    * @version 2021-10-30 zzc
    */
    public saveSecuritySettings(data: SecuritySettingsConfig) {

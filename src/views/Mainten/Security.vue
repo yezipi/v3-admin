@@ -8,6 +8,7 @@ const formRef = ref();
 const labelCol = { style: { width: '100px' } }
 const formState = ref<SecuritySettingsConfig>({
   black_ip: '',
+  open: false,
 })
 
 const rules: Record<string, Rule[]> = {}
@@ -23,6 +24,7 @@ const getDetail = async () => {
 const onSubmit = () => {
   formRef.value.validate().then(async () => {
     const rawValue = toRaw(formState.value)
+    console.log(rawValue.black_ip.split('\n'))
     await SettingsApi.saveSecuritySettings(rawValue)
     message.success('保存成功')
   })
@@ -35,7 +37,11 @@ getDetail()
   <div class="mail-settings">
     <a-form ref="formRef" :model="formState" :rules="rules" :label-col="labelCol">
       <a-form-item label="黑名单ip">
-        <a-textarea v-model:value="formState.black_ip" :rows="3" placeholder="请输入要拦截的ip，英文逗号隔开"></a-textarea>
+        <a-textarea v-model:value="formState.black_ip" :rows="3" placeholder="请输入要拦截的ip，一行一个"></a-textarea>
+      </a-form-item>
+
+      <a-form-item label="启用拦截">
+        <a-switch v-model:checked="formState.open"></a-switch>
       </a-form-item>
 
       <a-form-item style="margin-left: 100px;">

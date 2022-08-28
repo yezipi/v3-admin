@@ -2,7 +2,6 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import config from '@/config'
 import { 
   HomeOutlined,
-  EditOutlined,
   CopyOutlined,
   CommentOutlined,
   LinkOutlined,
@@ -36,7 +35,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    meta: { title: '数据看板', noLink: true, icon: LineChartOutlined },
+    meta: { title: '数据看板', noLink: true },
     component: () => import('@/views/Comments/Index.vue'),
     children: [
       {

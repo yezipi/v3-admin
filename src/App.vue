@@ -6,6 +6,8 @@ import 'dayjs/locale/zh-cn'
 import dayjs from 'dayjs'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 
+import userApi from '@/api/user'
+
 dayjs.locale('zh-cn')
 
 const menuRef = ref()
@@ -52,11 +54,17 @@ watch(() => route.name, () => {
   setPageState()
 })
 
+const getUserInfo = async () => {
+  const { data } = await userApi.getDetail(store.state.user.id)
+  store.commit('updateUser', data)
+}
+
 const collapseMenu = () => {
   menuRef.value.toggleCollapsed()
 }
 
 onMounted(() => {
+  getUserInfo()
   setPageState()
 })
 
