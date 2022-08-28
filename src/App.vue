@@ -55,6 +55,9 @@ watch(() => route.name, () => {
 })
 
 const getUserInfo = async () => {
+  if (!token.value) {
+    return
+  }
   const { data } = await userApi.getDetail(store.state.user.id)
   store.commit('updateUser', data)
 }
