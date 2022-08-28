@@ -5,10 +5,9 @@ import {
   CopyOutlined,
   CommentOutlined,
   LinkOutlined,
-  PictureOutlined,
+  SettingOutlined,
   AppstoreOutlined,
   UserOutlined,
-  SettingOutlined,
   LineChartOutlined,
   ToolOutlined
 } from '@ant-design/icons-vue'
@@ -35,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    meta: { title: '数据看板', noLink: true },
+    meta: { title: '数据看板', noLink: true, icon: LineChartOutlined },
     component: () => import('@/views/Comments/Index.vue'),
     children: [
       {
@@ -103,7 +102,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/albums/list',
         name: 'AlbumList',
-        meta: { title: '相册管理', icon: PictureOutlined },
+        meta: { title: '相册管理' },
         component: () => import('@/views/Content/AlbumList.vue'),
       },
       {
