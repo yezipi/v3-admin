@@ -25,7 +25,7 @@ class AliyunUpload {
       formData.append('success_action_status', '200')
       formData.append('key', fileUrl)
       formData.append('file', file)
-      await this.upload(data.host, formData)
+      // await this.upload(data.host, formData)
       return exportName
     } catch (e) {
       console.log(e)
@@ -36,16 +36,16 @@ class AliyunUpload {
   }
 
   // 上传到oss
-  async upload(url: string, formData: string) {
-    try {
-      const res = await common.ossUpload(url, formData)
-      if (res.status !== 200) {
-        throw { message: '图片上传失败~' }
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }
+  // async upload(url: string, formData: string) {
+  //   try {
+  //     const res = await common.ossUpload(url, formData)
+  //     if (res.status !== 200) {
+  //       throw { message: '图片上传失败~' }
+  //     }
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
 }
 
 export default new AliyunUpload()
