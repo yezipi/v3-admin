@@ -177,22 +177,22 @@ window.onresize = function() {
       </div>
       <div class="baidu-overview-item">
         <div class="baidu-overview-table">
-          <h3>入口页</h3>
-          <a-table :columns="columns" :dataSource="landingPage" :loading="tableLoading" bordered size="middle" class="baidu-overview-anttable"></a-table>
-        </div>
-        <div class="baidu-overview-table">
-          <h3>访问页</h3>
-          <a-table :columns="columns" :dataSource="visitPage" :loading="tableLoading" bordered size="middle" class="baidu-overview-anttable"></a-table>
-        </div>
-      </div>
-      <div class="baidu-overview-item">
-        <div class="baidu-overview-table">
           <h3>来源网站</h3>
           <a-table :columns="columns" :dataSource="sourceSite" :loading="tableLoading" bordered size="middle" class="baidu-overview-anttable"></a-table>
         </div>
         <div class="baidu-overview-table">
           <h3>关键词</h3>
           <a-table :columns="columns" :dataSource="word" :loading="tableLoading" bordered size="middle" class="baidu-overview-anttable"></a-table>
+        </div>
+      </div>
+      <div class="baidu-overview-item">
+        <div class="baidu-overview-table">
+          <h3>入口页</h3>
+          <a-table :columns="columns" :dataSource="landingPage" :loading="tableLoading" bordered size="middle" class="baidu-overview-anttable"></a-table>
+        </div>
+        <div class="baidu-overview-table">
+          <h3>访问页</h3>
+          <a-table :columns="columns" :dataSource="visitPage" :loading="tableLoading" bordered size="middle" class="baidu-overview-anttable"></a-table>
         </div>
       </div>
     </div>

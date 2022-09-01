@@ -277,6 +277,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { title: '网站维护', icon: '' },
         component: () => import('@/views/Mainten/Maintenance.vue'),
       },
+      {
+        path: '/settings/sitemap',
+        name: 'SettingsSitemap',
+        meta: { title: '网站地图', icon: '' },
+        component: () => import('@/views/Mainten/Sitemap.vue'),
+      },
     ],
   },
   {

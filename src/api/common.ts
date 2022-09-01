@@ -37,6 +37,15 @@ export default new class Common extends Request {
   }
 
   /**
+   * 生成网站地图
+   * @version 2022-09-01 zzc
+   */
+   public createSitemap() {
+    const url = 'v1/common/createSitemap'
+    return this.post(url, {})
+  }
+
+  /**
    * 阿里云文件上传
    * @param { FormData } formData 文件
    */

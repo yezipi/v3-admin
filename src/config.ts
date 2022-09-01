@@ -19,7 +19,7 @@ const HOST = {
     apiUrl: 'http://localhost:8001/'
   },
   production: {
-    apiUrl: 'http://localhost:8001/'
+    apiUrl: 'https://api.yezipi.net/'
   }
 }
 

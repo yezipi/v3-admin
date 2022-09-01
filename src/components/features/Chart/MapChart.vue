@@ -1,6 +1,6 @@
 <!--地图数据组件，2022-06-27，zzc-->
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, onUnmounted } from 'vue'
 import * as echarts from 'echarts/core';
 import {
   TitleComponent,
@@ -212,6 +212,11 @@ const refresh = () => init()
 onMounted(() => {
   height.value = chartEl.value.clientWidth
   init();
+})
+
+onUnmounted(() => {
+  myChart && myChart.clear()
+  myChart && myChart.dispose()
 })
 
 defineExpose({

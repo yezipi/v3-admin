@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-import { Empty } from 'ant-design-vue';
+import { onMounted, ref, onUnmounted } from 'vue'
 import ReportApi from '@/api/report'
 
 import * as echarts from 'echarts/core'
@@ -213,6 +212,11 @@ const refresh = () => init()
 defineExpose({
   resize,
   refresh
+})
+
+onUnmounted(() => {
+  myChart && myChart.clear()
+  myChart && myChart.dispose()
 })
 
 onMounted(() => {

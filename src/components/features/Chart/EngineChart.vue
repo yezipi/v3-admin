@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, onUnmounted } from 'vue'
 import ReportApi from '@/api/report'
 
 import * as echarts from 'echarts/core'
@@ -122,6 +122,11 @@ defineExpose({
 onMounted(() => {
   height.value = chartEl.value.clientWidth
   init()
+})
+
+onUnmounted(() => {
+  myChart && myChart.clear()
+  myChart && myChart.dispose()
 })
 
 
